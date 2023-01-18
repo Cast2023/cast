@@ -1,7 +1,6 @@
-
 **Checkout technics:**  
 * `git checkout -b <branch> <remote branch>`= `git branch <branch> <remote branch>` + `git checkout <branch branch>`. Create `<branch>` then move the `HEAD` pointer to there.
-* `git checkout --track <remote branch>` Creates a new branch from the specified branch. Moves HEAD to the new branch. New branch is set to track remote branch. 
+* `git checkout --track <remote branch>` Creates a new branch from the specified branch. Moves HEAD to the new branch. The new branch is set to track the remote branch. 
 
 **Make local `BRANCH_NAME` branch updated from the remote**  
 * `git checkout BRANCH_NAME`  
@@ -12,13 +11,13 @@
 * `git pull origin BRANCH_NAME`  
   
   ## Git workflow 1
-* Add a new remote repository to local repo 
+* Add a new remote repository to a local repo 
   * `git remote add  CERTAIN_LINK`  
 * When you are merging, you might have to use `--allow-unrelated-histories` flag  
   * `git fetch origin`  
   * `git merge origin/master`  
 
-* Create a new branch `feature/create-awesome` from master branch  
+* Create a new branch `feature/create-awesome` from the master branch  
   * `git checkout -b feature/create-awesome master`  
 * In branch `feature/create-awesome` start work work work....
 * Commit changes
@@ -49,4 +48,4 @@
   * Ready for production:
     * _todo_
     
-  [Usefule to read](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+  [Useful to read](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
