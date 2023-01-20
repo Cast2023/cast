@@ -1,7 +1,14 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'backend', views.SkeletonAPIView, 'skeleton')
+
+
 urlpatterns = [
     path('backend/', views.index),
     path('backend/skeleton',views.skeleton),
-    path('backend/skeleton-post',views.skeleton_post)
+    path('backend/skeleton-post',views.skeleton_post),
+    path('api/', include(router.urls)),
 ]

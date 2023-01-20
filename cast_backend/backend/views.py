@@ -1,7 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from backend.models import Skeleton
 from backend.forms import SkeletonForms
+
+
+from rest_framework import viewsets
+from .serializers import SkeletonSerializer
 
 def index(request):
     return render(request, 'backend/index.html')
@@ -24,3 +28,7 @@ def skeleton_post(request):
         form = SkeletonForms()
 
     return render(request, 'backend/skeleton.html', {'form': form})
+
+class SkeletonAPIView(viewsets.ModelViewSet):
+    serializer_class = SkeletonSerializer
+    queryset = Skeleton.objects.all()
