@@ -11,21 +11,24 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+ENV = dotenv_values(Path(BASE_DIR).joinpath(".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r3a--!08%$kd+n421%0@iw56#*r+k_t+$@a=ku#9*t)1&3^6!c'
+SECRET_KEY = ENV['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    ENV['CORS_ORIGIN']
+]
 
 
 # Application definition
@@ -80,9 +83,11 @@ WSGI_APPLICATION = 'cast_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cast',
-        'USER': 'holaphei',
-
+        'NAME': ENV['POSTGRES_DB'],
+        'USER': ENV['POSTGRES_USER'],
+        'PASSWORD': ENV['POSTGRES_PASSWORD'],
+        'HOST': ENV['POSTGRES_HOST'],
+        'PORT': ENV['POSTGRES_PORT'],
     }
 }
 
@@ -129,5 +134,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000'
+     ENV['CORS_ORIGIN'],
 ]
