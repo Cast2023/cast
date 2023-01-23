@@ -20,6 +20,7 @@ The initial design is to use the following stack for the project. Information wi
 ### Project progress
 - [Backlog Sprint 0](https://docs.google.com/spreadsheets/d/1wXlovJIC06ALvSr0M8b3VLNFiQBl1FqVd2ohvP6ofAQ/edit#gid=0)
 - [Product and Sprint Backlogs](https://docs.google.com/spreadsheets/d/1S5vMRKWoh7EqyPTEw0pMzFiRCvPBMS1V/edit#gid=1159722037)
+- [Retro notes](https://drive.google.com/drive/u/0/folders/1b6o-C2-OCTkozW5lMW37FBeKggW2jbtV)
 - [Working hours](https://docs.google.com/spreadsheets/d/1krRQkM73SgpyN823PulQSOlVZdtE565QKWDeB00OikY/edit#gid=0)
 
 ## Developer links
