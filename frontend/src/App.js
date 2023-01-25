@@ -37,7 +37,7 @@ const App = () => {
   const [newContent, setNewContent] = useState("a new note...")
 
   useEffect(() => {
-    axios.get("/api/backend/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/backend ").then((response) => {
       setContent(response.data)
     })
   }, [])
@@ -51,7 +51,7 @@ const App = () => {
     }
 
     axios
-      .post("/api/backend/", contentObject)
+      .post("http://127.0.0.1:8000/api/backend ", contentObject)
       .then((response) => {
         console.log("LOGGING: ", response)
       })
