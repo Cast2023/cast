@@ -1,5 +1,36 @@
+import {
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+} from "@mui/material"
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import React, { useState, useEffect } from "react"
 import axios from "axios"
+
+const Notes = ({ notes }) => (
+  <div>
+    <h2>Notes</h2>
+
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {notes.map((note) => (
+            <TableRow key={note.id}>
+              <TableCell>
+                <Link to={`/notes/${note.id}`}>{note.content}</Link>
+              </TableCell>
+              <TableCell>{note.name}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </div>
+)
 
 const App = () => {
   const [content, setContent] = useState([])
@@ -40,18 +71,20 @@ const App = () => {
   }
 
   return (
-    <div>
-      <p>Hello world</p>
-
-      <ul>{result}</ul>
+    <Container>
       <div>
-        <form onSubmit={addContent}>
-          <input value={newContent} onChange={handleContentChange} />
-          <br />
-          <input type="submit" value="OK" />
-        </form>
+        <p>Hello world</p>
+
+        <Notes notes={result} />
+        <div>
+          <form onSubmit={addContent}>
+            <input value={newContent} onChange={handleContentChange} />
+            <br />
+            <input type="submit" value="OK" />
+          </form>
+        </div>
       </div>
-    </div>
+    </Container>
   )
 }
 
