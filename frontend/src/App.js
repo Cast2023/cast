@@ -1,70 +1,40 @@
-import {
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Paper,
-} from "@mui/material"
+import { Container, Toolbar, AppBar, IconButton, Button } from "@mui/material"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import React, { useState, useEffect } from "react"
-import axios from "axios"
-
-const Notes = ({ notes }) => (
-  <div>
-    <h2>Notes</h2>
-
-    <TableContainer component={Paper}>
-      <Table>
-        <TableBody>
-          {notes.map((note) => (
-            <TableRow key={note.id}>
-              <TableCell>
-                <Link to={`/notes/${note.id}`}>{note.content}</Link>
-              </TableCell>
-              <TableCell>{note.name}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </div>
-)
+import Notes from "./Components/Notes"
+import NoteService from "./Services/NoteService"
+import Home from "./Components/Home"
+import Profile from "./Components/Profile"
+import Search from "./Components/Search"
 
 const App = () => {
   const [content, setContent] = useState([])
-  const [newContent, setNewContent] = useState("a new note...")
+  const [newContent, setNewContent] = useState("")
+
+  const padding = {
+    padding: 5,
+  }
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/backend ").then((response) => {
-      setContent(response.data)
+    NoteService.getAllNotes().then((initialNotes) => {
+      setContent(initialNotes)
     })
   }, [])
 
-  const result = content.map((item) => <li> {item.content} </li>)
-
-  const addContent = (event) => {
+  const submitContent = (event) => {
     event.preventDefault()
     const contentObject = {
       content: newContent,
     }
 
-    axios
-      .post("http://127.0.0.1:8000/api/backend ", contentObject)
-      .then((response) => {
-        console.log("LOGGING: ", response)
+    NoteService.createNote(contentObject)
+      .then((returnedNote) => {
+        setContent(content.concat(returnedNote))
+        setNewContent("")
       })
       .catch((error) => {
-        console.log(error, contentObject)
+        console.log(error)
       })
-    const addContentObject = {
-      content: newContent,
-      id: content.length + 1,
-    }
-
-    setContent(content.concat(addContentObject))
-    setNewContent("")
   }
   const handleContentChange = (event) => {
     setNewContent(event.target.value)
@@ -72,18 +42,53 @@ const App = () => {
 
   return (
     <Container>
-      <div>
-        <p>Hello world</p>
-
-        <Notes notes={result} />
+      <Router>
         <div>
-          <form onSubmit={addContent}>
-            <input value={newContent} onChange={handleContentChange} />
-            <br />
-            <input type="submit" value="OK" />
-          </form>
+          <h1>Competency, Allocation and Skill tracker</h1>
         </div>
-      </div>
+        <div>
+          <AppBar>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+              ></IconButton>
+              <Button color="inherit" component={Link} to="/">
+                home
+              </Button>
+              <Button color="inherit" component={Link} to="/notes">
+                notes
+              </Button>
+              <Button color="inherit" component={Link} to="/profile">
+                profile
+              </Button>
+              <Button color="inherit" component={Link} to="/search">
+                search
+              </Button>
+            </Toolbar>
+          </AppBar>
+        </div>
+        <Routes>
+          <Route
+            path="/notes"
+            element={
+              <Notes
+                notes={content}
+                submitContent={submitContent}
+                newContent={newContent}
+                handleContentChange={handleContentChange}
+              />
+            }
+          />
+          <Route path="/search" element={<Search />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+        <div>
+          <i>Cast APP, OhTu-projekti 2023</i>
+        </div>
+      </Router>
     </Container>
   )
 }
