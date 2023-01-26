@@ -54,7 +54,7 @@ const App = () => {
                 color="inherit"
                 aria-label="menu"
               ></IconButton>
-              <Button color="inherit" component={Link} to="/">
+              <Button color="inherit" component={Link} to="/" id="home">
                 home
               </Button>
               <Button color="inherit" component={Link} to="/notes">
