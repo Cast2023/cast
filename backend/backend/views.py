@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from backend.models import Skeleton
+from backend.models import Skeleton, Techs
 from backend.forms import SkeletonForms
 
 
 from rest_framework import viewsets
-from .serializers import SkeletonSerializer
+from .serializers import SkeletonSerializer, TechSerializer
+
 
 def index(request):
     return render(request, 'backend/index.html')
@@ -32,3 +33,7 @@ def skeleton_post(request):
 class SkeletonAPIView(viewsets.ModelViewSet):
     serializer_class = SkeletonSerializer
     queryset = Skeleton.objects.all()
+
+class TechAPIView(viewsets.ModelViewSet):
+    serializer_class = TechSerializer
+    queryset = Techs.objects.all()

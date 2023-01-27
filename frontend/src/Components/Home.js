@@ -1,3 +1,6 @@
+import { GoogleLogin } from "@react-oauth/google"
+import successCallback from "./Goauth"
+
 const Home = () => (
   <div>
     <h2>Home</h2>
@@ -23,6 +26,14 @@ const Home = () => (
       fringilla. Sed mattis posuere odio, et condimentum risus viverra at.
       Aliquam erat volutpat.
     </div>
+
+    {
+      <GoogleLogin
+        onSuccess={(credentialResponse) => {
+          successCallback(credentialResponse)
+        }}
+      />
+    }
   </div>
 )
 
