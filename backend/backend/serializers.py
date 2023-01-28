@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Skeleton
-from .models import Techs
+from .models import Users
+from .models import Employee_tech_skills
 
 
 class SkeletonSerializer(serializers.ModelSerializer):
@@ -9,7 +10,16 @@ class SkeletonSerializer(serializers.ModelSerializer):
         fields = ['content']
 
 
-class TechSerializer(serializers.ModelSerializer):
+class TechSkillSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Techs
-        fields = ['tech_name']
+        model = Employee_tech_skills
+        fields = ['skill_level']
+
+class ConsultSerializer(serializers.ModelSerializer):
+    skills = serializers.StringRelatedField(many=True)
+    class Meta:
+        model = Users
+        fields = '__all__'
+        depth = 2
+    
+    

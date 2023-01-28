@@ -3,6 +3,7 @@ const baseUrl = "http://127.0.0.1:8000/api/backend/"
 
 const getAllNotes = () => {
   const request = axios.get(baseUrl)
+  console.log("Getting all notes:", baseUrl, request)
   return request.then((response) => response.data)
 }
 

@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from backend.models import Skeleton, Techs
+from backend.models import Skeleton, Employee_tech_skills, Users
 from backend.forms import SkeletonForms
 
 
 from rest_framework import viewsets
-from .serializers import SkeletonSerializer, TechSerializer
+from .serializers import SkeletonSerializer, TechSkillSerializer, ConsultSerializer
 
 
 def index(request):
@@ -35,5 +35,9 @@ class SkeletonAPIView(viewsets.ModelViewSet):
     queryset = Skeleton.objects.all()
 
 class TechAPIView(viewsets.ModelViewSet):
-    serializer_class = TechSerializer
-    queryset = Techs.objects.all()
+    serializer_class = TechSkillSerializer
+    queryset = Employee_tech_skills.objects.all()
+
+class ConsultAPIView(viewsets.ModelViewSet):
+    serializer_class = ConsultSerializer
+    queryset = Users.objects.all()
