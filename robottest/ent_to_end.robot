@@ -1,42 +1,10 @@
 *** Variables ***
 
-${HOSTNAME}             127.0.0.1
-${PORT}                 3000
-${SERVER}               http://${HOSTNAME}:${PORT}/
-${BROWSER}              firefox
-
-
 *** Settings ***
-
-Documentation   Django Robot Tests
-Library         SeleniumLibrary  timeout=10  implicit_wait=0
-Library         Process
+Resource        resource.robot
 Suite Setup     Start Django and open Browser
 Suite Teardown  Stop Django and close Browser
 #Test Teardown   Flush Database
-
-
-
-*** Keywords ***
-
-Start Django and open Browser
-  ${django process}=  Start process  python3  backend/manage.py  runserver
-  Set suite variable  ${django process}
-  Open Browser  ${SERVER}  ${BROWSER}
-
-Stop Django and close browser
-  Close Browser
-  Terminate Process  ${django process}
-  
-Set Message
-  [arguments]  ${message}
-  Input Text  messge input  ${message}
-
-#Start Frontend
-    #TODO
-
-#Flush Database  
-   #TODO 
 
 *** Test Cases ***
 
