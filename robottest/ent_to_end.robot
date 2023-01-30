@@ -24,3 +24,9 @@ Scenario: As A visitor I can inspect search page
   Wait until page contains element  search
   Click element  search
   Page Should Contain  Search consults
+
+Scenario: As A visitor I can inspect api page
+  Go To  ${SERVER}
+  Wait until page contains element  api
+  Click element  api
+  Page Should Contain  Notes

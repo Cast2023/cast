@@ -72,7 +72,7 @@ const App = () => {
               <Button color="inherit" component={Link} to="/profile" id="profile">
                 profile
               </Button>
-              <Button color="inherit" component={Link} to="/notes">
+              <Button color="inherit" component={Link} to="/notes" id="api">
                 api
               </Button>
             </Toolbar>
