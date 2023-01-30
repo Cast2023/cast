@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Users(models.Model):
     first_name = models.TextField()
     last_name = models.TextField()
