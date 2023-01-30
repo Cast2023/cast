@@ -66,10 +66,10 @@ const App = () => {
               <Button color="inherit" component={Link} to="/" id="home">
                 home
               </Button>
-              <Button color="inherit" component={Link} to="/search">
+              <Button color="inherit" component={Link} to="/search" id="search">
                 search
               </Button>
-              <Button color="inherit" component={Link} to="/profile">
+              <Button color="inherit" component={Link} to="/profile" id="profile">
                 profile
               </Button>
               <Button color="inherit" component={Link} to="/notes">
