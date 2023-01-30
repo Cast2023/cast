@@ -6,7 +6,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material"
-const Profile = ({ tech }) => (
+const Profile = ({ consult }) => (
   <div>
     <h2>Profile</h2>
     <div>This is the profile page.</div>
@@ -24,9 +24,11 @@ const Profile = ({ tech }) => (
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
-          {tech.map((tech) => (
-            <TableRow key={tech.id}>
-              <TableCell>{tech.tech_name}</TableCell>
+          {consult.map((consult) => (
+            <TableRow key={consult.id}>
+              <TableCell>
+                {consult.first_name} {consult.last_name}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

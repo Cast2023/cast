@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import React, { useState, useEffect } from "react"
 import Notes from "./Components/Notes"
 import NoteService from "./Services/NoteService"
-import TechService from "./Services/TechService"
+import ConsultService from "./Services/ConsultService"
 import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
@@ -11,7 +11,7 @@ import Login from "./Components/Login"
 
 const App = () => {
   const [content, setContent] = useState([])
-  const [tech, setTech] = useState([])
+  const [consult, setConsult] = useState([])
   const [newContent, setNewContent] = useState("")
 
   const padding = {
@@ -25,8 +25,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    TechService.getAllTechs().then((techs) => {
-      setTech(techs)
+    ConsultService.getAllConsults().then((consults) => {
+      setConsult(consults)
     })
   }, [])
 
@@ -91,7 +91,7 @@ const App = () => {
             }
           />
           <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile tech={tech} />} />
+          <Route path="/profile" element={<Profile consult={consult} />} />
           <Route path="/" element={<Home />} />
         </Routes>
         <div>

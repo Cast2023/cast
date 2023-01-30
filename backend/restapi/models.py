@@ -1,8 +1,5 @@
 from django.db import models
 
-class Skeleton(models.Model):
-    content = models.TextField()
-
 class Users(models.Model):
     first_name = models.TextField()
     last_name = models.TextField()

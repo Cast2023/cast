@@ -1,13 +1,6 @@
 from rest_framework import serializers
-from .models import Skeleton
 from .models import Users
 from .models import Employee_tech_skills
-
-
-class SkeletonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Skeleton
-        fields = ['content']
 
 
 class TechSkillSerializer(serializers.ModelSerializer):
