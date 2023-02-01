@@ -9,10 +9,10 @@ from .models import Users
 
 class VerifyOAuthTokenApi(APIView):
     def get(self, request):
-        with open("log.log", "w") as filename:
-            filename.write("Headers:\n")
-            for key, value in request.headers.items():
-                filename.write(f"{key}: {value}\n")
+        # with open("log.log", "w") as filename:
+        #     filename.write("Headers:\n")
+        #     for key, value in request.headers.items():
+        #         filename.write(f"{key}: {value}\n")
         CLIENT_ID = settings.ENV["OAUTH_CLIENT_ID"]
 
         try:

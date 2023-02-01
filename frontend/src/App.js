@@ -125,12 +125,14 @@ const App = () => {
           </div>
         ) : (
           <div>
-            <Login handleLogIn={handleLogIn} />
+            <div>Start by logging in: </div>
+            <br />
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 successCallback({ credentialResponse, setSessionState })
               }}
             />
+            <br />
           </div>
         )}
         <div>
@@ -142,44 +144,3 @@ const App = () => {
 }
 
 export default App
-{
-  /* 
-<AppBar>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-              ></IconButton>
-              <Button color="inherit" component={Link} to="/" id="home">
-                home
-              </Button>
-              <Button color="inherit" component={Link} to="/search" id="search">
-                search
-              </Button>
-              <Button color="inherit" component={Link} to="/profile" id="profile">
-                profile
-              </Button>
-              <Button color="inherit" component={Link} to="/notes" id="api">
-                api
-              </Button>
-            </Toolbar>
-          </AppBar>
-        </div>
-        <Routes>
-          <Route
-            path="/notes"
-            element={
-              <Notes
-                notes={content}
-                submitContent={submitContent}
-                newContent={newContent}
-                handleContentChange={handleContentChange}
-              />
-            }
-          />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile consult={consult} />} />
-          <Route path="/" element={<Home />} />
-        </Routes> */
-}
