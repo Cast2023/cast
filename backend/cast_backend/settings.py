@@ -24,7 +24,7 @@ ENV = dotenv_values(Path(BASE_DIR).joinpath(".env"))
 SECRET_KEY = ENV['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -131,9 +131,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS_ORIGIN_WHITELIST = [
-#      ENV['CORS_ORIGIN'],
-# ]
-
-CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    #  ENV['CORS_ORIGIN'],
+    "http://localhost:3000",
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://127.0.0.1:3000",
+]
