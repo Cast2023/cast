@@ -25,16 +25,9 @@ const Home = () => (
       aliquam odio tristique quis. Aenean pulvinar vulputate tellus quis
       fringilla. Sed mattis posuere odio, et condimentum risus viverra at.
       Aliquam erat volutpat.
+      <br /> 
+      </div>
     </div>
-
-    {
-      <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          successCallback(credentialResponse)
-        }}
-      />
-    }
-  </div>
 )
 
 export default Home
