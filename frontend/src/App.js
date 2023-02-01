@@ -8,17 +8,24 @@ import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
 import Login from "./Components/Login"
-import axios from 'axios'
+import axios from "axios"
 
 import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
 
-
-const successCallback = (response) => {
-  axios.get(process.env.REACT_APP_BACKEND_URL, {
+const successCallback = ({ credentialResponse, setSessionState }) => {
+  console.log(credentialResponse, setSessionState)
+  const result = axios.get(process.env.REACT_APP_BACKEND_URL, {
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: JSON.stringify(response.credential)
+      "Content-Type": "application/json",
+      Authorization: JSON.stringify(credentialResponse.credential),
+    },
+  })
+  const verify = result.then((promiseresponse) => {
+    console.log(promiseresponse.data)
+    if (promiseresponse.data === "Just keep swimming.") {
+      console.log("Token matches")
+      setSessionState(true)
     }
   })
 }
@@ -64,70 +71,68 @@ const App = () => {
   const handleLogIn = (event) => {
     event.preventDefault()
     setSessionState(true)
-}
+  }
   const handleContentChange = (event) => {
     setNewContent(event.target.value)
   }
-  //console.log(sessionState)
+
   return (
     <Container>
       <Router>
         <div>
           <h1>Competency, Allocation and Skill tracker</h1>
         </div>
-        
-          {sessionState
-          ?  <div>
-             <AppBar>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-              ></IconButton>
-              <Button color="inherit" component={Link} to="/" id="home">
-                home
-              </Button>
-              <Button color="inherit" component={Link} to="/search">
-                search
-              </Button>
-              <Button color="inherit" component={Link} to="/profile">
-                profile
-              </Button>
-              <Button color="inherit" component={Link} to="/notes">
-                api
-              </Button>
-            </Toolbar>
-          </AppBar>
-        <Routes>
-          <Route
-            path="/notes"
-            element={
-              <Notes
-                notes={content}
-                submitContent={submitContent}
-                newContent={newContent}
-                handleContentChange={handleContentChange}
+
+        {sessionState ? (
+          <div>
+            <AppBar>
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                ></IconButton>
+                <Button color="inherit" component={Link} to="/" id="home">
+                  home
+                </Button>
+                <Button color="inherit" component={Link} to="/search">
+                  search
+                </Button>
+                <Button color="inherit" component={Link} to="/profile">
+                  profile
+                </Button>
+                <Button color="inherit" component={Link} to="/notes">
+                  api
+                </Button>
+              </Toolbar>
+            </AppBar>
+            <Routes>
+              <Route
+                path="/notes"
+                element={
+                  <Notes
+                    notes={content}
+                    submitContent={submitContent}
+                    newContent={newContent}
+                    handleContentChange={handleContentChange}
+                  />
+                }
               />
-            }
-          />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile consult={consult} />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-        </div>
-        : 
-        <div>
-          <Login handleLogIn={handleLogIn}/>
-          
+              <Route path="/search" element={<Search />} />
+              <Route path="/profile" element={<Profile consult={consult} />} />
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </div>
+        ) : (
+          <div>
+            <Login handleLogIn={handleLogIn} />
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                successCallback(credentialResponse)
+                successCallback({ credentialResponse, setSessionState })
               }}
             />
-        </div>
-
-          }
+          </div>
+        )}
         <div>
           <i>Cast APP, OhTu-projekti 2023</i>
         </div>
@@ -137,7 +142,8 @@ const App = () => {
 }
 
 export default App
-{/* 
+{
+  /* 
 <AppBar>
             <Toolbar>
               <IconButton
@@ -175,4 +181,5 @@ export default App
           <Route path="/search" element={<Search />} />
           <Route path="/profile" element={<Profile consult={consult} />} />
           <Route path="/" element={<Home />} />
-        </Routes> */}
+        </Routes> */
+}
