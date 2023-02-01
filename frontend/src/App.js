@@ -1,13 +1,10 @@
 import { Container, Toolbar, AppBar, IconButton, Button } from "@mui/material"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import React, { useState, useEffect } from "react"
-import Notes from "./Components/Notes"
-import NoteService from "./Services/NoteService"
 import ConsultService from "./Services/ConsultService"
 import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
-import Login from "./Components/Login"
 import axios from "axios"
 
 import { GoogleLogin } from "@react-oauth/google"
@@ -31,9 +28,7 @@ const successCallback = ({ credentialResponse, setSessionState }) => {
 }
 
 const App = () => {
-  const [content, setContent] = useState([])
   const [consult, setConsult] = useState([])
-  const [newContent, setNewContent] = useState("")
   const [sessionState, setSessionState] = useState(false)
 
   const padding = {
@@ -41,39 +36,14 @@ const App = () => {
   }
 
   useEffect(() => {
-    NoteService.getAllNotes().then((initialNotes) => {
-      setContent(initialNotes)
-    })
-  }, [])
-
-  useEffect(() => {
     ConsultService.getAllConsults().then((consults) => {
       setConsult(consults)
     })
   }, [])
 
-  const submitContent = (event) => {
-    event.preventDefault()
-    const contentObject = {
-      content: newContent,
-    }
-
-    NoteService.createNote(contentObject)
-      .then((returnedNote) => {
-        setContent(content.concat(returnedNote))
-        setNewContent("")
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
   const handleLogIn = (event) => {
     event.preventDefault()
     setSessionState(true)
-  }
-  const handleContentChange = (event) => {
-    setNewContent(event.target.value)
   }
 
   return (
@@ -107,17 +77,6 @@ const App = () => {
               </Toolbar>
             </AppBar>
             <Routes>
-              <Route
-                path="/notes"
-                element={
-                  <Notes
-                    notes={content}
-                    submitContent={submitContent}
-                    newContent={newContent}
-                    handleContentChange={handleContentChange}
-                  />
-                }
-              />
               <Route path="/search" element={<Search />} />
               <Route path="/profile" element={<Profile consult={consult} />} />
               <Route path="/" element={<Home />} />
