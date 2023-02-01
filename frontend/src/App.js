@@ -8,6 +8,20 @@ import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
 import Login from "./Components/Login"
+import axios from 'axios'
+
+import { GoogleLogin } from "@react-oauth/google"
+// import successCallback from "./Goauth"
+
+
+const successCallback = (response) => {
+  axios.get(process.env.REACT_APP_BACKEND_URL, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: JSON.stringify(response.credential)
+    }
+  })
+}
 
 const App = () => {
   const [content, setContent] = useState([])
@@ -102,7 +116,16 @@ const App = () => {
           <Route path="/" element={<Home />} />
         </Routes>
         </div>
-        : <Login handleLogIn={handleLogIn}/>
+        : 
+        <div>
+          <Login handleLogIn={handleLogIn}/>
+          
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                successCallback(credentialResponse)
+              }}
+            />
+        </div>
 
           }
         <div>
