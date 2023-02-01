@@ -30,3 +30,9 @@ Scenario: As A visitor I can inspect api page
   Wait until page contains element  api
   Click element  api
   Page Should Contain  Notes
+
+Scenario: When I inspect profile page I see data from backend
+  Go To  ${SERVER}
+  Wait until page contains element  profile
+  Click element  profile
+  Page Should Contain  Bruce Banner
