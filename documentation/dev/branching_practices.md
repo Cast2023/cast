@@ -50,7 +50,7 @@
   * Ready for production:
     * _todo_
 
-  ## Git workflow 3. When we made changes from 'feature1' branch, and want changes to a new 'feature2' branch, which does not exist yet. 
+  ## Git workflow 3. When we made changes in existing 'feature1' branch, but do not want to commit changes to that branch, but to a new 'feature2' branch, which does not exist yet. 
 * `git checkout -b feature2 feature1`
 * `git status`
 * `git add -a /-p`
