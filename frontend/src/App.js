@@ -13,6 +13,7 @@ const App = () => {
   const [content, setContent] = useState([])
   const [consult, setConsult] = useState([])
   const [newContent, setNewContent] = useState("")
+  const [sessionState, setSessionState] = useState(false)
 
   const padding = {
     padding: 5,
@@ -45,18 +46,76 @@ const App = () => {
         console.log(error)
       })
   }
+
+  const handleLogIn = (event) => {
+    event.preventDefault()
+    setSessionState(true)
+}
   const handleContentChange = (event) => {
     setNewContent(event.target.value)
   }
-
+  //console.log(sessionState)
   return (
     <Container>
       <Router>
         <div>
           <h1>Competency, Allocation and Skill tracker</h1>
         </div>
+        
+          {sessionState
+          ?  <div>
+             <AppBar>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+              ></IconButton>
+              <Button color="inherit" component={Link} to="/" id="home">
+                home
+              </Button>
+              <Button color="inherit" component={Link} to="/search">
+                search
+              </Button>
+              <Button color="inherit" component={Link} to="/profile">
+                profile
+              </Button>
+              <Button color="inherit" component={Link} to="/notes">
+                api
+              </Button>
+            </Toolbar>
+          </AppBar>
+        <Routes>
+          <Route
+            path="/notes"
+            element={
+              <Notes
+                notes={content}
+                submitContent={submitContent}
+                newContent={newContent}
+                handleContentChange={handleContentChange}
+              />
+            }
+          />
+          <Route path="/search" element={<Search />} />
+          <Route path="/profile" element={<Profile consult={consult} />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+        </div>
+        : <Login handleLogIn={handleLogIn}/>
+
+          }
         <div>
-          <AppBar>
+          <i>Cast APP, OhTu-projekti 2023</i>
+        </div>
+      </Router>
+    </Container>
+  )
+}
+
+export default App
+{/* 
+<AppBar>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -93,13 +152,4 @@ const App = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/profile" element={<Profile consult={consult} />} />
           <Route path="/" element={<Home />} />
-        </Routes>
-        <div>
-          <i>Cast APP, OhTu-projekti 2023</i>
-        </div>
-      </Router>
-    </Container>
-  )
-}
-
-export default App
+        </Routes> */}
