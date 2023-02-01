@@ -14,7 +14,7 @@ import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
 
 const successCallback = ({ credentialResponse, setSessionState }) => {
-  console.log(credentialResponse, setSessionState)
+  console.log(credentialResponse.credential)
   const result = axios.get(process.env.REACT_APP_BACKEND_URL, {
     headers: {
       "Content-Type": "application/json",
