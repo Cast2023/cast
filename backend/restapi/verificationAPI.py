@@ -19,9 +19,9 @@ class VerifyOAuthTokenApi(APIView):
             token = request.headers.get("Authorization").strip("\"")
 
             try:
-                idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)['email']
-                if self.validate_user(idinfo):
-                    return Response("Just keep swimming.", status=200) # Token OK
+                idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+                print(idinfo)
+                return Response("Just keep swimming.", status=200) # Token OK
                 
 
             except ValueError:
@@ -31,10 +31,3 @@ class VerifyOAuthTokenApi(APIView):
         # Should be more spesific, possible scenarios are at least KeyError and AttributeError
         except Exception:
             return Response("Error: Not authorized", status=401) # Something else is wrong
-
-    def validate_user(self, email):
-        user_emails = Users.objects.filter(email=email).values()
-        print("USER_EMAILS:", user_emails)
-        if user_emails:
-            return True
-        return False
