@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
   Link,
-  redirect,
+  Navigate,
 } from "react-router-dom"
 import React, { useState, useEffect } from "react"
 import ConsultService from "./Services/ConsultService"
@@ -19,10 +19,6 @@ import axios from "axios"
 import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
 
-const Roboroute = ({ setSessionState }) => {
-  setSessionState(true)
-  return <div></div>
-}
 
 const successCallback = ({ credentialResponse, setSessionState }) => {
   console.log(credentialResponse.credential)
@@ -49,8 +45,10 @@ const App = () => {
   const [consult, setConsult] = useState([])
   const [sessionState, setSessionState] = useState(false)
 
-  const padding = {
-    padding: 5,
+  
+  const Roboroute = ({ setSessionState }) => {
+    setSessionState(true)
+    return <Navigate to="/"/>
   }
 
   useEffect(() => {
