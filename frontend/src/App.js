@@ -114,7 +114,6 @@ const App = () => {
           }
         <div>
         <br /> 
-        <br /> 
           <i>Cast APP, OhTu-projekti 2023</i>
         </div>
       </Router>
