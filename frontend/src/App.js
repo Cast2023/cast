@@ -132,7 +132,6 @@ const App = () => {
               }}
               onError={() => {
                 console.log('Login Failed');
-                
               }} 
             />
         </div>
