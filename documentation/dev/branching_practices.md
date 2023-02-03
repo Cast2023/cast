@@ -9,7 +9,9 @@
 (or)  
 * `git checkout BRANCH_NAME`  
 * `git pull origin BRANCH_NAME`  
-  
+
+[Useful to read](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+
   ## Git workflow 1
 * Add a new remote repository to a local repo 
   * `git remote add  CERTAIN_LINK`  
@@ -47,5 +49,11 @@
     * `git push ?? ??`
   * Ready for production:
     * _todo_
+
+  ## Git workflow 3. When we made changes in existing 'feature1' branch, but do not want to commit changes to that branch, but to a new 'feature2' branch, which does not exist yet. 
+* `git checkout -b feature2 feature1`
+* `git status`
+* `git add -a /-p`
+* `git commit -m "Commit message"`
+* `git push origin feature2`
     
-  [Useful to read](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
