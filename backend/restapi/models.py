@@ -4,6 +4,7 @@ from django.db import models
 class Users(models.Model):
     first_name = models.TextField()
     last_name = models.TextField()
+    email = models.TextField()
 
 class Techs(models.Model):
     tech_name = models.TextField()
