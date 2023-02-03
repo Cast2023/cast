@@ -1,25 +1,34 @@
 import { Container, Toolbar, AppBar, IconButton, Button } from "@mui/material"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import React, { useState, useEffect } from "react"
-import Notes from "./Components/Notes"
-import NoteService from "./Services/NoteService"
 import ConsultService from "./Services/ConsultService"
 import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
-import Login from "./Components/Login"
-import axios from 'axios'
+import axios from "axios"
 
 import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
 
+<<<<<<< HEAD
 ////////////////////////////////////////////////////////////////////////////
 const successCallback = (response) => {
   console.log(response)
+=======
+const successCallback = ({ credentialResponse, setSessionState }) => {
+  console.log(credentialResponse.credential)
+>>>>>>> 6e5d8b3d755168ba57cff9ec20ce174b6fb24a6f
   const result = axios.get(process.env.REACT_APP_BACKEND_URL, {
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: JSON.stringify(response.credential)
+      "Content-Type": "application/json",
+      Authorization: JSON.stringify(credentialResponse.credential),
+    },
+  })
+  const verify = result.then((promiseresponse) => {
+    console.log(promiseresponse.data)
+    if (promiseresponse.data === "Just keep swimming.") {
+      console.log("Token matches")
+      setSessionState(true)
     }
   })
   console.log("Response", result)
@@ -28,9 +37,7 @@ const successCallback = (response) => {
 }
 
 const App = () => {
-  const [content, setContent] = useState([])
   const [consult, setConsult] = useState([])
-  const [newContent, setNewContent] = useState("")
   const [sessionState, setSessionState] = useState(false)
 
   const padding = {
@@ -38,41 +45,19 @@ const App = () => {
   }
 
   useEffect(() => {
-    NoteService.getAllNotes().then((initialNotes) => {
-      setContent(initialNotes)
-    })
-  }, [])
-
-  useEffect(() => {
     ConsultService.getAllConsults().then((consults) => {
       setConsult(consults)
     })
   }, [])
 
-  const submitContent = (event) => {
-    event.preventDefault()
-    const contentObject = {
-      content: newContent,
-    }
-
-    NoteService.createNote(contentObject)
-      .then((returnedNote) => {
-        setContent(content.concat(returnedNote))
-        setNewContent("")
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
   const handleLogIn = (event) => {
     event.preventDefault()
     setSessionState(true)
-}
-  const handleContentChange = (event) => {
-    setNewContent(event.target.value)
   }
+<<<<<<< HEAD
   // console.log(sessionState)
+=======
+>>>>>>> 6e5d8b3d755168ba57cff9ec20ce174b6fb24a6f
 
   return (
     <Container>
@@ -80,63 +65,53 @@ const App = () => {
         <div>
           <h1>Competency, Allocation and Skill tracker</h1>
         </div>
-        
-          {sessionState
-          ?  <div>
-             <AppBar>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-              ></IconButton>
-              <Button color="inherit" component={Link} to="/" id="home">
-                home
-              </Button>
-              <Button color="inherit" component={Link} to="/search">
-                search
-              </Button>
-              <Button color="inherit" component={Link} to="/profile">
-                profile
-              </Button>
-              <Button color="inherit" component={Link} to="/notes">
-                api
-              </Button>
-            </Toolbar>
-          </AppBar>
-        <Routes>
-          <Route
-            path="/notes"
-            element={
-              <Notes
-                notes={content}
-                submitContent={submitContent}
-                newContent={newContent}
-                handleContentChange={handleContentChange}
-              />
-            }
-          />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile consult={consult} />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-        </div>
-        : 
-        <div>
-          <Login handleLogIn={handleLogIn}/>
-          
+
+        {sessionState ? (
+          <div>
+            <AppBar>
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                ></IconButton>
+                <Button color="inherit" component={Link} to="/" id="home">
+                  home
+                </Button>
+                <Button color="inherit" component={Link} to="/search">
+                  search
+                </Button>
+                <Button color="inherit" component={Link} to="/profile">
+                  profile
+                </Button>
+                <Button color="inherit" component={Link} to="/notes">
+                  api
+                </Button>
+              </Toolbar>
+            </AppBar>
+            <Routes>
+              <Route path="/search" element={<Search />} />
+              <Route path="/profile" element={<Profile consult={consult} />} />
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </div>
+        ) : (
+          <div>
+            <div>Start by logging in: </div>
+            <br />
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 successCallback(credentialResponse);
                 setSessionState(true)
+
               }}
               onError={() => {
                 console.log('Login Failed');
               }} 
             />
-        </div>
-
-          }
+            <br />
+          </div>
+        )}
         <div>
           <i>Cast APP, OhTu-projekti 2023</i>
         </div>
@@ -146,42 +121,3 @@ const App = () => {
 }
 
 export default App
-{/* 
-<AppBar>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-              ></IconButton>
-              <Button color="inherit" component={Link} to="/" id="home">
-                home
-              </Button>
-              <Button color="inherit" component={Link} to="/search" id="search">
-                search
-              </Button>
-              <Button color="inherit" component={Link} to="/profile" id="profile">
-                profile
-              </Button>
-              <Button color="inherit" component={Link} to="/notes" id="api">
-                api
-              </Button>
-            </Toolbar>
-          </AppBar>
-        </div>
-        <Routes>
-          <Route
-            path="/notes"
-            element={
-              <Notes
-                notes={content}
-                submitContent={submitContent}
-                newContent={newContent}
-                handleContentChange={handleContentChange}
-              />
-            }
-          />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile consult={consult} />} />
-          <Route path="/" element={<Home />} />
-        </Routes> */}
