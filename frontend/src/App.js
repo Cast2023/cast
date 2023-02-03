@@ -13,14 +13,18 @@ import axios from 'axios'
 import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
 
-
+////////////////////////////////////////////////////////////////////////////
 const successCallback = (response) => {
-  axios.get(process.env.REACT_APP_BACKEND_URL, {
+  console.log(response)
+  const result = axios.get(process.env.REACT_APP_BACKEND_URL, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: JSON.stringify(response.credential)
     }
   })
+  console.log("Response", result)
+
+  return result
 }
 
 const App = () => {
@@ -68,7 +72,8 @@ const App = () => {
   const handleContentChange = (event) => {
     setNewContent(event.target.value)
   }
-  //console.log(sessionState)
+  // console.log(sessionState)
+
   return (
     <Container>
       <Router>
@@ -122,8 +127,13 @@ const App = () => {
           
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                successCallback(credentialResponse)
+                successCallback(credentialResponse);
+                setSessionState(true)
               }}
+              onError={() => {
+                console.log('Login Failed');
+                
+              }} 
             />
         </div>
 
