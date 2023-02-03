@@ -1,6 +1,3 @@
-import { GoogleLogin } from "@react-oauth/google"
-import successCallback from "./Goauth"
-
 const Home = () => (
   <div>
     <h2>Home</h2>

@@ -8,6 +8,8 @@ import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
 import Login from "./Components/Login"
+import Api from "./Components/Api"
+import MyTeam from "./Components/MyTeam"
 
 const App = () => {
   const [content, setContent] = useState([])
@@ -100,9 +102,11 @@ const App = () => {
               />
             }
           />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile consult={consult} />} />
           <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile consult={consult} />} />
+          <Route path="/api" element={<Api />} />
+          <Route path="/myteam" element={<MyTeam />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
         </div>
         : <Login handleLogIn={handleLogIn}/>
