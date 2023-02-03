@@ -5,19 +5,17 @@ import ConsultService from "./Services/ConsultService"
 import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
+import Login from "./Components/Login"
+import Api from "./Components/Api"
+import MyTeam from "./Components/MyTeam"
 import axios from "axios"
 
 import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
 
-<<<<<<< HEAD
-////////////////////////////////////////////////////////////////////////////
-const successCallback = (response) => {
-  console.log(response)
-=======
 const successCallback = ({ credentialResponse, setSessionState }) => {
   console.log(credentialResponse.credential)
->>>>>>> 6e5d8b3d755168ba57cff9ec20ce174b6fb24a6f
+
   const result = axios.get(process.env.REACT_APP_BACKEND_URL, {
     headers: {
       "Content-Type": "application/json",
@@ -54,10 +52,7 @@ const App = () => {
     event.preventDefault()
     setSessionState(true)
   }
-<<<<<<< HEAD
   // console.log(sessionState)
-=======
->>>>>>> 6e5d8b3d755168ba57cff9ec20ce174b6fb24a6f
 
   return (
     <Container>
@@ -65,44 +60,60 @@ const App = () => {
         <div>
           <h1>Competency, Allocation and Skill tracker</h1>
         </div>
+        
+          {sessionState
+          ?  <div>
+             <AppBar>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+              ></IconButton>
+              <Button color="inherit" component={Link} to="/" id="home">
+                home
+              </Button>
+              <Button color="inherit" component={Link} to="/profile" id="profile">
+                profile
+              </Button>
+              <Button color="inherit" component={Link} to="/api" id="api">
+                api
+              </Button>
+              <Button color="inherit" component={Link} to="/myteam" id="myteam">
+                my team
+              </Button>
+              <Button color="inherit" component={Link} to="/search" id="search">
+                search
+              </Button>
+            </Toolbar>
+          </AppBar>
+        <Routes>
+          <Route
+            path="/notes"
+            element={
+              <Notes
+                notes={content}
+                submitContent={submitContent}
+                newContent={newContent}
+                handleContentChange={handleContentChange}
+              />
+            }
+          />
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile consult={consult} />} />
+          <Route path="/api" element={<Api />} />
+          <Route path="/myteam" element={<MyTeam />} />
+          <Route path="/search" element={<Search />} />
+        </Routes>
+        </div>
 
-        {sessionState ? (
-          <div>
-            <AppBar>
-              <Toolbar>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                ></IconButton>
-                <Button color="inherit" component={Link} to="/" id="home">
-                  home
-                </Button>
-                <Button color="inherit" component={Link} to="/search">
-                  search
-                </Button>
-                <Button color="inherit" component={Link} to="/profile">
-                  profile
-                </Button>
-                <Button color="inherit" component={Link} to="/notes">
-                  api
-                </Button>
-              </Toolbar>
-            </AppBar>
-            <Routes>
-              <Route path="/search" element={<Search />} />
-              <Route path="/profile" element={<Profile consult={consult} />} />
-              <Route path="/" element={<Home />} />
-            </Routes>
-          </div>
-        ) : (
+         : (
           <div>
             <div>Start by logging in: </div>
             <br />
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                successCallback(credentialResponse);
-                setSessionState(true)
+                successCallback({credentialResponse, setSessionState })
 
               }}
               onError={() => {
@@ -113,6 +124,7 @@ const App = () => {
           </div>
         )}
         <div>
+        <br /> 
           <i>Cast APP, OhTu-projekti 2023</i>
         </div>
       </Router>

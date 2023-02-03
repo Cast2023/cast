@@ -26,6 +26,7 @@ const Login = ({handleLogIn}) => (
           color="primary"
           type="submit"
           value="Submit"
+          id="login"
         >
           Log in
         </Button>
