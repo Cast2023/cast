@@ -19,7 +19,7 @@ The initial design is to use the following stack for the project. Information wi
 
 ### Project progress
 - [Sprint Backlog](https://github.com/orgs/Cast2023/projects/2/views/1?layout=board)
-- [Product Backlog](https://github.com/Cast2023/cast/issues?q=is%3Aopen+is%3Aissue+label%3A%22user+story%22+sort%3Acreated-asc)
+- [Product Backlog](https://github.com/orgs/Cast2023/projects/2)
 - [Retro notes](https://drive.google.com/drive/u/0/folders/1b6o-C2-OCTkozW5lMW37FBeKggW2jbtV)
 - [Working hours](https://docs.google.com/spreadsheets/d/1krRQkM73SgpyN823PulQSOlVZdtE565QKWDeB00OikY/edit#gid=0)
 - [Backlog Sprint 0](https://docs.google.com/spreadsheets/d/1wXlovJIC06ALvSr0M8b3VLNFiQBl1FqVd2ohvP6ofAQ/edit#gid=0)
