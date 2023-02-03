@@ -2,7 +2,7 @@
 
 ${HOSTNAME}             127.0.0.1
 ${PORT}                 3000
-${SERVER}               http://${HOSTNAME}:${PORT}/
+${SERVER}               http://${HOSTNAME}:${PORT}/roboroute
 ${BROWSER}              chrome
 
 

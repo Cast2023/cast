@@ -1,5 +1,11 @@
 import { Container, Toolbar, AppBar, IconButton, Button } from "@mui/material"
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  redirect,
+} from "react-router-dom"
 import React, { useState, useEffect } from "react"
 import ConsultService from "./Services/ConsultService"
 import Home from "./Components/Home"
@@ -12,6 +18,11 @@ import axios from "axios"
 
 import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
+
+const Roboroute = ({ setSessionState }) => {
+  setSessionState(true)
+  return <div></div>
+}
 
 const successCallback = ({ credentialResponse, setSessionState }) => {
   console.log(credentialResponse.credential)
@@ -114,6 +125,12 @@ const App = () => {
           <div>
             <div>Start by logging in: </div>
             <br />
+            <Routes>
+              <Route
+                path="/roboroute"
+                element={<Roboroute setSessionState={setSessionState} />}
+              />
+            </Routes>
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 successCallback({ credentialResponse, setSessionState })
