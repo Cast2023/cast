@@ -19,6 +19,7 @@ const Home = () => {
       <Button
         variant="contained"
         color="primary"
+        id="getstarted"
         onClick={(event) => {
           setAnchorEl(event.currentTarget);
         }}
