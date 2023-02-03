@@ -11,6 +11,7 @@ const Home = () => {
     <br />
     <div>
       Recent news/updates:
+      Ei mitään
       <br />
       <br />
       <br />
