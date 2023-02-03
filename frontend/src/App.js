@@ -10,14 +10,9 @@ import axios from "axios"
 import { GoogleLogin } from "@react-oauth/google"
 // import successCallback from "./Goauth"
 
-<<<<<<< HEAD
-////////////////////////////////////////////////////////////////////////////
-const successCallback = (response) => {
-  console.log(response)
-=======
 const successCallback = ({ credentialResponse, setSessionState }) => {
   console.log(credentialResponse.credential)
->>>>>>> 6e5d8b3d755168ba57cff9ec20ce174b6fb24a6f
+
   const result = axios.get(process.env.REACT_APP_BACKEND_URL, {
     headers: {
       "Content-Type": "application/json",
@@ -54,10 +49,7 @@ const App = () => {
     event.preventDefault()
     setSessionState(true)
   }
-<<<<<<< HEAD
   // console.log(sessionState)
-=======
->>>>>>> 6e5d8b3d755168ba57cff9ec20ce174b6fb24a6f
 
   return (
     <Container>
@@ -101,8 +93,7 @@ const App = () => {
             <br />
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                successCallback(credentialResponse);
-                setSessionState(true)
+                successCallback({credentialResponse, setSessionState })
 
               }}
               onError={() => {
