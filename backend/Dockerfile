@@ -1,10 +1,10 @@
-FROM python:3.9-slim
+FROM python:3.9-alpine
 
 ENV PYTHONBUFFERED 1
 
 WORKDIR /app
 
-ADD . /app
+COPY . /app
 
 RUN pip install -r requirements.txt
 RUN chmod +x docker-entrypoint.sh

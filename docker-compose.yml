@@ -1,14 +1,14 @@
-version: '3.8'
+version: '3'
 services:
-  frontend:
+  frontend_staging:
     build:
       context: frontend/
       dockerfile: Dockerfile
-    ports:
-      - 443:443
     volumes:
       - $PWD/nginx.conf:/etc/nginx/nginx.conf
-      - /certs:/etc/nginx/certs
+    networks:
+      - default
+      - deployment
     depends_on:
       backend:
         condition: service_started
@@ -22,7 +22,7 @@ services:
         condition: service_healthy
 
   db:
-    image: postgres
+    image: postgres:alpine
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -34,3 +34,8 @@ services:
       interval: 1s
       timeout: 1s
       retries: 5
+
+networks:
+  deployment:
+    name: deployment
+    external: true

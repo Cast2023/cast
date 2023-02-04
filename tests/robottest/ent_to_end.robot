@@ -2,7 +2,7 @@
 
 *** Settings ***
 Resource        resource.robot
-Suite Setup     Start Django and open Browser
+Suite Setup     Init Browser
 Suite Teardown  Stop Django and close Browser
 #Test Teardown   Flush Database
 
