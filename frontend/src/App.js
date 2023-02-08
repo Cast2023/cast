@@ -18,7 +18,6 @@ import { GoogleLogin } from "@react-oauth/google"
 import { useDispatch } from "react-redux"
 import { initializeConsultants } from "./Reducers/consultantReducer"
 
-
 const successCallback = ({ credentialResponse, setSessionState }) => {
   console.log(credentialResponse.credential)
 
@@ -30,7 +29,7 @@ const successCallback = ({ credentialResponse, setSessionState }) => {
   })
   const verify = result.then((promiseresponse) => {
     console.log(promiseresponse.data)
-    if (promiseresponse.data === "Just keep swimming.") {
+    if (promiseresponse.data[0] === "Just keep swimming.") {
       console.log("Token matches")
       setSessionState(true)
     }
@@ -45,16 +44,14 @@ const App = () => {
   // const [consult, setConsult] = useState([])
   const [sessionState, setSessionState] = useState(false)
 
-  
   const Roboroute = ({ setSessionState }) => {
     setSessionState(true)
-    return <Navigate to="/"/>
+    return <Navigate to="/" />
   }
 
   useEffect(() => {
     dispatch(initializeConsultants())
   }, [dispatch])
-
 
   // useEffect(() => {
   //   ConsultService.getAllConsults().then((consults) => {
