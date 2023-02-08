@@ -7,7 +7,6 @@ import {
   Navigate,
 } from "react-router-dom"
 import React, { useState, useEffect } from "react"
-import ConsultService from "./Services/ConsultService"
 import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
@@ -17,7 +16,8 @@ import MyTeam from "./Components/MyTeam"
 import axios from "axios"
 
 import { GoogleLogin } from "@react-oauth/google"
-// import successCallback from "./Goauth"
+import { useDispatch } from "react-redux"
+import { initializeConsultants } from "./Reducers/consultantReducer"
 
 
 const successCallback = ({ credentialResponse, setSessionState }) => {
@@ -42,7 +42,8 @@ const successCallback = ({ credentialResponse, setSessionState }) => {
 }
 
 const App = () => {
-  const [consult, setConsult] = useState([])
+  const dispatch = useDispatch()
+  // const [consult, setConsult] = useState([])
   const [sessionState, setSessionState] = useState(false)
 
   
@@ -52,10 +53,15 @@ const App = () => {
   }
 
   useEffect(() => {
-    ConsultService.getAllConsults().then((consults) => {
-      setConsult(consults)
-    })
-  }, [])
+    dispatch(initializeConsultants())
+  }, [dispatch])
+
+
+  // useEffect(() => {
+  //   ConsultService.getAllConsults().then((consults) => {
+  //     setConsult(consults)
+  //   })
+  // }, [])
 
   const handleLogIn = (event) => {
     event.preventDefault()
@@ -113,7 +119,7 @@ const App = () => {
             </AppBar>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/profile" element={<Profile consult={consult} />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/api" element={<Api />} />
               <Route path="/myteam" element={<MyTeam />} />
               <Route path="/search" element={<Search />} />
