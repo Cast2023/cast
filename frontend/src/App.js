@@ -45,12 +45,6 @@ const App = () => {
   const [consult, setConsult] = useState([])
   const [sessionState, setSessionState] = useState(false)
 
-  
-  const Roboroute = ({ setSessionState }) => {
-    setSessionState(true)
-    return <Navigate to="/"/>
-  }
-
   useEffect(() => {
     ConsultService.getAllConsults().then((consults) => {
       setConsult(consults)
@@ -123,12 +117,7 @@ const App = () => {
           <div>
             <div>Start by logging in: </div>
             <br />
-            <Routes>
-              <Route
-                path="/roboroute"
-                element={<Roboroute setSessionState={setSessionState} />}
-              />
-            </Routes>
+          
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 successCallback({ credentialResponse, setSessionState })
