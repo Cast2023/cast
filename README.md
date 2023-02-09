@@ -25,7 +25,7 @@ The initial design is to use the following stack for the project. Information wi
 - [Backlog Sprint 0](https://docs.google.com/spreadsheets/d/1wXlovJIC06ALvSr0M8b3VLNFiQBl1FqVd2ohvP6ofAQ/edit#gid=0)
 
 ## Developer links
-- [Best practice](https://docs.google.com/document/d/1NonQrUMyR0aYnCJGbhKkU74uqanqBfKQ1cmjqPz5Bu8/edit
+- [Best practice](https://docs.google.com/document/d/1NonQrUMyR0aYnCJGbhKkU74uqanqBfKQ1cmjqPz5Bu8/edit)
 - [Definition of Done](https://docs.google.com/document/d/1p4CsCFcm2ePFmxsqkQ7I0mt9tyTYYlAqzxWl63oserw/edit?usp=sharing)
 - [Sprint roles](https://docs.google.com/spreadsheets/d/1Q4MoQU1m7zkIFaSLqo1c0bxwS7ynKVRr_-0KvGd1d-M/edit#gid=0)
 - [Instructions for project](https://github.com/Cast2023/ohjeita)
