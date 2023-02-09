@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Users(models.Model):
+class Employees(models.Model):
     first_name = models.TextField()
     last_name = models.TextField()
     email = models.TextField()
@@ -22,7 +22,7 @@ class Employee_tech_skills(models.Model):
     class Meta:
         ordering = ['tech']
    
-    user = models.ForeignKey(Users, related_name='skills', on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employees, related_name='skills', on_delete=models.CASCADE)
     # skill_level = models.IntegerField()
     tech = models.ForeignKey(Techs, related_name='tech', on_delete=models.CASCADE)
     skill_level = models.IntegerField(choices=Skill.choices)

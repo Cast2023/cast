@@ -4,7 +4,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 from django.conf import settings
-from .models import Users
+from .models import Employees
 
 
 class VerifyOAuthTokenApi(APIView):

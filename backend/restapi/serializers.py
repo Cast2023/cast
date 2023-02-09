@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Users
+from .models import Employees
 from .models import Employee_tech_skills
 
 
@@ -9,10 +9,10 @@ class TechSkillSerializer(serializers.ModelSerializer):
         model = Employee_tech_skills
         fields = ['skill_level']
 
-class ConsultSerializer(serializers.ModelSerializer):
+class ConsultantSerializer(serializers.ModelSerializer):
     skills = serializers.StringRelatedField(many=True)
     class Meta:
-        model = Users
+        model = Employees
         fields = '__all__'
         depth = 2
     
