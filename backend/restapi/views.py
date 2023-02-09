@@ -17,6 +17,7 @@ class ConsultantAPIView(viewsets.ModelViewSet):
     """
     queryset = Employees.objects.all()
     serializer_class = ConsultantSerializer
+    
 
 
 
