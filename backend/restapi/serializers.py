@@ -16,4 +16,3 @@ class ConsultantSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 2
     
-    

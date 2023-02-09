@@ -5,10 +5,16 @@ class Employees(models.Model):
     first_name = models.TextField()
     last_name = models.TextField()
     email = models.TextField()
+    phone_number = models.TextField(null=True)
+    location_country = models.TextField(null=True)
+    location_city = models.TextField(null=True)
+    worktime_allocation = models.IntegerField(null=True)
+    allocation_until = models.DateField(null=True)
+    wants_to_do = models.TextField(null=True)
+    wants_not_to_do = models.TextField(null=True)
 
 class Techs(models.Model):
     tech_name = models.TextField()
-
     def __str__(self):
         return self.tech_name
 
