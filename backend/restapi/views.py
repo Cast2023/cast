@@ -18,6 +18,5 @@ class ConsultantAPIView(viewsets.ModelViewSet):
     queryset = Employees.objects.all()
     serializer_class = ConsultantSerializer
 
-    def partial_update(self, request, pk=None):
-        pass
+
 
