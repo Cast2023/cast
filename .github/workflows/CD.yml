@@ -4,14 +4,9 @@ on:
   push:
     branches:
       - master
-  pull_request_review:
-    types: [submitted]
-    branches:
-      - master
 
 jobs:
   deploy:
-    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
 
     steps:
