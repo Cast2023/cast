@@ -14,6 +14,7 @@ class Employees(models.Model):
     wants_not_to_do = models.TextField(null=True)
 
 class Techs(models.Model):
+    employee = models.ManyToManyField(Employees, through='Employee_tech_skills')
     tech_name = models.TextField()
     def __str__(self):
         return self.tech_name

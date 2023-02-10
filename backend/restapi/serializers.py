@@ -11,9 +11,10 @@ class TechSerializer(serializers.ModelSerializer):
         fields = ('tech_name')
 
 class TechSkillSerializer(serializers.ModelSerializer):
+    tech_name = serializers.StringRelatedField(source='tech.tech_name')
     class Meta:
         model = Employee_tech_skills
-        fields = ('skill_level', 'tech')
+        fields = ('skill_level', 'tech', 'tech_name')
 
 class ConsultantSerializer(serializers.ModelSerializer):
     skills = TechSkillSerializer(many=True)
@@ -42,13 +43,6 @@ class ConsultantSerializer(serializers.ModelSerializer):
                     skill.save()
             if not updated:
                 # pass
-                print(instance.id, updated_skill['tech'].id, updated_skill['skill_level'])
-                # Employee_tech_skills.objects.create(employee = instance.id, tech=updated_skill['tech'].id, skill_level=updated_skill['skill_level'])
-            # consultant_skill = consultant_skills.pop(0)
-            # print(consultant_skill.tech, consultant_skill.skill_level)
-            # print(updated_skill.get('skill_level', consultant_skill.skill_level))
-            # consultant_skill.tech = updated_skill.get('tech', consultant_skill.tech)
-            # consultant_skill.skill_level = updated_skill.get('skill_level', consultant_skill.skill_level)
-            # consultant_skill.save()
+                Employee_tech_skills.objects.create(employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
         return instance
     
