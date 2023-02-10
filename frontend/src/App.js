@@ -30,21 +30,17 @@ const successCallback = ({ credentialResponse, setSessionState }) => {
   })
   const verify = result.then((promiseresponse) => {
     console.log(promiseresponse.data)
-    if (promiseresponse.data[0] === "Just keep swimming.") {
+    if (promiseresponse.status === 200) {
       console.log("Token matches")
+      console.log(promiseresponse.status)
       setSessionState(true)
       const userId = promiseresponse.data[2]
       console.log(userId)
-      handleInitializeUser(userId)
     }
   })
   console.log("Response", result)
 
   return result
-}
-
-const handleInitializeUser = async (id) => {
-  initializeUser(id)
 }
 
 const App = () => {
@@ -59,6 +55,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeConsultants())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeUser(5))
   }, [dispatch])
 
   // useEffect(() => {

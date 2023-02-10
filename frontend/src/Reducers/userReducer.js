@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 
-const consultantSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
-  initialState: [],
+  initialState: ["nOMnOm"],
   reducers: {
     setUser(state, action) {
       return action.payload
@@ -12,12 +12,12 @@ const consultantSlice = createSlice({
 })
 
 export const initializeUser = (id) => {
+  console.log("USER: ", id)
   return async (dispatch) => {
     const user = await consultantService.getSelectedConsultant(id)
-    console.log("USER:")
     dispatch(setUser(user))
   }
 }
 
-export const { setUser } = consultantSlice.actions
-export default consultantSlice.reducer
+export const { setUser } = userSlice.actions
+export default userSlice.reducer

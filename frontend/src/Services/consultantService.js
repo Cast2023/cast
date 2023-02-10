@@ -13,8 +13,13 @@ const createConsultants = (newObject) => {
 }
 
 const getSelectedConsultant = (id) => {
-  const request = axios.get(`${baseUrl}/${id}`)
+  console.log("AXIOOOOOS!!!!")
+  const request = axios.get(`${baseUrl}${id}/`)
   return request.then((response) => response.data)
 }
 
-export default { getAllConsultants, createConsultants, getSelectedConsultant }
+export default {
+  getAllConsultants,
+  createConsultants,
+  getSelectedConsultant,
+}
