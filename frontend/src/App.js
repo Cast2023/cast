@@ -1,77 +1,24 @@
 import { Container, Toolbar, AppBar, IconButton, Button } from "@mui/material"
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Navigate,
-} from "react-router-dom"
-import React, { useState, useEffect } from "react"
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import Home from "./Components/Home"
 import Profile from "./Components/Profile"
 import Search from "./Components/Search"
 import Api from "./Components/Api"
 import MyTeam from "./Components/MyTeam"
-import axios from "axios"
+import Roboroute from "./Components/Roboroute"
 
 import { GoogleLogin } from "@react-oauth/google"
 import { useDispatch } from "react-redux"
 import { initializeConsultants } from "./Reducers/consultantReducer"
-import { initializeUser } from "./Reducers/userReducer"
+import { initializeUser } from "./Reducers/sessionReducer"
+import { useSelector } from "react-redux"
 
-const successCallback = ({ credentialResponse, setSessionState }) => {
-  console.log(credentialResponse.credential)
-
-  const result = axios.get(process.env.REACT_APP_BACKEND_URL, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: JSON.stringify(credentialResponse.credential),
-    },
-  })
-  const verify = result.then((promiseresponse) => {
-    console.log(promiseresponse.data)
-    if (promiseresponse.status === 200) {
-      console.log("Token matches")
-      console.log(promiseresponse.status)
-      setSessionState(true)
-      const userId = promiseresponse.data[2]
-      console.log(userId)
-    }
-  })
-  console.log("Response", result)
-
-  return result
-}
+import SuccessCallback from "./Services/authenticationService"
+import { setActiveSession } from "./Reducers/sessionReducer"
 
 const App = () => {
   const dispatch = useDispatch()
-  // const [consult, setConsult] = useState([])
-  const [sessionState, setSessionState] = useState(false)
-
-  const Roboroute = ({ setSessionState }) => {
-    setSessionState(true)
-    return <Navigate to="/" />
-  }
-
-  useEffect(() => {
-    dispatch(initializeConsultants())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(initializeUser(5))
-  }, [dispatch])
-
-  // useEffect(() => {
-  //   ConsultService.getAllConsults().then((consults) => {
-  //     setConsult(consults)
-  //   })
-  // }, [])
-
-  const handleLogIn = (event) => {
-    event.preventDefault()
-    setSessionState(true)
-  }
-  // console.log(sessionState)
+  const activeSession = useSelector((state) => state.session.activeSession)
 
   return (
     <Container>
@@ -80,7 +27,7 @@ const App = () => {
           <h1>Competency, Allocation and Skill tracker</h1>
         </div>
 
-        {sessionState ? (
+        {activeSession ? (
           <div>
             <AppBar>
               <Toolbar>
@@ -134,14 +81,17 @@ const App = () => {
             <div>Start by logging in: </div>
             <br />
             <Routes>
-              <Route
-                path="/roboroute"
-                element={<Roboroute setSessionState={setSessionState} />}
-              />
+              <Route path="/roboroute" element={<Roboroute />} />
             </Routes>
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                successCallback({ credentialResponse, setSessionState })
+                SuccessCallback({
+                  credentialResponse,
+                }).then(
+                  dispatch(setActiveSession(true)),
+                  dispatch(initializeUser(5)),
+                  dispatch(initializeConsultants())
+                )
               }}
               onError={() => {
                 console.log("Login Failed")

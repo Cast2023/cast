@@ -10,7 +10,10 @@ import {
 import { useSelector } from "react-redux"
 
 const Profile = () => {
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.session.activeUser)
+  if (user.length === 0) {
+    return <div>Nothing to render</div>
+  }
   console.log("User:", user)
   return (
     <div>
