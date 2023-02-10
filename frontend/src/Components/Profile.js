@@ -9,11 +9,11 @@ import {
 
 import { useSelector } from "react-redux"
 
-
-
 const Profile = () => {
-  const consultants = useSelector( state => state.consultants)
-  return(
+  const consultants = useSelector((state) => state.consultants)
+  const user = useSelector((state) => state.user)
+  console.log("User:", user)
+  return (
     <div>
       <h2>Profile</h2>
       <div>This is the profile page.</div>
@@ -34,7 +34,8 @@ const Profile = () => {
             {consultants.map((consultant) => (
               <TableRow key={consultant.id}>
                 <TableCell>
-                  {consultant.first_name} {consultant.last_name}
+                  {consultant.first_name} {consultant.last_name}{" "}
+                  {consultant.email}
                 </TableCell>
               </TableRow>
             ))}

@@ -17,6 +17,7 @@ import axios from "axios"
 import { GoogleLogin } from "@react-oauth/google"
 import { useDispatch } from "react-redux"
 import { initializeConsultants } from "./Reducers/consultantReducer"
+import { initializeUser } from "./Reducers/userReducer"
 
 const successCallback = ({ credentialResponse, setSessionState }) => {
   console.log(credentialResponse.credential)
@@ -32,11 +33,18 @@ const successCallback = ({ credentialResponse, setSessionState }) => {
     if (promiseresponse.data[0] === "Just keep swimming.") {
       console.log("Token matches")
       setSessionState(true)
+      const userId = promiseresponse.data[2]
+      console.log(userId)
+      handleInitializeUser(userId)
     }
   })
   console.log("Response", result)
 
   return result
+}
+
+const handleInitializeUser = async (id) => {
+  initializeUser(id)
 }
 
 const App = () => {
