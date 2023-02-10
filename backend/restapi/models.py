@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Employees(models.Model):
+    '''
+        To be considered: Which fields can be null. 
+    '''
     first_name = models.TextField()
     last_name = models.TextField()
     email = models.TextField()
@@ -14,6 +17,10 @@ class Employees(models.Model):
     wants_not_to_do = models.TextField(null=True)
 
 class Techs(models.Model):
+    '''
+        Good source on ManyToMany-relationship and extra fields: 
+        https://docs.djangoproject.com/en/4.1/topics/db/models/#extra-fields-on-many-to-many-relationships
+    '''
     employee = models.ManyToManyField(Employees, through='Employee_tech_skills')
     tech_name = models.TextField()
     def __str__(self):
@@ -30,7 +37,6 @@ class Employee_tech_skills(models.Model):
         ordering = ['tech']
    
     employee = models.ForeignKey(Employees, related_name='skills', on_delete=models.CASCADE)
-    # skill_level = models.IntegerField()
     tech = models.ForeignKey(Techs, related_name='tech', on_delete=models.CASCADE)
     skill_level = models.IntegerField(choices=Skill.choices)
 

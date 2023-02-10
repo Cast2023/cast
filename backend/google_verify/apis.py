@@ -16,8 +16,8 @@ class VerifyOAuthTokenApi(APIView):
             try:
                 id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 
-            except ValueError:
-                return Response("Invalid token, you shall not pass!", status=401) # Token invalid
+            except ValueError as e:
+                return Response(f"Invalid token, you shall not pass! {e}", status=401) # Token invalid
 
             return Response("Just keep swimming.", status=200) # Token OK
 
