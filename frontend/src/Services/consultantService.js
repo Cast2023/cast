@@ -13,7 +13,6 @@ const createConsultants = (newObject) => {
 }
 
 const getSelectedConsultant = (id) => {
-  console.log("AXIOOOOOS!!!!")
   const request = axios.get(`${baseUrl}${id}/`)
   return request.then((response) => response.data)
 }

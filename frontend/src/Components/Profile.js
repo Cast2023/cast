@@ -10,7 +10,6 @@ import {
 import { useSelector } from "react-redux"
 
 const Profile = () => {
-  const consultants = useSelector((state) => state.consultants)
   const user = useSelector((state) => state.user)
   console.log("User:", user)
   return (
@@ -19,23 +18,30 @@ const Profile = () => {
       <div>This is the profile page.</div>
       <div>
         <ul>
-          <li>Name:</li>
-          <li>Role:</li>
-          <li>Skills</li>
-          <li>Certifications</li>
-          <li>Allocation</li>
-          <li>Etc.</li>
+          <li>
+            Name: {user.firstname} {user.last_name}
+          </li>
+          <li>Email: {user.email}</li>
+          <li>Phone: {user.phone_number}</li>
+          <li>
+            Location: {user.location_city}, {user.location_country}
+          </li>
+          <li>
+            Worktime allocation: {user.worktime_allocation}, until{" "}
+            {user.allocation_until}
+          </li>
+          <li>I want to do: {user.wants_to_do}</li>
+          <li>I want not to do: {user.wants_not_to_do}</li>
         </ul>
       </div>
       Available Skills:
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {consultants.map((consultant) => (
-              <TableRow key={consultant.id}>
+            {user.skills.map((skill) => (
+              <TableRow key={skill.id}>
                 <TableCell>
-                  {consultant.first_name} {consultant.last_name}{" "}
-                  {consultant.email}
+                  {skill.tech_name} {skill.skill_level}
                 </TableCell>
               </TableRow>
             ))}
