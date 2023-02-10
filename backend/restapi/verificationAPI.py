@@ -4,7 +4,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 from django.conf import settings
-from .models import Users
+from .models import Employees
 
 
 class VerifyOAuthTokenApi(APIView):
@@ -19,8 +19,8 @@ class VerifyOAuthTokenApi(APIView):
                 userinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
                 return Response(["Just keep swimming.", userinfo['email']], status=200) # Token OK
 
-            except ValueError:
-                return Response("Invalid token, you shall not pass!", status=401) # Token invalid
+            except ValueError as error:
+                return Response(f"Invalid token, you shall not pass! {error}", status=401) # Token invalid
 
         # Should be more spesific, possible scenarios are at least KeyError and AttributeError
         except Exception:
