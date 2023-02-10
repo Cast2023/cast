@@ -17,7 +17,7 @@ class VerifyOAuthTokenApi(APIView):
             try:
                 #idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
                 userinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
-                return Response(["Just keep swimming.", userinfo['email']], status=200) # Token OK
+                return Response(["Just keep swimming.", userinfo['email'], 5], status=200) # Token OK
 
             except ValueError as error:
                 return Response(f"Invalid token, you shall not pass! {error}", status=401) # Token invalid
