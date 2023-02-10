@@ -1,0 +1,22 @@
+FROM python:slim-bullseye
+
+WORKDIR /app
+
+COPY ./robottest ./robottest/
+COPY ./requirements.txt .
+
+RUN apt-get update && apt-get install -y wget unzip
+RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
+
+RUN CHROMEDRIVER_VERSION=`wget --no-verbose --output-document - https://chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+    wget --no-verbose --output-document /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
+    unzip -qq /tmp/chromedriver_linux64.zip -d /opt/chromedriver && \
+    chmod +x /opt/chromedriver/chromedriver && \
+    ln -fs /opt/chromedriver/chromedriver /usr/local/bin/chromedriver
+
+RUN chmod 777 /usr/local/bin/chromedriver
+
+RUN pip install -r requirements.txt
+
+CMD [ "robot", "robottest"]

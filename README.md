@@ -1,5 +1,7 @@
 # Competency, Allocation and Skill tracker
 
+[![CI](https://github.com/Cast2023/cast/actions/workflows/CI.yml/badge.svg?branch=development)](https://github.com/Cast2023/cast/blob/development/.github/workflows/CI.yml)
+
 Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.
 
 ## Stack information
@@ -15,7 +17,12 @@ The initial design is to use the following stack for the project. Information wi
 
 ## Project links
 
+### Application
+- [Production](https://cast23.lol)
+- [Staging](https://staging.cast23.lol)
+
 ### Documentation
+- [Documentation](https://github.com/Cast2023/cast/tree/development/documentation)
 
 ### Project progress
 - [Sprint Backlog](https://github.com/orgs/Cast2023/projects/2/views/1?layout=board)
