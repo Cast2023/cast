@@ -3,6 +3,8 @@ import { BrowserRouter as Router } from "react-router-dom"
 
 import AppRoutes from "./Components/AppRoutes"
 import AuthRoutes from "./Components/AuthRoutes"
+import Header from "./Components/Header"
+import Footer from "./Components/Footer"
 
 import { useSelector } from "react-redux"
 
@@ -12,23 +14,9 @@ const App = () => {
   return (
     <Container>
       <Router>
-        <div>
-          <h1>Competency, Allocation and Skill tracker</h1>
-        </div>
-
-        {activeSession ? (
-          <div>
-            <AppRoutes />
-          </div>
-        ) : (
-          <div>
-            <AuthRoutes />
-          </div>
-        )}
-        <div>
-          <br />
-          <i>Cast APP, OhTu-projekti 2023</i>
-        </div>
+        <Header />
+        {activeSession ? <AppRoutes /> : <AuthRoutes />}
+        <Footer />
       </Router>
     </Container>
   )
