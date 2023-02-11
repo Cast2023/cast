@@ -3,8 +3,8 @@ import { BrowserRouter as Router } from "react-router-dom"
 
 import AppRoutes from "./Components/AppRoutes"
 import AuthRoutes from "./Components/AuthRoutes"
-import Header from "./Components/Header"
-import Footer from "./Components/Footer"
+import AppHeader from "./Components/AppHeader"
+import AppFooter from "./Components/AppFooter"
 
 import { useSelector } from "react-redux"
 
@@ -14,9 +14,9 @@ const App = () => {
   return (
     <Container>
       <Router>
-        <Header />
+        <AppHeader />
         {activeSession ? <AppRoutes /> : <AuthRoutes />}
-        <Footer />
+        <AppFooter />
       </Router>
     </Container>
   )

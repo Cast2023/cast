@@ -1,5 +1,5 @@
 import { Toolbar, AppBar, IconButton, Button } from "@mui/material"
-import { BrowserRouter as Routes, Route, Link } from "react-router-dom"
+import { Routes, Route, Link } from "react-router-dom"
 import Home from "./Home"
 import Profile from "./Profile"
 import Search from "./Search"

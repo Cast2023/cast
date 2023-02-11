@@ -1,4 +1,4 @@
-const Footer = () => {
+const AppFooter = () => {
   return (
     <div>
       <br />
@@ -7,4 +7,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default AppFooter

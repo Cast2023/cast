@@ -31,7 +31,6 @@ const AuthRoutes = () => {
           console.log("Login Failed")
         }}
       />
-      <br />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-const Header = () => {
+const AppHeader = () => {
   return (
     <div>
       <h1>Competency, Allocation and Skill tracker</h1>
@@ -6,4 +6,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default AppHeader
