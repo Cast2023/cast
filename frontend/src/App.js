@@ -6,10 +6,15 @@ import AuthRoutes from "./Components/AuthRoutes"
 import AppHeader from "./Components/AppHeader"
 import AppFooter from "./Components/AppFooter"
 
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { useEffect } from "react"
+import { setActiveSession } from "./Reducers/sessionReducer"
 
 const App = () => {
   const activeSession = useSelector((state) => state.session.activeSession)
+  const userID = useSelector((state) => state.session.activeUserId)
+  const token = useSelector((state) => state.session.token)
+
 
   return (
     <Container>

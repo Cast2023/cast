@@ -4,7 +4,7 @@ import consultantService from "../Services/consultantService"
 const initialState = {
   activeSession: false,
   token: null,
-  activeUserId: 1,
+  activeUserId: null,
   activeUser: [],
 }
 
@@ -21,10 +21,12 @@ const sessionSlice = createSlice({
     setActiveSession: (state, action) => {
       state.activeSession = action.payload
     },
-    setToken(state, action) {
-      return {
-        token: action.payload,
-      }
+    setToken: (state, action) =>{
+      let token = null
+      token = `Bearer ${action.payload}`
+      console.log('token is:', token)
+      // state.token = jwt.sign(state.activeUserId, process.env.SECRET)
+      // console.log("token is: ",state.token)
     },
     setActiveUserId: (state, action) => {
       state.activeUserId = action.payload
@@ -46,5 +48,6 @@ export const { setToken, setActiveUserId, setActiveSession, setActiveUser } =
 
 export const selectSessionState = (state) => state.session.activeSession
 export const selectSessionUser = (state) => state.session.activeUserId
+export const selectSessionToken = (state) => state.session.token
 
 export default sessionSlice.reducer
