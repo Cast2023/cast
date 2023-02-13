@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 
+// User-id is set to 1 for now to highlight if the correct user info is not fecthed from database
 const initialState = {
   activeSession: false,
   token: null,
