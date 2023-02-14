@@ -1,13 +1,15 @@
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Paper,
+  Grid,
+  Container
 } from "@mui/material"
 
 import { useSelector } from "react-redux"
+import SkillsCard from "./SkillsCard"
+import ProfileCard from "./ProfileCard"
+import CertsCard from "./CertsCard"
+import ProjectsCard from "./ProjectsCard"
+
 
 const Profile = () => {
   const user = useSelector((state) => state.session.activeUser)
@@ -17,41 +19,24 @@ const Profile = () => {
   console.log("User:", user)
   return (
     <div>
-      <h2>Profile</h2>
-      <div>This is the profile page.</div>
-      <div>
-        <ul>
-          <li>
-            Name: {user.firstname} {user.last_name}
-          </li>
-          <li>Email: {user.email}</li>
-          <li>Phone: {user.phone_number}</li>
-          <li>
-            Location: {user.location_city}, {user.location_country}
-          </li>
-          <li>
-            Worktime allocation: {user.worktime_allocation}, until{" "}
-            {user.allocation_until}
-          </li>
-          <li>I want to do: {user.wants_to_do}</li>
-          <li>I want not to do: {user.wants_not_to_do}</li>
-        </ul>
-      </div>
-      Available Skills:
-      <TableContainer component={Paper}>
-        <Table>
-          <TableBody>
-            {user.skills.map((skill) => (
-              <TableRow key={skill.id}>
-                <TableCell>
-                  {skill.tech_name} {skill.skill_level}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Container>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12} sm={6} md={6}>
+            <ProfileCard user={user} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <ProjectsCard user={user} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <SkillsCard user={user} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <CertsCard user={user} />
+          </Grid>
+        </Grid>
+      </Container>
     </div>
   )
 }
+
 export default Profile
