@@ -17,8 +17,15 @@ const getSelectedConsultant = (id) => {
   return request.then((response) => response.data)
 }
 
+const editConsultant = (id, payload) => {
+  console.log('editcons payload:', payload)
+  const request = axios.put(`${baseUrl}${id}/`, payload)
+  return request.then((response) => response.data)
+}
+
 export default {
   getAllConsultants,
   createConsultants,
   getSelectedConsultant,
+  editConsultant,
 }

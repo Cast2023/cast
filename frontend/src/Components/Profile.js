@@ -1,5 +1,4 @@
 import {
-  Paper,
   Grid,
   Container
 } from "@mui/material"
