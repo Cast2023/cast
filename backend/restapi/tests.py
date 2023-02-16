@@ -5,7 +5,7 @@ from django.test.client import encode_multipart, RequestFactory
 
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APIRequestFactory, APITestCase
+from rest_framework.test import APIRequestFactory, APITestCase, APIClient
 from .models import Employees, Techs, Employee_tech_skills
 
 class EmployeeGetTests(APITestCase):
@@ -47,7 +47,7 @@ class EmployeeUpdateTests(APITestCase):
         tests run properly.
     """
     def setUp(self):
-        self.client = Client()
+        self.client = APIClient()
         self.factory = APIRequestFactory()
 
         user1 = Employees.objects.create(
@@ -55,7 +55,6 @@ class EmployeeUpdateTests(APITestCase):
             last_name='Doe',
             email='tester@gmail.com'
             )
-        
         
         Employees.objects.create(
             first_name='Jane',
@@ -91,9 +90,7 @@ class EmployeeUpdateTests(APITestCase):
             'email': 'tester@gmail.com',
         }
         
-        content = encode_multipart('BoUnDaRyStRiNg', data)
-        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
-        response = self.client.patch(url, content, content_type=content_type)
+        response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Employees.objects.filter(email = 'tester@gmail.com')[0].first_name, 'Jackie')
 
@@ -115,7 +112,6 @@ class EmployeeUpdateTests(APITestCase):
         response = self.client.patch(url, content, content_type=content_type)
         self.assertEqual(response.status_code, 200)
     
-    @skip('This test does not work at the moment. Need to figure out why.')
     def test_a_skill_level_can_be_altered_data(self):
         url = self.get_base_url()
         data = {
@@ -124,20 +120,17 @@ class EmployeeUpdateTests(APITestCase):
             'email': 'tester@gmail.com',
             'skills': [
                 {
-                    "tech": 1,        
-                    "skill_level": 1
+                    'tech': 1,        
+                    'skill_level': 2
                 }
             ]
         }
         
-        content = encode_multipart('BoUnDaRyStRiNg', data)
-        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
-        self.client.patch(url, content, content_type=content_type)
-        
+        client = self.client
+        response = client.patch(url, data, format='json')
         response = self.client.get(url)
         result = response.json()
-        print(url, result)
-        self.assertEqual(result['skills'][0]['skill_level'], 1)
+        self.assertEqual(result['skills'][0]['skill_level'], 2)
         
 
         
