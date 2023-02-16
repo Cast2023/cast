@@ -37,7 +37,7 @@ const sessionSlice = createSlice({
 })
 
 export const initializeUser = (id) => {
-  console.log("USER: ", id)
+  //console.log("USER: ", id)
   return async (dispatch) => {
     const user = await consultantService.getSelectedConsultant(id)
     dispatch(setActiveUser(user))

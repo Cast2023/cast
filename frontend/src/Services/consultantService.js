@@ -19,7 +19,7 @@ const getSelectedConsultant = (id) => {
 
 const editConsultant = (id, payload) => {
   console.log('editcons payload:', payload)
-  const request = axios.put(`${baseUrl}${id}/`, payload)
+  const request = axios.patch(`${baseUrl}${id}/`, payload)
   return request.then((response) => response.data)
 }
 
