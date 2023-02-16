@@ -30,7 +30,6 @@ class ConsultantSerializer(serializers.ModelSerializer):
             Con
         '''
            
-        
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.email = validated_data.get('email', instance.email)
@@ -44,10 +43,8 @@ class ConsultantSerializer(serializers.ModelSerializer):
         instance.save()
 
         if 'skills' in validated_data:
-
             updated_skill_list = validated_data.pop('skills')
             consultant_skills = list((instance.skills).all())
-
 
             for updated_skill in updated_skill_list:
                 updated = False

@@ -66,31 +66,14 @@ class EmployeeTests(APITestCase):
     def test_editing_existing_employee_works(self):
         patch_url = '/api/consultant/1/'
         data = {
-            'first_name': 'Jack',
+            'first_name': 'Jackie',
             'last_name': 'Doe',
             'email': 'tester@gmail.com',
-            'skills': []
         }
-        factory = RequestFactory()
+        
         content = encode_multipart('BoUnDaRyStRiNg', data)
         content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
         response = self.client.patch(patch_url, content, content_type=content_type)
         self.assertEqual(response.status_code, 200)
-        # self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # self.assertEqual(Employees.objects.filter(email = 'tester@gmail.com')[0].first_name, 'Jack')
+        self.assertEqual(Employees.objects.filter(email = 'tester@gmail.com')[0].first_name, 'Jackie')
 
-        
-    def creating_a_new_employee_works(self):
-        """
-        Ensure we can create a new Employee object.
-        """
-        url = '/api/consultant/'
-        data = {
-            'first_name': 'Sherlock',
-            'last_name': 'Holmes',
-            'email': 'baskerville@gmail.com',
-            }
-        response = self.client.post(url, data, format='json')
-        # self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Employees.objects.count(), 3)
-        self.assertEqual(Employees.objects.get().email, 'baskerville@gmail.com')
