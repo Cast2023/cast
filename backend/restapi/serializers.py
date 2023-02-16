@@ -29,9 +29,7 @@ class ConsultantSerializer(serializers.ModelSerializer):
             TBD: change changes to all employee-fields. 
             Con
         '''
-        updated_skill_list = validated_data.pop('skills')
-        consultant_skills = list((instance.skills).all())
-    
+           
         
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
@@ -45,14 +43,20 @@ class ConsultantSerializer(serializers.ModelSerializer):
         instance.wants_not_to_do = validated_data.get('wants_not_to_do', instance.wants_not_to_do)
         instance.save()
 
-        for updated_skill in updated_skill_list:
-            updated = False
-            for skill in consultant_skills:
-                if updated_skill['tech']== skill.tech:
-                    skill.skill_level = updated_skill['skill_level']
-                    skill.save()
-                    updated = True
-            if not updated:
-                Employee_tech_skills.objects.create(employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
+        if 'skills' in validated_data:
+
+            updated_skill_list = validated_data.pop('skills')
+            consultant_skills = list((instance.skills).all())
+
+
+            for updated_skill in updated_skill_list:
+                updated = False
+                for skill in consultant_skills:
+                    if updated_skill['tech']== skill.tech:
+                        skill.skill_level = updated_skill['skill_level']
+                        skill.save()
+                        updated = True
+                if not updated:
+                    Employee_tech_skills.objects.create(employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
         return instance
     
