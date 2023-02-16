@@ -1,6 +1,6 @@
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Q
+
 
 from restapi.models import Employee_tech_skills, Employees
 from .serializers import TechSkillSerializer, ConsultantSerializer
