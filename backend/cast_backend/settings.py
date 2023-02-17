@@ -27,7 +27,7 @@ ENV = dotenv_values(Path(BASE_DIR).joinpath(".env"))
 SECRET_KEY = ENV['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = json.loads(ENV['ALLOWED_HOST'])
 
