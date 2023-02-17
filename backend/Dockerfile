@@ -7,6 +7,5 @@ WORKDIR /app
 COPY . /app
 
 RUN pip install -r requirements.txt
-RUN chmod +x docker-entrypoint.sh
 
-ENTRYPOINT [ "./docker-entrypoint.sh" ]
+ENTRYPOINT [ "./django.sh" ]

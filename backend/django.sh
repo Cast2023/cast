@@ -8,6 +8,14 @@ python manage.py makemigrations
 echo "Apply database migrations"
 python manage.py migrate
 
+if [[ -z "${IS_TEST}" ]]; then
+    echo "Production environment activated..."
+else
+    # Load test data and run unit tests
+    python manage.py loaddata testdata.json 
+    python manage.py test
+fi
+
 # Start server
 echo "Starting server"
 python manage.py runserver 0.0.0.0:8000

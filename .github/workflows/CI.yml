@@ -34,7 +34,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Create .env file
         run: |
           echo "${{ secrets.DEPLOY_ENV_FILE }}" | base64 -d > .env
@@ -62,4 +62,5 @@ jobs:
             cd deploy
             cp .env backend/
             cp .env frontend/
+            docker compose down
             docker compose up -d --build

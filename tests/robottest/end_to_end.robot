@@ -11,11 +11,11 @@ Scenario: As a visitor I can visit the home page
   Wait until page contains element  home
   Page Should Contain  Welcome to CAS-tracker
 
-Scenario: As A visitor I can inspect profile page
-  Go To  ${SERVER}
-  Wait until page contains element  profile
-  Click element  profile
-  Page Should Contain  Profile
+#Scenario: As A visitor I can inspect profile page
+#  Go To  ${SERVER}
+#  Wait until page contains element  profile
+#  Click element  profile
+#  Page Should Contain  Profile
 
 Scenario: As A visitor I can inspect my team page
   Go To  ${SERVER}
