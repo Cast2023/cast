@@ -1,5 +1,4 @@
 import {
-  Paper,
   Grid,
   Container
 } from "@mui/material"
@@ -16,7 +15,7 @@ const Profile = () => {
   if (user.length === 0) {
     return <div>Nothing to render</div>
   }
-  console.log("User:", user)
+
   return (
     <div>
       <Container>
