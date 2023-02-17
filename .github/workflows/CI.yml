@@ -16,7 +16,7 @@ jobs:
         run: echo ${{ secrets.REGISTRY_PWORD }} | docker login ${{ secrets.SERVER }} -u ${{ secrets.REGISTRY_UNAME }} --password-stdin
 
       - name: Pull base image
-        run: docker pull ${{ secrets.IMAGE }}
+        run: docker pull ${{ secrets.SERVER }}/robottest:sprint2
 
       - name: Run robot tests
         env:
