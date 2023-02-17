@@ -1,40 +1,41 @@
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Paper,
+  Grid,
+  Container
 } from "@mui/material"
-const Profile = ({ consult }) => (
-  <div>
-    <h2>Profile</h2>
-    <div>This is the profile page.</div>
+
+import { useSelector } from "react-redux"
+import SkillsCard from "./SkillsCard"
+import ProfileCard from "./ProfileCard"
+import CertsCard from "./CertsCard"
+import ProjectsCard from "./ProjectsCard"
+
+
+const Profile = () => {
+  const user = useSelector((state) => state.session.activeUser)
+  if (user.length === 0) {
+    return <div>Nothing to render</div>
+  }
+
+  return (
     <div>
-      <ul>
-        <li>Name:</li>
-        <li>Role:</li>
-        <li>Skills</li>
-        <li>Certifications</li>
-        <li>Allocation</li>
-        <li>Etc.</li>
-      </ul>
+      <Container>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12} sm={6} md={6}>
+            <ProfileCard user={user} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <ProjectsCard user={user} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <SkillsCard user={user} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            <CertsCard user={user} />
+          </Grid>
+        </Grid>
+      </Container>
     </div>
-    Available Skills:
-    <TableContainer component={Paper}>
-      <Table>
-        <TableBody>
-          {consult.map((consult) => (
-            <TableRow key={consult.id}>
-              <TableCell>
-                {consult.first_name} {consult.last_name}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </div>
-)
+  )
+}
 
 export default Profile
