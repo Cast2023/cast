@@ -15,19 +15,33 @@ import consultantService from "../Services/consultantService"
 
 const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
-  const [formValues, setFormValues] = useState(({
-    
-  }))
+ // const [formValues, setFormValues] = useState(({}))
 
   const handleClick = (edit) => {
     setEditable(!edit)
   }
+  
+  //const handleChange = (event) => {
+  //  const value = event.target.value
+  //  
+  //  console.log(value)
+  //  setFormValues({...formValues, [event.target.name]: value})
+  //}
+  //const handleSubmit = (event) => {
+  //  event.preventDefault()
+  //  const values = formValues
+  //  console.log("handlesubmit",formValues)
+  //  consultantService.editConsultant(user.id, values)
+  //  //log("boom", data)
+  //  setEditable(!editable)
+  //
+  //}
   const columns = [
     { 
       field: 'tech', 
       headerName: 'Technical skill', 
       flex: 1,
-      editable: editable,
+      editable: false,
       sortable: true,
       
     },
@@ -38,7 +52,7 @@ const SkillsCard = ({ user }) => {
       editable: editable,
       sortable: true,
       type: "singleSelect",
-      valueOptions: [1,2,3],
+      valueOptions: ["1","2","3"],
     }
   ]
       
@@ -61,7 +75,7 @@ const SkillsCard = ({ user }) => {
           }
           title="Technical skills"
         />
-        <CardContent> 
+        <CardContent > 
           <Box sx={{ height: 400, width: '100%' }}>
             <DataGrid
               rows={rows()}
@@ -71,15 +85,13 @@ const SkillsCard = ({ user }) => {
               disableSelectionOnClick
               //checkboxSelection
             />
+            
           </Box>
           <br/>Skill levels: 
           <br/>1 = Wants to learn, 2 = Can work with, 3 = Proficient
+          
         </CardContent>
-        {editable && (
-          <Button type='submit'>
-          Submit
-          </Button>
-        )}
+        
       </Card>
     </div>
   )

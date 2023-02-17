@@ -15,40 +15,22 @@ import consultantService from "../Services/consultantService"
 
 const ProfileCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
-  const [formValues, setFormValues] = useState(({
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-    phone_number: user.phone_number,
-    location_country: user.location_country,
-    location_city_: user.location_city,
-    worktime_allocation: user.worktime_allocation,
-    allocation_until: user.allocation_until,
-    wants_to_do: user.wants_to_do,
-    wants_not_to_do: user.wants_not_to_do,
-  }))
+  const [formValues, setFormValues] = useState(({}))
 
-  //const toggleEditability = (event) => {
-  //  setEditable(event.target.value)
-  //}
-
-  const handleClick = (edit) => {
-    setEditable(!edit)
+  const handleClick = () => {
+    setEditable(!editable)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
     const values = formValues
-    //console.log("handlesubmit",formValues)
-    const data = consultantService.editConsultant(user.id, values)
-    //log("boom", data)
-    setEditable(!editable)
+    consultantService.editConsultant(user.id, values)
+    handleClick()
   
   }
   
   const handleChange = (event) => {
     const value = event.target.value
-    console.log(value)
     setFormValues({...formValues, [event.target.name]: value})
   }
 
@@ -59,7 +41,7 @@ const ProfileCard = ({ user }) => {
       <Card>
         <CardHeader
           action={
-            <IconButton onClick={() => handleClick(editable)}>
+            <IconButton onClick={() => handleClick()}>
               <EditIcon />
             </IconButton>
           }
@@ -97,7 +79,7 @@ const ProfileCard = ({ user }) => {
                 id="email"
                 label="Email"
                 name="email"
-                value={user.email}
+                defaultValue={user.email}
                 variant="standard"
               />
               <TextField
@@ -105,7 +87,7 @@ const ProfileCard = ({ user }) => {
                 id="phonenumber"
                 label="Phone"
                 name="phone_number"
-                value={user.phone_number}
+                defaultValue={user.phone_number}
                 variant="standard"
               />
               <div>
@@ -114,7 +96,7 @@ const ProfileCard = ({ user }) => {
                   id="city"
                   label="City"
                   name="location_city"
-                  value={user.location_city}
+                  defaultValue={user.location_city}
                   variant="standard"
                 />
                 <TextField
@@ -122,7 +104,7 @@ const ProfileCard = ({ user }) => {
                   id="country"
                   label="Country"
                   name="location_country"
-                  value={user.location_country}
+                  defaultValue={user.location_country}
                   variant="standard"
                 />
               </div>
@@ -130,7 +112,7 @@ const ProfileCard = ({ user }) => {
                 disabled={!editable}
                 id="team"
                 label="Team"
-                value="To Do"
+                defaultValue="To Do"
                 variant="standard"
               />
               <div>
@@ -138,7 +120,7 @@ const ProfileCard = ({ user }) => {
                   disabled={!editable}
                   id="languages"
                   label="Languages"
-                  value="To do"
+                  defaultValue="To do"
                   variant="standard"
                 />
               </div>
@@ -147,7 +129,7 @@ const ProfileCard = ({ user }) => {
                 id="worktime"
                 label="Work time allocation"
                 name="worktime_allocation"
-                value={`${user.worktime_allocation}%`}
+                defaultValue={`${user.worktime_allocation}%`}
                 variant="standard"
               />
               <TextField
@@ -155,7 +137,7 @@ const ProfileCard = ({ user }) => {
                 id="until"
                 label="Work time allocation until"
                 name="allocation_until"
-                value={user.allocation_until}
+                defaultValue={user.allocation_until}
                 variant="standard"
               />
               <div>
@@ -166,7 +148,7 @@ const ProfileCard = ({ user }) => {
                   name="wants_to_do"
                   multiline
                   rows={4}
-                  value={user.wants_to_do}
+                  defaultValue={user.wants_to_do}
                 />
               </div>
               <div>
@@ -177,7 +159,7 @@ const ProfileCard = ({ user }) => {
                   name="wants_not_to_do"
                   multiline
                   rows={4}
-                  value={user.wants_not_to_do}
+                  defaultValue={user.wants_not_to_do}
                 />
               </div>
               {editable && (
