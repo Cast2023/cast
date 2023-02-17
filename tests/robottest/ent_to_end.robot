@@ -1,7 +1,7 @@
 *** Variables ***
 
 *** Settings ***
-Resource        ${RESOURCE}
+Resource        container.robot
 Suite Setup     ${SETUP}
 
 *** Test Cases ***
