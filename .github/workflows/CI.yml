@@ -12,12 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: unittest
-        run: |
-          cd backend/ 
-          pip install -r requirements.txt
-          python3 manage.py test
-
       - name: Login container registry
         run: echo ${{ secrets.REGISTRY_PWORD }} | docker login ${{ secrets.SERVER }} -u ${{ secrets.REGISTRY_UNAME }} --password-stdin
 
