@@ -1,10 +1,8 @@
 *** Variables ***
 
 *** Settings ***
-Resource        resource.robot
-#Suite Setup     Init Browser
-Suite Teardown  Stop Django and close Browser
-#Test Teardown   Flush Database
+Resource        ${RESOURCE}
+Suite Setup     ${SETUP}
 
 *** Test Cases ***
 
