@@ -21,9 +21,7 @@ jobs:
         run: sed -i '/Roboroute\|<*Routes>\|Routes,/d' ~/frontend/src/Components/AuthRoutes.js
 
       - name: Remove File
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: ~/frontend/src/Components/Roboroute.js
+        run: rm -rf ~/frontend/src/Components/Roboroute.js
 
       - name: Create .env file
         run: |
