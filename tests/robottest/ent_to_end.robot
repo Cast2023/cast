@@ -1,7 +1,7 @@
 *** Variables ***
 
 *** Settings ***
-Resource        container.robot
+Resource        ${RESOURCE}
 Suite Setup     ${SETUP}
 
 *** Test Cases ***
@@ -10,12 +10,6 @@ Scenario: As a visitor I can visit the home page
   Go To  ${SERVER}
   Wait until page contains element  home
   Page Should Contain  Welcome to CAS-tracker
-
-#Scenario: As A visitor I can inspect profile page
-#  Go To  ${SERVER}
-#  Wait until page contains element  profile
-#  Click element  profile
-#  Page Should Contain  Profile
 
 Scenario: As A visitor I can inspect my team page
   Go To  ${SERVER}
@@ -40,3 +34,9 @@ Scenario: As A visitor clicking get started button opens a popup
   Wait until page contains element  getstarted
   Click element  getstarted
   Page Should Contain  This is very helpful
+
+#Scenario: As A visitor I can inspect profile page
+#  Go To  ${SERVER}
+#  Wait until page contains element  profile
+#  Click element  profile
+#  Page Should Contain  Profile
