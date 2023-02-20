@@ -23,6 +23,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      - IS_TEST=true
     healthcheck:
       test: [ "CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/consultant/ || exit 1" ]
       interval: 5s

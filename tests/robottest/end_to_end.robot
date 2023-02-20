@@ -11,6 +11,12 @@ Scenario: As a visitor I can visit the home page
   Wait until page contains element  home
   Page Should Contain  Welcome to CAS-tracker
 
+#Scenario: As A visitor I can inspect profile page
+#  Go To  ${SERVER}
+#  Wait until page contains element  profile
+#  Click element  profile
+#  Page Should Contain  Profile
+
 Scenario: As A visitor I can inspect my team page
   Go To  ${SERVER}
   Wait until page contains element  myteam
@@ -28,15 +34,3 @@ Scenario: As A visitor I can inspect api page
   Wait until page contains element  api
   Click element  api
   Page Should Contain  Api
-
-Scenario: As A visitor clicking get started button opens a popup
-  Go To  ${SERVER}
-  Wait until page contains element  getstarted
-  Click element  getstarted
-  Page Should Contain  This is very helpful
-
-#Scenario: As A visitor I can inspect profile page
-#  Go To  ${SERVER}
-#  Wait until page contains element  profile
-#  Click element  profile
-#  Page Should Contain  Profile
