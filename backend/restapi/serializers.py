@@ -8,7 +8,7 @@ from .models import Techs
 class TechSerializer(serializers.ModelSerializer):
     class Meta:
         model = Techs
-        fields = ('tech_name')
+        fields = ('id', 'tech_name')
 
 class TechSkillSerializer(serializers.ModelSerializer):
     tech_name = serializers.StringRelatedField(source='tech.tech_name')

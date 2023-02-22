@@ -7,7 +7,7 @@ class Employees(models.Model):
     '''
     first_name = models.TextField()
     last_name = models.TextField()
-    email = models.TextField()
+    email = models.TextField(unique=True)
     phone_number = models.TextField(null=True)
     location_country = models.TextField(null=True)
     location_city = models.TextField(null=True)
@@ -22,7 +22,7 @@ class Techs(models.Model):
         https://docs.djangoproject.com/en/4.1/topics/db/models/#extra-fields-on-many-to-many-relationships
     '''
     employee = models.ManyToManyField(Employees, through='Employee_tech_skills')
-    tech_name = models.TextField()
+    tech_name = models.TextField(unique=True)
     def __str__(self):
         return self.tech_name
 
