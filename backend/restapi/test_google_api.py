@@ -28,10 +28,28 @@ class TestVerifyOAuthTokenApi(TestCase):
         header = {'HTTP_AUTHORIZATION': '"Bysanttilaista dädää!"'}
         request = self.factory.get("api/verify-google-token", **header)
         return_value = self.api.get(request)
-
         requests.Request.assert_called()
         self.assertEqual(return_value.status_code, 200)
-        self.assertTrue(0 in return_value.data)
+    
+    @patch.object(id_token, 'verify_oauth2_token', MagicMock(return_value={'email':'aku.ankka@gmail.com'}))
+    @patch.object(requests, 'Request', MagicMock(return_value="Pepparkakor"))
+    def test_existing_user_is_found_from_database(self):
+        header = {'HTTP_AUTHORIZATION': '"Bysanttilaista dädää!"'}
+        request = self.factory.get("api/verify-google-token", **header)
+        return_value = self.api.get(request)
+        user = Employees.objects.get(id=return_value.data[0])
+        requests.Request.assert_called()
+        self.assertTrue(user.email, 'aku.ankka@gmail.com')
+
+    @patch.object(id_token, 'verify_oauth2_token', MagicMock(return_value={'email':'iines.ankka@gmail.com', 'first_name': 'Iines', 'last_name': 'Ankka'}))
+    @patch.object(requests, 'Request', MagicMock(return_value="Pepparkakor"))
+    def text_new_user_is_created_to_database(self):
+        header = {'HTTP_AUTHORIZATION': '"Bysanttilaista dädää!"'}
+        request = self.factory.get("api/verify-google-token", **header)
+        return_value = self.api.get(request)
+        user = Employees.objects.get(id=return_value.data[0])
+        requests.Request.assert_called()
+        self.assertTrue(user.email, 'iines.ankka@gmail.com')
 
     @patch.object(id_token, 'verify_oauth2_token', MagicMock(side_effect=ValueError()))
     @patch.object(requests, 'Request', MagicMock())
