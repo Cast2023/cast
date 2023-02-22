@@ -1,24 +1,93 @@
-import { TextField, Button, Grid } from "@mui/material"
-import { useSelector } from "react-redux"
+import {
+  TextField,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+  CardActionArea,
+  CardMedia,
+  List,
+  ListItem,
+  ListItemText,
+  Avatar,
+  CardHeader,
+} from "@mui/material"
+import { deepOrange } from "@mui/material/colors"
+import { useEffect, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { setSearchFilter } from "../Reducers/searchReducer"
+import axios from "axios"
 
-const makeChange = () => {
-  console.log("Life changes!")
-}
 
 const Search = () => {
-  const consultants = useSelector((state) => state.consultants)
+  const [consultants, setConsultants] = useState(
+    useSelector((state) => state.consultants.allConsultants)
+  )
+  console.log("consultants in search page: ", consultants)//
+  const [filteredUsers, setFilteredUsers] = useState(consultants)
+  const [catUrl, setCatUrl] = useState("")
+
+  const dispatch = useDispatch()
+  const filter = useSelector((state) => state.search.filter)
+  console.log("haku:", filter)
+
+
+  const changeSearchTerm = (e) => {
+    dispatch(setSearchFilter(e.target.value))
+  }
+
+  useEffect(() => {
+    if (consultants) {
+      setFilteredUsers(
+        consultants.filter((consultant) => {
+          return (
+            consultant.first_name
+              .toLowerCase()
+              .includes(filter.toLowerCase()) ||
+            consultant.last_name
+              .toLowerCase()
+              .includes(filter.toLowerCase())
+          )
+        })
+      )
+    } else {
+      setFilteredUsers(null)
+    }
+  }, [filter])
+
+  // Just for debug/logging purposes to see your filteredUsers
+  // useEffect(() => {
+  //   console.log(filteredUsers)
+  // }, [filteredUsers])
+
+  const initCatUrl = async () => {
+    const result = await axios
+      .get("https://api.thecatapi.com/v1/images/search")
+      .then((response) => response.data[0].url)
+      .catch((error) => console.error(error))
+    setCatUrl(result)
+  }
+  useEffect(() => {
+    initCatUrl()
+  }, [])
 
   return (
     <div>
-      <h2>Search consults</h2>
-
       <div>
-        <Grid container>
-          <form onSubmit={makeChange}>
-            <Grid item>
-              <TextField value="" onChange={makeChange} />
-            </Grid>
-            <Grid item alignItems="stretch" style={{ display: "flex" }}>
+        <Grid container spacing={4} justifyContent="center" alignItems="left">
+          <Grid item xs={12} md={12} lg={12}>
+            <h2>Search consults</h2>
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <TextField
+              fullWidth
+              onChange={changeSearchTerm}
+              placeholder="search with first and last name"
+              type="text"
+              value={filter}
+            />
+          </Grid>
+          {/* <Grid item xs={4}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -27,21 +96,70 @@ const Search = () => {
               >
                 Search
               </Button>
-            </Grid>
-          </form>
+            </Grid> */}
         </Grid>
       </div>
       <br />
       <div>Search results here</div>
-      <ul>
-        {consultants.map((consultant) => (
-          <li key={consultant.id}>
-            {consultant.first_name} {consultant.last_name}
-          </li>
-        ))}
-      </ul>
+      {filteredUsers ? (
+        <Grid container spacing={2}>
+          {filteredUsers.map((consultant) => (
+            <Grid item xs={4}>
+              <Card variant="outlined" key={consultant.id}>
+                <CardActionArea>
+                  <CardHeader
+                    title={`${consultant.first_name} ${consultant.last_name}`}
+                    subheader={`${consultant.location_city}, ${consultant.location_country}`}
+                  />
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    // image={catUrl}
+                    // image={`https://i.pravatar.cc/${consultant.id + 300}`}
+                    image={`https://cataas.com/cat?${consultant.id}`}
+                    alt="placeholder img"
+                  />
+
+                  <CardContent>
+                    <div>
+                      <b>Wants to do:</b> {consultant.wants_to_do}
+                    </div>
+                    <br />
+                    <div>
+                      <b>Wants not to do:</b> {consultant.wants_not_to_do}
+                    </div>
+                    <br />
+                    <div>
+                      Allocation: {consultant.worktime_allocation}, until:{" "}
+                      {consultant.allocation_until}
+                    </div>
+                    <br />
+                    <b>Skills:</b>
+                    <div>
+                      {" "}
+                      {consultant.skills.map((skill) => skill.tech_name + "  ")}
+                    </div>
+                    {/* <List>
+                      {consultant.skills.map((skill) => {
+                        return (
+                          <ListItem dense={true}>
+                            <ListItemText>{skill.tech_name}</ListItemText>
+                          </ListItem>
+                        )
+                      })}
+                    </List> */}
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <div>Nothing to show yet</div>
+      )}
     </div>
   )
 }
+
 
 export default Search
