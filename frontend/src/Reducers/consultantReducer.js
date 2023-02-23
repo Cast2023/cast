@@ -25,9 +25,23 @@ const consultantSlice = createSlice({
         filteredConsultants: action.payload,
       }
     },
-    filtByNameConsultants(state,action){
-      
-    }
+    updateFilteredConsultansByName(state, action) {
+      const searchTerm = action.payload
+      state.filteredConsultants = state.allConsultants.filter((consultant) => {
+        return (
+          consultant.first_name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          consultant.last_name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          consultant.first_name.concat(" ", consultant.last_name)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        )
+      })
+      console.log("filted consultant state: ",state.filteredConsultants)
+    },
   },
 })
 
@@ -39,5 +53,6 @@ export const initializeConsultants = () => {
   }
 }
 
-export const { setAllConsultants, setFilteredConsultants} = consultantSlice.actions
+export const { setAllConsultants, setFilteredConsultants, updateFilteredConsultansByName} =
+  consultantSlice.actions
 export default consultantSlice.reducer

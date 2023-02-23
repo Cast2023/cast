@@ -16,42 +16,27 @@ import { deepOrange } from "@mui/material/colors"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setSearchFilter } from "../Reducers/searchReducer"
+import { updateFilteredConsultansByName } from "../Reducers/consultantReducer"
 import axios from "axios"
 
 
 const Search = () => {
-  const [consultants, setConsultants] = useState(
-    useSelector((state) => state.consultants.allConsultants)
-  )
-  console.log("consultants in search page: ", consultants)//
-  const [filteredUsers, setFilteredUsers] = useState(consultants)
-  const [catUrl, setCatUrl] = useState("")
-
   const dispatch = useDispatch()
-  const filter = useSelector((state) => state.search.filter)
-  console.log("haku:", filter)
-
-
   const changeSearchTerm = (e) => {
     dispatch(setSearchFilter(e.target.value))
   }
 
+  const consultants = useSelector((state) => state.consultants.allConsultants)
+  const filteredUsers = useSelector((state) => state.consultants.filteredConsultants)
+  const [catUrl, setCatUrl] = useState("")
+  const filter = useSelector((state) => state.search.filter)
+
+
   useEffect(() => {
     if (consultants) {
-      setFilteredUsers(
-        consultants.filter((consultant) => {
-          return (
-            consultant.first_name
-              .toLowerCase()
-              .includes(filter.toLowerCase()) ||
-            consultant.last_name
-              .toLowerCase()
-              .includes(filter.toLowerCase())
-          )
-        })
-      )
+      dispatch(updateFilteredConsultansByName(filter))
     } else {
-      setFilteredUsers(null)
+      dispatch(updateFilteredConsultansByName(null))
     }
   }, [filter])
 
