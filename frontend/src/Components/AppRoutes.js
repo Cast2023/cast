@@ -5,6 +5,7 @@ import Profile from "./Profile"
 import Search from "./Search"
 import Api from "./Api"
 import MyTeam from "./MyTeam"
+import Logout from "./Logout"
 
 const AppRoutes = () => {
   return (
@@ -31,6 +32,9 @@ const AppRoutes = () => {
           <Button color="inherit" component={Link} to="/search" id="search">
             search
           </Button>
+          <Button color="inherit" component={Link} to="/logout" id="logout">
+            logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Routes>
@@ -39,6 +43,7 @@ const AppRoutes = () => {
         <Route path="/api" element={<Api />} />
         <Route path="/myteam" element={<MyTeam />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </div>
   )

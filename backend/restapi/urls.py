@@ -1,30 +1,31 @@
 from django.urls import path, include
 
-from . import views
+from .views import ConsultantAPIView, TechAPIView
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
 router = routers.DefaultRouter()
-router.register(r'consultant', views.ConsultantAPIView, basename='consultant')
+router.register(r'consultant', ConsultantAPIView, basename='consultant')
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
-
-
-consultant_list = views.ConsultantAPIView.as_view({
+consultant_list = ConsultantAPIView.as_view({
     'get': 'list',
     'post': 'create'
 })
-consultant_detail = views.ConsultantAPIView.as_view({
+consultant_detail = ConsultantAPIView.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
     'delete': 'destroy'
 })
 
+tech_list = TechAPIView.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
 urlpatterns = format_suffix_patterns([
-    path('api/consultant/', consultant_list, name='consultant-list'),
-    path('api/consultant/<int:pk>/', consultant_detail, name='consultant-detail'),
+    path('consultant/', consultant_list, name='consultant-list'),
+    path('consultant/<int:pk>/', consultant_detail, name='consultant-detail'),
+    path('tech/', tech_list, name='tech-list'),
 ])
 
