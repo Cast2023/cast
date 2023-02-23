@@ -4,6 +4,7 @@ import consultantService from "../Services/consultantService"
 const initialState = {
   allConsultants: [],
   filteredConsultants: [],
+  selectedConsultant: [],
 }
 
 const consultantSlice = createSlice({
@@ -35,12 +36,16 @@ const consultantSlice = createSlice({
           consultant.last_name
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-          consultant.first_name.concat(" ", consultant.last_name)
+          consultant.first_name
+            .concat(" ", consultant.last_name)
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
         )
       })
-      console.log("filted consultant state: ",state.filteredConsultants)
+      console.log("filted consultant state: ", state.filteredConsultants)
+    },
+    setSelectedConsultant(state, action) {
+      state.selectedConsultant = action.payload
     },
   },
 })
@@ -53,6 +58,10 @@ export const initializeConsultants = () => {
   }
 }
 
-export const { setAllConsultants, setFilteredConsultants, updateFilteredConsultansByName} =
-  consultantSlice.actions
+export const {
+  setAllConsultants,
+  setFilteredConsultants,
+  updateFilteredConsultansByName,
+  setSelectedConsultant,
+} = consultantSlice.actions
 export default consultantSlice.reducer
