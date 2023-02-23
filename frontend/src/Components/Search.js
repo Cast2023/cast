@@ -29,7 +29,7 @@ const Search = () => {
   const consultants = useSelector((state) => state.consultants.allConsultants)
   const filteredUsers = useSelector((state) => state.consultants.filteredConsultants)
   const [catUrl, setCatUrl] = useState("")
-  const filter = useSelector((state) => state.search.filter)
+  const filter = useSelector((state) => state.search.consultantName)
 
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const Search = () => {
       {filteredUsers ? (
         <Grid container spacing={2}>
           {filteredUsers.map((consultant) => (
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} md={4} lg={4} >
               <Card variant="outlined" key={consultant.id}>
                 <CardActionArea>
                   <CardHeader

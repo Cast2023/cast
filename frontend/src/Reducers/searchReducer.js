@@ -7,8 +7,11 @@ import consultantService from "../Services/consultantService"
 // }
 
 const initialState = {
-  filter: "",
-  filteredUsers: "",
+  consultantName: "",
+  projectName:"",
+  // filteredUsers: "",
+  extentedSearch: false
+
 }
 
 const searchSlice = createSlice({
@@ -16,7 +19,7 @@ const searchSlice = createSlice({
   initialState,
   reducers: {
     setSearchFilter(state, action) {
-      state.filter = action.payload
+      state.consultantName = action.payload
     },
     // setFilteredUsers(state, action) {
     //   return {
