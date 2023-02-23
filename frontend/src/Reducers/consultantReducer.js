@@ -25,6 +25,9 @@ const consultantSlice = createSlice({
         filteredConsultants: action.payload,
       }
     },
+    filtByNameConsultants(state,action){
+      
+    }
   },
 })
 
