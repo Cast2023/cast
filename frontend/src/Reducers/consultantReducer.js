@@ -25,6 +25,22 @@ const consultantSlice = createSlice({
         filteredConsultants: action.payload,
       }
     },
+    updateFilteredConsultans(state, action) {
+      const searchTerm = action.payload
+      return {
+        ...state,
+        filteredConsultants: state.allConsultants.filter((consultant) => {
+          return (
+            consultant.first_name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+            consultant.last_name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          )
+        }),
+      }
+    },
   },
 })
 
@@ -36,5 +52,6 @@ export const initializeConsultants = () => {
   }
 }
 
-export const { setAllConsultants, setFilteredConsultants} = consultantSlice.actions
+export const { setAllConsultants, setFilteredConsultants } =
+  consultantSlice.actions
 export default consultantSlice.reducer
