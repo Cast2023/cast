@@ -1,7 +1,4 @@
-import {
-  Grid,
-  Container
-} from "@mui/material"
+import { Grid, Container } from "@mui/material"
 
 import { useSelector } from "react-redux"
 import SkillsCard from "./SkillsCard"
@@ -9,9 +6,10 @@ import ProfileCard from "./ProfileCard"
 import CertsCard from "./CertsCard"
 import ProjectsCard from "./ProjectsCard"
 
-
 const Profile = () => {
-  const user = useSelector((state) => state.session.activeUser)
+  // const user = useSelector((state) => state.session.activeUser)
+  const user = useSelector((state) => state.consultants.selectedConsultant)
+  console.log(user)
   if (user.length === 0) {
     return <div>Nothing to render</div>
   }
