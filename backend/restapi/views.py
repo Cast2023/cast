@@ -1,31 +1,27 @@
 from rest_framework import viewsets, filters
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as rest_filters 
 
 
-from restapi.models import Employee_tech_skills, Employees
-from .serializers import TechSkillSerializer, ConsultantSerializer
+from restapi.models import Employees, Techs
+from .serializers import TechSerializer, ConsultantSerializer
 
 class TechAPIView(viewsets.ModelViewSet):
-    serializer_class = TechSkillSerializer
-    queryset = Employee_tech_skills.objects.all()
-    
+    serializer_class = TechSerializer
+    queryset = Techs.objects.all()
+
+class EmployeeFilter(rest_filters.FilterSet):
+    first_name = rest_filters.CharFilter(field_name='first_name', lookup_expr='icontains')
+    last_name = rest_filters.CharFilter(field_name='last_name', lookup_expr='icontains')
+
+    class Meta:
+        fields = ("first_name",)
+        model = Employees
 
 class ConsultantAPIView(viewsets.ModelViewSet):
     queryset = Employees.objects.all()
     serializer_class = ConsultantSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = [
-        'id',
-        'first_name',
-        'last_name', 
-        'location_city', 
-        'location_country', 
-        'email', 
-        'phone_number', 
-        'worktime_allocation', 
-        'wants_to_do', 
-        'wants_not_to_do'
-        ]
+    filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = EmployeeFilter
     search_fields = [
         'first_name', 
         'last_name', 
@@ -38,5 +34,4 @@ class ConsultantAPIView(viewsets.ModelViewSet):
         'wants_not_to_do', 
         'techs__tech_name'
         ]
-
 

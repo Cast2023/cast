@@ -20,6 +20,6 @@ from restapi.verificationAPI import VerifyOAuthTokenApi
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('', include('restapi.urls')),
+    path('api/', include('restapi.urls')),
     path('api/verify-google-token/', VerifyOAuthTokenApi.as_view(), name="Verify Google OAuth token"),
 ]

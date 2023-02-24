@@ -30,13 +30,14 @@ const AuthRoutes = () => {
       </Routes>
       <GoogleLogin
         onSuccess={(credentialResponse) => {
+          console.log(credentialResponse)
           SuccessCallback({ //now inside SuccessCallback only have axios.get().. we may also need to implement axios.post 
             credentialResponse,
           }).then( response =>{
             //need to apply response when backend side is handeled
             const newToken = "123"//may utilize the value from response
             dispatch(setActiveSession(true))
-            dispatch(initializeUser(5))
+            dispatch(initializeUser(response.data))
             dispatch(initializeConsultants())
             dispatch(setToken(`${newToken}`))
             //saving the token to the browser's local storage
