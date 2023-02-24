@@ -53,14 +53,24 @@ const SkillsCard = ({ user }) => {
       sortable: true,
       type: "singleSelect",
       valueOptions: ["1","2","3"],
+    },
+    {
+      field: 'techPreference',
+      headerName: 'Tech preference',
+      flex: 0.7,
+      editable: editable,
+      sortable: true,
+      type: "singleSelect",
+      // valueOptions: ["Null","True","False"],
     }
   ]
       
   const rows = () => {
       const t = []
       user.skills.map(skill =>
-        t.push({ id: skill.tech, tech: skill.tech_name, skillLevel: skill.skill_level }) //use concat instead of push?
+        t.push({ id: skill.tech, tech: skill.tech_name, skillLevel: skill.skill_level, techPreference: skill.tech_preference }) //use concat instead of push?
       )
+      console.log('rows', t)
       return t
   }
 

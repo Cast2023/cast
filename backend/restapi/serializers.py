@@ -14,7 +14,7 @@ class TechSkillSerializer(serializers.ModelSerializer):
     tech_name = serializers.StringRelatedField(source='tech.tech_name')
     class Meta:
         model = Employee_tech_skills
-        fields = ('skill_level', 'tech', 'tech_name')
+        fields = ('skill_level', 'tech', 'tech_name', 'tech_preference')
 
 class ConsultantSerializer(serializers.ModelSerializer):
     skills = TechSkillSerializer(many=True)
