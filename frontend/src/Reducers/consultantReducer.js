@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 
+
 const initialState = {
   allConsultants: [],
   filteredConsultants: [],
@@ -11,9 +12,6 @@ const consultantSlice = createSlice({
   name: "consultants",
   initialState,
   reducers: {
-    // setConsultants(state, action) {
-    //   return action.payload
-    // },
     setAllConsultants(state, action) {
       return {
         ...state,
@@ -26,23 +24,22 @@ const consultantSlice = createSlice({
         filteredConsultants: action.payload,
       }
     },
-    updateFilteredConsultansByName(state, action) {
+    updateFilteredConsultantsByName(state, action) {
       const searchTerm = action.payload
       state.filteredConsultants = state.allConsultants.filter((consultant) => {
         return (
-          consultant.first_name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          consultant.last_name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
+          // consultant.first_name
+          //   .toLowerCase()
+          //   .includes(searchTerm.toLowerCase()) ||
+          // consultant.last_name
+          //   .toLowerCase()
+          //   .includes(searchTerm.toLowerCase()) ||
           consultant.first_name
             .concat(" ", consultant.last_name)
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
         )
       })
-      console.log("filted consultant state: ", state.filteredConsultants)
     },
     setSelectedConsultant(state, action) {
       state.selectedConsultant = action.payload
@@ -61,7 +58,8 @@ export const initializeConsultants = () => {
 export const {
   setAllConsultants,
   setFilteredConsultants,
-  updateFilteredConsultansByName,
+  updateFilteredConsultantsByName,
   setSelectedConsultant,
 } = consultantSlice.actions
+
 export default consultantSlice.reducer

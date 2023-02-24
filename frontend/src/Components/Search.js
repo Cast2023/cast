@@ -1,75 +1,50 @@
 import {
   TextField,
-  Button,
   Grid,
   Card,
   CardContent,
   CardActionArea,
   CardMedia,
-  List,
-  ListItem,
-  ListItemText,
-  Avatar,
   CardHeader,
 } from "@mui/material"
-import { deepOrange } from "@mui/material/colors"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setSearchFilter } from "../Reducers/searchReducer"
-import { updateFilteredConsultansByName } from "../Reducers/consultantReducer"
-import axios from "axios"
+import { setNameFilter } from "../Reducers/searchReducer"
+import { updateFilteredConsultantsByName } from "../Reducers/consultantReducer"
 
 
 const Search = () => {
-  const dispatch = useDispatch()
-  const changeSearchTerm = (e) => {
-    dispatch(setSearchFilter(e.target.value))
-  }
-
   const consultants = useSelector((state) => state.consultants.allConsultants)
   const filteredUsers = useSelector((state) => state.consultants.filteredConsultants)
-  const [catUrl, setCatUrl] = useState("")
-  const filter = useSelector((state) => state.search.consultantName)
-
+  const nameFilter = useSelector((state) => state.search.nameFilter)
 
   useEffect(() => {
     if (consultants) {
-      dispatch(updateFilteredConsultansByName(filter))
+      dispatch(updateFilteredConsultantsByName(nameFilter))
     } else {
-      dispatch(updateFilteredConsultansByName(null))
+      dispatch(updateFilteredConsultantsByName(null))
     }
-  }, [filter])
+  }, [nameFilter])
 
-  // Just for debug/logging purposes to see your filteredUsers
-  // useEffect(() => {
-  //   console.log(filteredUsers)
-  // }, [filteredUsers])
-
-  const initCatUrl = async () => {
-    const result = await axios
-      .get("https://api.thecatapi.com/v1/images/search")
-      .then((response) => response.data[0].url)
-      .catch((error) => console.error(error))
-    setCatUrl(result)
+  const dispatch = useDispatch()
+  const changeSearchTerm = (e) => {
+    dispatch(setNameFilter(e.target.value))
   }
-  useEffect(() => {
-    initCatUrl()
-  }, [])
 
   return (
     <div>
       <div>
         <Grid container spacing={4} justifyContent="center" alignItems="left">
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
             <h2>Search consults</h2>
           </Grid>
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
               fullWidth
               onChange={changeSearchTerm}
               placeholder="search with first and last name"
               type="text"
-              value={filter}
+              value={nameFilter}
             />
           </Grid>
           {/* <Grid item xs={4}>
@@ -89,8 +64,8 @@ const Search = () => {
       {filteredUsers ? (
         <Grid container spacing={2}>
           {filteredUsers.map((consultant) => (
-            <Grid item xs={12} sm={6} md={4} lg={4} >
-              <Card variant="outlined" key={consultant.id}>
+            <Grid item xs={12} sm={6} md={4} lg={4} key={consultant.id} >
+              <Card variant="outlined" >
                 <CardActionArea>
                   <CardHeader
                     title={`${consultant.first_name} ${consultant.last_name}`}
@@ -99,12 +74,9 @@ const Search = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    // image={catUrl}
-                    // image={`https://i.pravatar.cc/${consultant.id + 300}`}
                     image={`https://cataas.com/cat?${consultant.id}`}
                     alt="placeholder img"
                   />
-
                   <CardContent>
                     <div>
                       <b>Wants to do:</b> {consultant.wants_to_do}
@@ -124,15 +96,6 @@ const Search = () => {
                       {" "}
                       {consultant.skills.map((skill) => skill.tech_name + "  ")}
                     </div>
-                    {/* <List>
-                      {consultant.skills.map((skill) => {
-                        return (
-                          <ListItem dense={true}>
-                            <ListItemText>{skill.tech_name}</ListItemText>
-                          </ListItem>
-                        )
-                      })}
-                    </List> */}
                   </CardContent>
                 </CardActionArea>
               </Card>
