@@ -11,11 +11,13 @@ import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setNameFilter } from "../Reducers/searchReducer"
 import { updateFilteredConsultantsByName } from "../Reducers/consultantReducer"
-
+import { Link } from "react-router-dom"
 
 const Search = () => {
   const consultants = useSelector((state) => state.consultants.allConsultants)
-  const filteredUsers = useSelector((state) => state.consultants.filteredConsultants)
+  const filteredUsers = useSelector(
+    (state) => state.consultants.filteredConsultants
+  )
   const nameFilter = useSelector((state) => state.search.nameFilter)
 
   useEffect(() => {
@@ -64,11 +66,15 @@ const Search = () => {
       {filteredUsers ? (
         <Grid container spacing={2}>
           {filteredUsers.map((consultant) => (
-            <Grid item xs={12} sm={6} md={4} lg={4} key={consultant.id} >
-              <Card variant="outlined" >
+            <Grid item xs={12} sm={6} md={4} lg={4} key={consultant.id}>
+              <Card variant="outlined">
                 <CardActionArea>
                   <CardHeader
-                    title={`${consultant.first_name} ${consultant.last_name}`}
+                    title={
+                      <Link to={`/profile/${consultant.id}`}>
+                        {consultant.first_name} {consultant.last_name}
+                      </Link>
+                    }
                     subheader={`${consultant.location_city}, ${consultant.location_country}`}
                   />
                   <CardMedia
@@ -108,6 +114,5 @@ const Search = () => {
     </div>
   )
 }
-
 
 export default Search
