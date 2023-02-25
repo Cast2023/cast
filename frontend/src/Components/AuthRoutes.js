@@ -5,8 +5,9 @@ import { useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { initializeConsultants } from "../Reducers/consultantReducer"
 import { initializeUser, setToken, setActiveSession } from "../Reducers/sessionReducer"
+import authenticationService from "../Services/authenticationService"
+import verifyToken from "../Services/authenticationService"
 
-import SuccessCallback from "../Services/authenticationService"
 
 const AuthRoutes = () => {
   const dispatch = useDispatch()
@@ -15,10 +16,14 @@ const AuthRoutes = () => {
     const token = window.localStorage.getItem('token')//its setItem can be found from Component/AppRoutes.js
     console.log('useEffect token: ', token)
     if (token) {
-      dispatch(setActiveSession(true))
-      dispatch(initializeUser(5))
-      dispatch(initializeConsultants())
-      dispatch(setToken(`${token}`))
+      authenticationService.verifyToken({token}).then(response =>{
+        console.log('response.data[0]: ', response.data[0])
+        dispatch(setActiveSession(true))
+        dispatch(initializeUser(response.data[0]))
+        dispatch(initializeConsultants())
+        dispatch(setToken(`${token}`))
+      }
+      )
     }
   }, [])
   return (
@@ -30,22 +35,21 @@ const AuthRoutes = () => {
       </Routes>
       <GoogleLogin
         onSuccess={(credentialResponse) => {
-          console.log(credentialResponse)
-          SuccessCallback({ //now inside SuccessCallback only have axios.get().. we may also need to implement axios.post 
+          console.log("CredentialResponse",credentialResponse)
+          authenticationService.successCallback({ //now inside SuccessCallback only have axios.get().. we may also need to implement axios.post 
             credentialResponse,
           }).then( response =>{
             //need to apply response when backend side is handeled
-            const newToken = "123"//may utilize the value from response
+            console.log("login response", response)
+            const newToken = response.data[1]//may utilize the value from response //now it is same to credentialResponse.credential's value
             dispatch(setActiveSession(true))
-            dispatch(initializeUser(response.data))
+            dispatch(initializeUser(response.data[0]))
             dispatch(initializeConsultants())
             dispatch(setToken(`${newToken}`))
             //saving the token to the browser's local storage
             window.localStorage.setItem('token', newToken)
             window.localStorage.getItem('token')
-
           }
-            
           )
         }}
         onError={() => {

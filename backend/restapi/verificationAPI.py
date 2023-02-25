@@ -31,7 +31,7 @@ class VerifyOAuthTokenApi(APIView):
         if not user:
             Employees.objects.create(first_name=userinfo['given_name'],last_name=userinfo['family_name'], email=userinfo['email'])
             user = self.get_user_from_db(userinfo['email'])
-        return Response([user.id], status=200) # Token OK
+        return Response([user.id, token], status=200) # Token OK
 
     def get_user_from_db(self, email):
         if Employees.objects.filter(email__exact=email).exists():
