@@ -5,9 +5,9 @@ import {
   IconButton,
   Box,
   Button,
+  TextField
 } from "@mui/material"
 
-import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
 import { useState } from "react"
 import consultantService from "../Services/consultantService"
@@ -15,51 +15,30 @@ import consultantService from "../Services/consultantService"
 
 const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
- // const [formValues, setFormValues] = useState(({}))
+  const [formValues, setFormValues] = useState([])
 
   const handleClick = (edit) => {
     setEditable(!edit)
   }
   
-  //const handleChange = (event) => {
-  //  const value = event.target.value
-  //  
-  //  console.log(value)
-  //  setFormValues({...formValues, [event.target.name]: value})
-  //}
-  //const handleSubmit = (event) => {
-  //  event.preventDefault()
-  //  const values = formValues
-  //  console.log("handlesubmit",formValues)
-  //  consultantService.editConsultant(user.id, values)
-  //  //log("boom", data)
-  //  setEditable(!editable)
-  //
-  //}
-  const columns = [
-    { 
-      field: 'tech', 
-      headerName: 'Technical skill', 
-      flex: 1,
-      editable: false,
-      sortable: true,
+  const handleChange = (event) => {
+    const value = event.target.value
+    const id = event.target.id
+    setFormValues([...formValues, {"skill_level": value, "tech": id}])
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const skillsList = {"skills":formValues}
+    consultantService.editConsultant(user.id, skillsList)
+    setEditable(!editable)
+  
+  }
       
-    },
-    {
-      field: 'skillLevel',
-      headerName: 'Skill level',
-      flex: 0.7,
-      editable: editable,
-      sortable: true,
-      type: "singleSelect",
-      valueOptions: ["1","2","3"],
-    }
-  ]
-      
-  const rows = () => {
-      const t = []
+  const skills = () => {
+      let t = []
       user.skills.map(skill =>
-        t.push({ id: skill.tech, tech: skill.tech_name, skillLevel: skill.skill_level }) //use concat instead of push?
+        t = t.concat([{ id: skill.tech, tech: skill.tech_name, skillLevel: skill.skill_level }])
       )
       return t
   }
@@ -69,22 +48,31 @@ const SkillsCard = ({ user }) => {
       <Card>
         <CardHeader
           action={
-            <IconButton onClick={() => handleClick(editable)}>
+            <IconButton id="edit_skills_button" onClick={() => handleClick(editable)} >
               <EditIcon />
             </IconButton>
           }
           title="Technical skills"
         />
         <CardContent > 
-          <Box sx={{ height: 400, width: '100%' }}>
-            <DataGrid
-              rows={rows()}
-              columns={columns}
-              autoPageSize
-              rowHeight={45}
-              disableSelectionOnClick
-              //checkboxSelection
-            />
+          <Box sx={{
+              '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}>
+            <form onSubmit={handleSubmit} onChange={handleChange}>
+            {skills().map (skill => <TextField 
+              disabled={!editable}
+                id={skill.id}
+                label={skill.tech}
+                name="skill_level"
+                defaultValue={skill.skillLevel}
+              variant="standard"
+            />)}
+            {editable && (
+                <Button type='submit' id="submit_skills_button">
+                Submit
+                </Button>
+              )}
+            </form>
             
           </Box>
           <br/>Skill levels: 
@@ -98,8 +86,3 @@ const SkillsCard = ({ user }) => {
 }
 
 export default SkillsCard
-
-
-
-
-
