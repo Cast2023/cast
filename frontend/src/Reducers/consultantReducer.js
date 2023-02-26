@@ -1,12 +1,48 @@
 import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 
+
+const initialState = {
+  allConsultants: [],
+  filteredConsultants: [],
+  selectedConsultant: [],
+}
+
 const consultantSlice = createSlice({
   name: "consultants",
-  initialState: [],
+  initialState,
   reducers: {
-    setConsultants(state, action) {
-      return action.payload
+    setAllConsultants(state, action) {
+      return {
+        ...state,
+        allConsultants: action.payload,
+      }
+    },
+    setFilteredConsultants(state, action) {
+      return {
+        ...state,
+        filteredConsultants: action.payload,
+      }
+    },
+    updateFilteredConsultantsByName(state, action) {
+      const searchTerm = action.payload
+      state.filteredConsultants = state.allConsultants.filter((consultant) => {
+        return (
+          // consultant.first_name
+          //   .toLowerCase()
+          //   .includes(searchTerm.toLowerCase()) ||
+          // consultant.last_name
+          //   .toLowerCase()
+          //   .includes(searchTerm.toLowerCase()) ||
+          consultant.first_name
+            .concat(" ", consultant.last_name)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        )
+      })
+    },
+    setSelectedConsultant(state, action) {
+      state.selectedConsultant = action.payload
     },
   },
 })
@@ -14,9 +50,16 @@ const consultantSlice = createSlice({
 export const initializeConsultants = () => {
   return async (dispatch) => {
     const consultants = await consultantService.getAllConsultants()
-    dispatch(setConsultants(consultants))
+    dispatch(setAllConsultants(consultants))
+    dispatch(setFilteredConsultants(consultants))
   }
 }
 
-export const { setConsultants } = consultantSlice.actions
+export const {
+  setAllConsultants,
+  setFilteredConsultants,
+  updateFilteredConsultantsByName,
+  setSelectedConsultant,
+} = consultantSlice.actions
+
 export default consultantSlice.reducer
