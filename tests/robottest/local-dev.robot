@@ -23,5 +23,9 @@ Set Message
   [arguments]  ${message}
   Input Text  messge input  ${message}
 
+Set Skill
+  [arguments]  ${id}  ${level} 
+  Input Text  ${id}  ${level}
+
 #Flush Database  
    #TODO 

@@ -34,3 +34,83 @@ Scenario: As A visitor I can inspect api page
   Wait until page contains element  api
   Click element  api
   Page Should Contain  Api
+
+Scenario: As a visitor I can see the skills card on profile page
+  Go To  ${SERVER}
+  Wait until page contains element  profile
+  Click element  profile
+  Page Should Contain Element  skillscard
+
+Scenario: As a visitor I can click the edit button to activate the edit mode on skills
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Page Should Contain Button  edit_skills_button
+  Click Button  edit_skills_button
+  Page Should Contain Button  submit_skills_button
+
+Scenario: As a visitor I can edit my skills
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Click Button  edit_skills_button
+  Page Should Contain  Python
+  Set Skill  1  1
+  Textfield Value Should Be  id=1  1
+  Set Skill  1  3
+  Textfield Value Should Be  id=1  3
+  Click Button  submit_skills_button
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Textfield Value Should Be  id=1  3
+
+Scenario: As a visitor I can't give illegal value to a skill
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Click Button  edit_skills_button
+  Set Skill  1  2
+  Click Button  submit_skills_button
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Click Button  edit_skills_button
+  Set Skill  1  9001
+  Click Button  submit_skills_button
+  Click Button  edit_skills_button
+  Set Skill  1  -1
+  Click Button  submit_skills_button
+  Click Button  edit_skills_button
+  Set Skill  1  apina
+  Click Button  submit_skills_button
+  Click Button  edit_skills_button
+  Set Skill  1  0
+  Click Button  submit_skills_button
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Textfield Value Should Be  id=1  2
+
+Scenario: As a visitor I can edit many skills
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Click Button  edit_skills_button
+  Set Skill  1  1
+  Set Skill  3  1
+  Textfield Value Should Be  id=1  1
+  Textfield Value Should Be  id=3  1
+  Click Button  submit_skills_button
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Click Button  edit_skills_button
+  Set Skill  1  3
+  Set Skill  3  2
+  Click Button  submit_skills_button
+  Go To  ${SERVER}
+  Wait Until Page Contains Element  profile
+  Click Element  profile
+  Textfield Value Should Be  id=1  3
+  Textfield Value Should Be  id=3  2
