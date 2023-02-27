@@ -16,9 +16,7 @@ const AppRoutes = () => {
         (consultant) => consultant.id === Number(match.params.id)
       )
     : null
-  const activeUser = useSelector(
-    (state) => state.consultants.selectedConsultant
-  )
+  const activeUser = useSelector((state) => state.consultants.activeConsultant)
   return (
     <div>
       <AppBar>
@@ -50,10 +48,17 @@ const AppRoutes = () => {
       </AppBar>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile consultant={activeUser} />} />
+        <Route
+          path="/profile"
+          element={
+            <Profile consultant={activeUser} key={window.location.pathname} />
+          }
+        />
         <Route
           path="/profile/:id"
-          element={<Profile consultant={consultant} />}
+          element={
+            <Profile consultant={consultant} key={window.location.pathname} />
+          }
         />
         <Route path="/api" element={<Api />} />
         <Route path="/myteam" element={<MyTeam />} />

@@ -15,7 +15,6 @@ const App = () => {
   const userID = useSelector((state) => state.session.activeUserId)
   const token = useSelector((state) => state.session.token)
 
-
   return (
     <Container>
       <Router>
