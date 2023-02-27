@@ -16,7 +16,7 @@ jobs:
         run: echo ${{ secrets.REGISTRY_PWORD }} | docker login ${{ secrets.SERVER }} -u ${{ secrets.REGISTRY_UNAME }} --password-stdin
 
       - name: Pull base image
-        run: docker pull ${{ secrets.SERVER }}/robottest:sprint2
+        run: docker pull ${{ secrets.IMAGE }}
 
       - name: Run robot tests
         env:
@@ -38,7 +38,6 @@ jobs:
       - name: Create .env file
         run: |
           echo "${{ secrets.DEPLOY_ENV_FILE }}" | base64 -d > .env
-
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:

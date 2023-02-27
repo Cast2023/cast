@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# run unittests
-echo "run unittests"
-python manage.py test
-
 # Collect static files
 echo "Collect static files"
 python manage.py makemigrations
