@@ -1,6 +1,4 @@
 import { Grid, Container } from "@mui/material"
-import PropTypes from "prop-types"
-import { useSelector } from "react-redux"
 import SkillsCard from "./SkillsCard"
 import PersonalInfoCard from "./PersonalInfoCard"
 import CertsCard from "./CertsCard"
@@ -16,11 +14,11 @@ const Profile = ({ consultant }) => {
   //   (state) => state.consultants.selectedConsultant
   // )
   console.log(selectedConsultant)
-  if (consultant === null) {
-    return <div>Nothing to render</div>
-  }
+  // if (!selectedConsultant.length) {
+  //   return <div>Nothing to render</div>
+  // }
 
-  return (
+  return selectedConsultant.id ? (
     <div>
       <Container id="container">
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} id="grid">
@@ -39,11 +37,13 @@ const Profile = ({ consultant }) => {
         </Grid>
       </Container>
     </div>
+  ) : (
+    <div>Loading data... spinner here </div>
   )
 }
 
 Profile.defaultProps = {
-  consultant: null,
+  consultant: [],
 }
 
 export default Profile
