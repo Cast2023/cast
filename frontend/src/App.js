@@ -9,12 +9,11 @@ import AppFooter from "./Components/AppFooter"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { setActiveSession } from "./Reducers/sessionReducer"
-
+// window.localStorage.removeItem('token')
 const App = () => {
   const activeSession = useSelector((state) => state.session.activeSession)
   const userID = useSelector((state) => state.session.activeUserId)
   const token = useSelector((state) => state.session.token)
-
 
   return (
     <Container>

@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const SuccessCallback = async ({ credentialResponse }) => {
+const successCallback = async ({ credentialResponse }) => {
   const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/verify-google-token/"
 
   const result = await axios.get(baseUrl, {
@@ -12,4 +12,16 @@ const SuccessCallback = async ({ credentialResponse }) => {
   return result
 }
 
-export default SuccessCallback
+const verifyToken = async ({ token }) => {
+  const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/verify-google-token/"
+
+  const result = await axios.get(baseUrl, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: JSON.stringify(token),
+    },
+  })
+  return result
+}
+
+export default {successCallback, verifyToken}
