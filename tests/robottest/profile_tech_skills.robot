@@ -65,3 +65,4 @@ Scenario: As a visitor I can edit many skills
   Refresh & Navigate to Profile Page
   Textfield Value Should Be  id=1  3
   Textfield Value Should Be  id=3  2
+  
