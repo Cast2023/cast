@@ -9,6 +9,7 @@ import {
 } from "@mui/material"
 
 import EditIcon from "@mui/icons-material/Edit"
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
@@ -53,12 +54,20 @@ const SkillsCard = ({ user }) => {
       <Card>
         <CardHeader
           action={
-            <IconButton
-              id="edit_skills_button"
-              onClick={() => handleClick(editable)}
-            >
-              <EditIcon />
-            </IconButton>
+            <Box>
+              <IconButton
+                id="add_skills_button"
+                onClick={() => handleClick(editable)}
+              >
+                <AddCircleIcon />
+              </IconButton>
+              <IconButton
+                id="edit_skills_button"
+                onClick={() => handleClick(editable)}
+              >
+                <EditIcon />
+              </IconButton>
+            </Box>
           }
           title="Technical skills"
         />
