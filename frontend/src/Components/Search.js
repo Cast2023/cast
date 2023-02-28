@@ -38,7 +38,7 @@ const Search = () => {
       <div>
         <Grid container spacing={4} justifyContent="center" alignItems="left">
           <Grid item xs={12} sm={12} md={12} lg={12}>
-            <h2>Search consults</h2>
+            <h2>Search consultants</h2>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
