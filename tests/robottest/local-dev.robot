@@ -28,8 +28,13 @@ Set Skill
   Input Text  ${id}  ${level}
 
 Set Value
-  [arguments]  ${id}  ${firstname}
-  Input Text  ${id}  ${firstname}
+  [arguments]  ${id}  ${value}
+  Input Text  ${id}  ${value}
+
+Refresh & Navigate to Profile Page
+  Go To  ${SERVER}
+  Wait until page contains element  profile
+  Click element  profile
 
 #Flush Database  
    #TODO 

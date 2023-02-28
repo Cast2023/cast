@@ -13,7 +13,7 @@ import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
 
-const ProfileCard = ({ user }) => {
+const PersonalInfoCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
   const [formValues, setFormValues] = useState(({}))
 
@@ -34,11 +34,9 @@ const ProfileCard = ({ user }) => {
     setFormValues({...formValues, [event.target.name]: value})
   }
 
-   
-
   return (
     <div>
-      <Card id="profilecard">
+      <Card id="personalinfocard">
         <CardHeader
           action={
             <IconButton onClick={() => handleClick()} id="editPersonalInfoButton">
@@ -175,7 +173,7 @@ const ProfileCard = ({ user }) => {
   )
 }
 
-export default ProfileCard
+export default PersonalInfoCard
 
 
 
