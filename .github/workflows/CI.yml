@@ -25,7 +25,8 @@ jobs:
           echo "${{ secrets.TESTS_ENV_FILE }}" | base64 -d > .env
           cp .env backend/
           cp .env frontend/
-          docker compose -f docker-compose-tests.yml up --exit-code-from robo
+          docker compose -f docker-compose.tests.yml up --exit-code-from robo
+
   deploy:
     needs: tests
 
@@ -33,6 +34,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Remove Roboroute
+        run: sed -i '/Roboroute\|<*Routes>\|Routes,/d' frontend/src/Components/AuthRoutes.js
+
+      - name: Remove File
+        run: rm -rf frontend/src/Components/Roboroute.js
 
       - name: Create .env file
         run: |
@@ -60,5 +67,4 @@ jobs:
             cd deploy
             cp .env backend/
             cp .env frontend/
-            docker compose down
-            docker compose up -d --build
+            docker compose -f docker-compose.production.yml up -d --build
