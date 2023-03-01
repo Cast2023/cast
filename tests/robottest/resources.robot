@@ -16,6 +16,12 @@ Init Browser
     Create Webdriver    driver_name=Chrome    alias=google    chrome_options=${chrome_options}    executable_path=/usr/local/bin/chromedriver
     Set Window Size    1200    1000  #run on docker can't use Maximize Browser Window
 
+Open Local Browser
+  Open Browser  ${SERVER}  ${BROWSER}
+
+Close Local Browser
+  Close Browser
+
 Set Skill
   [arguments]  ${id}  ${level} 
   Input Text  ${id}  ${level}
