@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 
-
 const initialState = {
   allConsultants: [],
   filteredConsultants: [],
   selectedConsultant: [],
+  activeConsultant: [],
 }
 
 const consultantSlice = createSlice({
@@ -44,6 +44,9 @@ const consultantSlice = createSlice({
     setSelectedConsultant(state, action) {
       state.selectedConsultant = action.payload
     },
+    setActiveConsultant(state, action) {
+      state.activeConsultant = action.payload
+    },
   },
 })
 
@@ -60,6 +63,7 @@ export const {
   setFilteredConsultants,
   updateFilteredConsultantsByName,
   setSelectedConsultant,
+  setActiveConsultant,
 } = consultantSlice.actions
 
 export default consultantSlice.reducer
