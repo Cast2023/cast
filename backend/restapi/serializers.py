@@ -51,6 +51,8 @@ class ConsultantSerializer(serializers.ModelSerializer):
                 for skill in consultant_skills:
                     if updated_skill['tech']== skill.tech:
                         skill.skill_level = updated_skill['skill_level']
+                        if 'tech_preference' in updated_skill:
+                            skill.tech_preference = updated_skill['tech_preference']
                         skill.save()
                         updated = True
                 if not updated:
