@@ -12,11 +12,13 @@ import EditIcon from "@mui/icons-material/Edit"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from "react"
 import consultantService from "../Services/consultantService"
+import techService from "../Services/techService";
 
 const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
   const [newSkill, setNewSkill] = useState(false)
   const [formValues, setFormValues] = useState([])
+  const [TechFormValues, setTechFormValues] = useState()
 
   const handleClick = (edit) => {
     setEditable(!edit)
@@ -31,16 +33,23 @@ const SkillsCard = ({ user }) => {
     const id = event.target.id
     setFormValues([...formValues, { skill_level: value, tech: id }])
   }
+  const handleTechChange = (event) => {
+    const value = event.target.value
+    //const id = event.target.id
+    setTechFormValues({tech_name: value })
+  }
 
   const handleNewSkill = (event) => {
     event.preventDefault()
     console.log('adding new skill', event.target)
-    const values = { skills: formValues }
-    consultantService.editConsultant(user.id, values)
+    const values = TechFormValues
+    const newSkill = techService.createTech(values)
+    console.log("newskill", newSkill.value.id)
     setNewSkill(!newSkill)
   }
 
   const handleSubmit = (event) => {
+    console.log("boom")
     event.preventDefault()
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
@@ -94,7 +103,7 @@ const SkillsCard = ({ user }) => {
               {skills().map((skill) => (
                 <TextField
                   disabled={!editable}
-                  disabled={!newSkill}
+                  //disabled={!newSkill}
                   id={skill.id}
                   label={skill.tech}
                   name="skill_level"
@@ -102,8 +111,15 @@ const SkillsCard = ({ user }) => {
                   variant="standard"
                 />
               ))}
-              {newSkill && (
-                <form onSubmit={handleNewSkill}>
+              
+              {editable && (
+                <Button type="submit" id="submit_skills_button">
+                  Submit
+                </Button>
+              )}
+            </form>
+            {newSkill && (
+                <form onSubmit={handleNewSkill} onChange={handleTechChange}>
                   <div><TextField
                       required
                       id="skill-name"
@@ -111,23 +127,12 @@ const SkillsCard = ({ user }) => {
                       variant="standard"
                     />
                     </div>
-                    <div><TextField
-                      required
-                      id="skill-level"
-                      label="Add skill level"
-                      variant="standard"
-                    /></div>
+                    
                     <div><Button type="submit" id="add_skills_button">
                       Add
                     </Button></div>
                 </form>
               )}
-              {editable && (
-                <Button type="submit" id="submit_skills_button">
-                  Submit
-                </Button>
-              )}
-            </form>
           </Box>
           <br />
           Skill levels:
@@ -139,3 +144,10 @@ const SkillsCard = ({ user }) => {
 }
 
 export default SkillsCard
+
+//<div><TextField
+//                      required
+//                      id="skill-level"
+//                      label="Add skill level"
+//                      variant="standard"
+//                    /></div>
