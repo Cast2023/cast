@@ -39,6 +39,7 @@ class Employee_tech_skills(models.Model):
     employee = models.ForeignKey(Employees, related_name='skills', on_delete=models.CASCADE)
     tech = models.ForeignKey(Techs, related_name='tech', on_delete=models.CASCADE)
     skill_level = models.IntegerField(choices=Skill.choices)
+    tech_preference = models.BooleanField(null=True)
 
     def __str__(self):
-        return f"{self.tech}: {self.skill_level}"        
+        return f"{self.tech}: {self.skill_level} {self.tech_preference}"        

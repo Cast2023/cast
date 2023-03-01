@@ -42,6 +42,7 @@ const SkillsCard = ({ user }) => {
             id: skill.tech,
             tech: skill.tech_name,
             skillLevel: skill.skill_level,
+            techPreference: skill.tech_preference
           },
         ]))
     )
@@ -70,6 +71,7 @@ const SkillsCard = ({ user }) => {
           >
             <form onSubmit={handleSubmit} onChange={handleChange}>
               {skills().map((skill) => (
+                <div>
                 <TextField
                   disabled={!editable}
                   id={skill.id}
@@ -78,6 +80,15 @@ const SkillsCard = ({ user }) => {
                   defaultValue={skill.skillLevel}
                   variant="standard"
                 />
+                <TextField
+                disabled={!editable}
+                id="preference"
+                label="Preferred"
+                name="tech_preference"
+                defaultValue={skill.techPreference}
+                variant="standard" 
+              />
+                </div>
               ))}
               {editable && (
                 <Button type="submit" id="submit_skills_button">
