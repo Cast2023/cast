@@ -47,7 +47,7 @@ const Search = () => {
               placeholder="search with first and last name"
               type="text"
               value={nameFilter}
-              id="search bar"
+              id="search_bar"
             />
           </Grid>
           {/* <Grid item xs={4}>
