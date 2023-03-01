@@ -16,14 +16,11 @@ Init Browser
     Create Webdriver    driver_name=Chrome    alias=google    chrome_options=${chrome_options}    executable_path=/usr/local/bin/chromedriver
     Set Window Size    1200    1000  #run on docker can't use Maximize Browser Window
 
-Start Django and open Browser
-  ${django process}=  Start process  python3  backend/manage.py  runserver
-  Set suite variable  ${django process}
+Open Local Browser
   Open Browser  ${SERVER}  ${BROWSER}
 
-Stop Django and close browser
+Close Local Browser
   Close Browser
-  Terminate Process  ${django process}
 
 Set Skill
   [arguments]  ${id}  ${level} 
