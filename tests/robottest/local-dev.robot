@@ -36,5 +36,11 @@ Refresh & Navigate to Profile Page
   Wait until page contains element  profile
   Click element  profile
 
+Refresh & Navigate to Selected View
+  [arguments]  ${element}
+  Go To  ${SERVER}
+  Wait until page contains element  ${element}
+  Click element  ${element}
+
 #Flush Database  
    #TODO 

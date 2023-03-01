@@ -47,6 +47,7 @@ const Search = () => {
               placeholder="search with first and last name"
               type="text"
               value={nameFilter}
+              id="search_bar"
             />
           </Grid>
           {/* <Grid item xs={4}>
@@ -71,7 +72,7 @@ const Search = () => {
                 <CardActionArea>
                   <CardHeader
                     title={
-                      <Link to={`/profile/${consultant.id}`}>
+                      <Link id={consultant.id} to={`/profile/${consultant.id}`}>
                         {consultant.first_name} {consultant.last_name}
                       </Link>
                     }
