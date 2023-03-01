@@ -16,3 +16,15 @@ Init Browser
     Create Webdriver    driver_name=Chrome    alias=google    chrome_options=${chrome_options}    executable_path=/usr/local/bin/chromedriver
     Set Window Size    1200    1000  #run on docker can't use Maximize Browser Window
 
+Set Skill
+  [arguments]  ${id}  ${level} 
+  Input Text  ${id}  ${level}
+
+Set Value
+  [arguments]  ${id}  ${value}
+  Input Text  ${id}  ${value}
+
+Refresh & Navigate to Profile Page
+  Go To  ${SERVER}
+  Wait until page contains element  profile
+  Click element  profile
