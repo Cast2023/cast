@@ -133,7 +133,11 @@ Scenario: As a visitor I can edit my preferences & dislikes in personal info on 
   Element Should Contain  id=preferences  I love transportation sector
   Element Should Contain  id=dislikes  Docker and tests
 
-
-
-
-
+Scenario: As a visitor I can't edit other user's personal info
+  Go To  ${SERVER}
+  Wait until page contains element  search
+  Click element  search
+  Wait Until Page Contains Element  searchresults
+  Click Element  2
+  Wait Until Page Contains Element  personalinfocard
+  Page Should Not Contain Button  editPersonalInfoButton

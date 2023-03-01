@@ -66,3 +66,11 @@ Scenario: As a visitor I can edit many skills
   Textfield Value Should Be  id=1  3
   Textfield Value Should Be  id=3  2
   
+Scenario: As a visitor I can't edit other user's tech skills
+  Go To  ${SERVER}
+  Wait until page contains element  search
+  Click element  search
+  Wait Until Page Contains Element  searchresults
+  Click Element  2
+  Wait Until Page Contains Element  projectscard
+  Page Should Not Contain Button  editProjectsButton

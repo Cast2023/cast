@@ -17,7 +17,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
         <CardHeader
           title="Projects"
           action={(user.id === activeUserId) && (
-            <IconButton>
+            <IconButton id="editProjectsButton">
               <EditIcon />
             </IconButton>
           )}
