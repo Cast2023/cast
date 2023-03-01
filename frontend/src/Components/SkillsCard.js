@@ -32,12 +32,19 @@ const SkillsCard = ({ user }) => {
     setFormValues([...formValues, { skill_level: value, tech: id }])
   }
 
+  const handleNewSkill = (event) => {
+    event.preventDefault()
+    console.log('adding new skill', event.target)
+    const values = { skills: formValues }
+    consultantService.editConsultant(user.id, values)
+    setNewSkill(!newSkill)
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
     setEditable(!editable)
-    setNewSkill(!newSkill)
   }
 
   const skills = () => {
@@ -96,23 +103,24 @@ const SkillsCard = ({ user }) => {
                 />
               ))}
               {newSkill && (
-                <Box>
-                  <TextField
-                    required
-                    id="skill-name"
-                    label="Add skill"
-                    variant="filled"
-                  />
-                  <TextField
-                    required
-                    id="skill-level"
-                    label="Add skill level"
-                    variant="filled"
-                  />
-                  <Button type="submit" id="add_skills_button">
-                    Add
-                  </Button>
-                </Box>
+                <form onSubmit={handleNewSkill}>
+                  <div><TextField
+                      required
+                      id="skill-name"
+                      label="Add skill"
+                      variant="standard"
+                    />
+                    </div>
+                    <div><TextField
+                      required
+                      id="skill-level"
+                      label="Add skill level"
+                      variant="standard"
+                    /></div>
+                    <div><Button type="submit" id="add_skills_button">
+                      Add
+                    </Button></div>
+                </form>
               )}
               {editable && (
                 <Button type="submit" id="submit_skills_button">
