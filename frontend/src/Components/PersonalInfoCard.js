@@ -13,7 +13,7 @@ import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
 
-const ProfileCard = ({ user }) => {
+const PersonalInfoCard = ({ user, activeUserId }) => {
   const [editable, setEditable] = useState(false)
   const [formValues, setFormValues] = useState(({}))
 
@@ -26,7 +26,6 @@ const ProfileCard = ({ user }) => {
     const values = formValues
     consultantService.editConsultant(user.id, values)
     handleClick()
-  
   }
   
   const handleChange = (event) => {
@@ -34,18 +33,16 @@ const ProfileCard = ({ user }) => {
     setFormValues({...formValues, [event.target.name]: value})
   }
 
-   
-
   return (
     <div>
-      <Card>
+      <Card id="personalinfocard">
         <CardHeader
-          action={
-            <IconButton onClick={() => handleClick()}>
+          title="Personal info"
+          action={(user.id === activeUserId) && (
+            <IconButton onClick={() => handleClick()} id="editPersonalInfoButton">
               <EditIcon />
             </IconButton>
-          }
-          title="Personal info"
+          )}
         />
         <CardContent>
           <Box
@@ -61,7 +58,7 @@ const ProfileCard = ({ user }) => {
               <TextField
                 disabled={!editable}
                 id="firstname"
-                label="First Name"
+                label="First name"
                 name="first_name"
                 defaultValue={user.first_name}
                 variant="standard"
@@ -69,7 +66,7 @@ const ProfileCard = ({ user }) => {
               <TextField
                 disabled={!editable}
                 id="lastname"
-                label="Last Name"
+                label="Last name"
                 name="last_name"
                 defaultValue={user.last_name}
                 variant="standard"
@@ -120,7 +117,7 @@ const ProfileCard = ({ user }) => {
                   disabled={!editable}
                   id="languages"
                   label="Languages"
-                  defaultValue="To do"
+                  defaultValue="To Do"
                   variant="standard"
                 />
               </div>
@@ -163,7 +160,7 @@ const ProfileCard = ({ user }) => {
                 />
               </div>
               {editable && (
-                <Button type='submit'>
+                <Button type='submit' id="submitPersonalInfoButton">
                 Submit
                 </Button>
               )}
@@ -175,7 +172,7 @@ const ProfileCard = ({ user }) => {
   )
 }
 
-export default ProfileCard
+export default PersonalInfoCard
 
 
 

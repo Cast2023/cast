@@ -38,7 +38,7 @@ const Search = () => {
       <div>
         <Grid container spacing={4} justifyContent="center" alignItems="left">
           <Grid item xs={12} sm={12} md={12} lg={12}>
-            <h2>Search consults</h2>
+            <h2>Search consultants</h2>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
@@ -47,6 +47,7 @@ const Search = () => {
               placeholder="search with first and last name"
               type="text"
               value={nameFilter}
+              id="search_bar"
             />
           </Grid>
           {/* <Grid item xs={4}>
@@ -64,14 +65,14 @@ const Search = () => {
       <br />
       <div>Search results here</div>
       {filteredUsers ? (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} id="searchresults">
           {filteredUsers.map((consultant) => (
             <Grid item xs={12} sm={6} md={4} lg={4} key={consultant.id}>
               <Card variant="outlined">
                 <CardActionArea>
                   <CardHeader
                     title={
-                      <Link to={`/profile/${consultant.id}`}>
+                      <Link id={consultant.id} to={`/profile/${consultant.id}`}>
                         {consultant.first_name} {consultant.last_name}
                       </Link>
                     }

@@ -1,5 +1,5 @@
 --variable BROWSER:headlessChrome
 --variable HOSTNAME:frontend
 --variable PORT:3000
---variable SETUP:container.Init Browser
---variable RESOURCE:container.robot
+--variable SETUP:resources.Init Browser
+--variable RESOURCE:resources.robot
