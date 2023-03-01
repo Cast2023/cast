@@ -18,7 +18,7 @@ const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
   const [newSkill, setNewSkill] = useState(false)
   const [formValues, setFormValues] = useState([])
-  const [TechFormValues, setTechFormValues] = useState()
+  const [techFormValues, setTechFormValues] = useState()
 
   const handleClick = (edit) => {
     setEditable(!edit)
@@ -35,21 +35,19 @@ const SkillsCard = ({ user }) => {
   }
   const handleTechChange = (event) => {
     const value = event.target.value
-    //const id = event.target.id
-    setTechFormValues({tech_name: value })
+    setTechFormValues(({...techFormValues, [event.target.name]: value}))
   }
 
-  const handleNewSkill = (event) => {
+  const handleNewSkill = async (event) => {
     event.preventDefault()
-    console.log('adding new skill', event.target)
-    const values = TechFormValues
-    const newSkill = techService.createTech(values)
-    console.log("newskill", newSkill.value.id)
+    //console.log('adding new skill', event.target)
+    const values = {tech_name: techFormValues.new_skill_name}
+    const newObject = await techService.createTech(values)// new object contains the skill name and id of the created skill
+    console.log("newskill", newObject)
     setNewSkill(!newSkill)
   }
 
   const handleSubmit = (event) => {
-    console.log("boom")
     event.preventDefault()
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
@@ -125,8 +123,17 @@ const SkillsCard = ({ user }) => {
                       id="skill-name"
                       label="Add skill"
                       variant="standard"
+                      name="new_skill_name"
                     />
                     </div>
+                    <div><TextField
+                      required
+                      id="skill-level"
+                      label="Add skill level"
+                      variant="standard"
+                      name="new_skill_level"
+
+                    /></div>
                     
                     <div><Button type="submit" id="add_skills_button">
                       Add
@@ -145,9 +152,3 @@ const SkillsCard = ({ user }) => {
 
 export default SkillsCard
 
-//<div><TextField
-//                      required
-//                      id="skill-level"
-//                      label="Add skill level"
-//                      variant="standard"
-//                    /></div>

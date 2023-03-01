@@ -7,12 +7,14 @@ const getAllTechs = () => {
   return request.then((response) => response.data)
 }
 
-const createTech = (newObject) => {
-  const request = axios.post(baseUrl, newObject)
-  return request.then((response) => response.data)
+const createTech = async (newObject) => {
+  const request = await axios.post(baseUrl, newObject)
+  
+  console.log("req", request.data) 
+  return request.data
 }
 
-const getSelectedTech = (id) => {
+const getSelectedTech =  (id) => {
   const request = axios.get(`${baseUrl}${id}/`)
   return request.then((response) => response.data)
 }
