@@ -65,7 +65,7 @@ const Search = () => {
       <br />
       <div>Search results here</div>
       {filteredUsers ? (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} id="searchresults">
           {filteredUsers.map((consultant) => (
             <Grid item xs={12} sm={6} md={4} lg={4} key={consultant.id}>
               <Card variant="outlined">

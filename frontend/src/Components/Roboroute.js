@@ -8,6 +8,7 @@ const Roboroute = () => {
   dispatch(setActiveSession(true))
   dispatch(initializeConsultants())
   dispatch(initializeUser(5))
+  dispatch(initializeConsultants())
   return <Navigate to="/" />
 }
 
