@@ -27,6 +27,10 @@ Set Skill
   [arguments]  ${id}  ${level} 
   Input Text  ${id}  ${level}
 
+Set Search
+  [arguments]  ${id}  ${level} 
+  Input Text  ${id}  ${level}
+
 Set Value
   [arguments]  ${id}  ${value}
   Input Text  ${id}  ${value}
@@ -35,6 +39,11 @@ Refresh & Navigate to Profile Page
   Go To  ${SERVER}
   Wait until page contains element  profile
   Click element  profile
+
+Refresh & Navigate to Search View
+  Go To  ${SERVER}
+  Wait until page contains element  search
+  Click element  search
 
 #Flush Database  
    #TODO 
