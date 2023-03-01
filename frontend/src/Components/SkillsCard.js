@@ -9,15 +9,21 @@ import {
 } from "@mui/material"
 
 import EditIcon from "@mui/icons-material/Edit"
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
 const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
+  const [newSkill, setNewSkill] = useState(false)
   const [formValues, setFormValues] = useState([])
 
   const handleClick = (edit) => {
     setEditable(!edit)
+  }
+
+  const handleAdd = (edit) => {
+    setNewSkill(!edit)
   }
 
   const handleChange = (event) => {
@@ -31,6 +37,7 @@ const SkillsCard = ({ user }) => {
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
     setEditable(!editable)
+    setNewSkill(!newSkill)
   }
 
   const skills = () => {
@@ -53,12 +60,20 @@ const SkillsCard = ({ user }) => {
       <Card>
         <CardHeader
           action={
-            <IconButton
-              id="edit_skills_button"
-              onClick={() => handleClick(editable)}
-            >
-              <EditIcon />
-            </IconButton>
+            <Box>
+              <IconButton
+                id="add_skills_button"
+                onClick={() => handleAdd(newSkill)}
+              >
+                <AddCircleIcon />
+              </IconButton>
+              <IconButton
+                id="edit_skills_button"
+                onClick={() => handleClick(editable)}
+              >
+                <EditIcon />
+              </IconButton>
+            </Box>
           }
           title="Technical skills"
         />
@@ -72,6 +87,7 @@ const SkillsCard = ({ user }) => {
               {skills().map((skill) => (
                 <TextField
                   disabled={!editable}
+                  disabled={!newSkill}
                   id={skill.id}
                   label={skill.tech}
                   name="skill_level"
@@ -79,6 +95,25 @@ const SkillsCard = ({ user }) => {
                   variant="standard"
                 />
               ))}
+              {newSkill && (
+                <Box>
+                  <TextField
+                    required
+                    id="skill-name"
+                    label="Add skill"
+                    variant="filled"
+                  />
+                  <TextField
+                    required
+                    id="skill-level"
+                    label="Add skill level"
+                    variant="filled"
+                  />
+                  <Button type="submit" id="add_skills_button">
+                    Add
+                  </Button>
+                </Box>
+              )}
               {editable && (
                 <Button type="submit" id="submit_skills_button">
                   Submit
