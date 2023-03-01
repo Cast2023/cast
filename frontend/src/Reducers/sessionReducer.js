@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
-import { setSelectedConsultant } from "./consultantReducer"
+import { setSelectedConsultant, setActiveConsultant } from "./consultantReducer"
 
 // User-id is set to 1 for now to highlight if the correct user info is not fecthed from database
 const initialState = {
@@ -42,6 +42,7 @@ export const initializeUser = (id) => {
   return async (dispatch) => {
     const user = await consultantService.getSelectedConsultant(id)
     dispatch(setSelectedConsultant(user))
+    dispatch(setActiveConsultant(user))
   }
 }
 

@@ -25,10 +25,6 @@ const AuthRoutes = () => {
       authenticationService.verifyToken({token}).then(response =>{
         //console.log('response.data[0]: ', response.data[0])
         userInitialization(token, response.data[0])
-        // dispatch(setActiveSession(true))
-        // dispatch(initializeUser(response.data[0]))
-        // dispatch(initializeConsultants())
-        // dispatch(setToken(`${token}`))
       }
       )
     }
@@ -50,10 +46,6 @@ const AuthRoutes = () => {
             console.log("login response", response)
             const newToken = response.data[1]//may utilize the value from response //now it is same to credentialResponse.credential's value
             userInitialization(newToken, response.data[0])
-            // dispatch(setActiveSession(true))
-            // dispatch(initializeUser(response.data[0]))
-            // dispatch(initializeConsultants())
-            // dispatch(setToken(`${newToken}`))
             //saving the token to the browser's local storage
             window.localStorage.setItem('token', newToken)
           }
