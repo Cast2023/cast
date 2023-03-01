@@ -10,17 +10,17 @@ import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
   
   
-const ProjectsCard = ({ user }) => {
+const ProjectsCard = ({ user, activeUserId }) => {
   return (
     <div>
       <Card>
         <CardHeader
-          action={
+          title="Projects"
+          action={(user.id === activeUserId) && (
             <IconButton>
               <EditIcon />
             </IconButton>
-          }
-          title="Projects"
+          )}
           />
         <CardContent> 
         

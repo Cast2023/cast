@@ -4,7 +4,7 @@ import consultantService from "../Services/consultantService"
 const initialState = {
   allConsultants: [],
   filteredConsultants: [],
-  selectedConsultant: [],
+  // selectedConsultant: [],
   activeConsultant: [],
 }
 
@@ -41,9 +41,9 @@ const consultantSlice = createSlice({
         )
       })
     },
-    setSelectedConsultant(state, action) {
-      state.selectedConsultant = action.payload
-    },
+    // setSelectedConsultant(state, action) {
+    //   state.selectedConsultant = action.payload
+    // },
     setActiveConsultant(state, action) {
       state.activeConsultant = action.payload
     },

@@ -7,19 +7,19 @@ const initialState = {
   activeSession: false,
   token: null,
   activeUserId: null,
-  activeUser: [],
+  // activeUser: [],
 }
 
 const sessionSlice = createSlice({
   name: "session",
   initialState,
   reducers: {
-    setActiveUser(state, action) {
-      return {
-        ...state,
-        activeUser: action.payload,
-      }
-    },
+    // setActiveUser(state, action) {
+    //   return {
+    //     ...state,
+    //     activeUser: action.payload,
+    //   }
+    // },
     setActiveSession: (state, action) => {
       state.activeSession = action.payload
     },
@@ -32,7 +32,7 @@ const sessionSlice = createSlice({
     },
     setActiveUserId: (state, action) => {
       state.activeUserId = action.payload
-      initializeUser(action.payload)
+      // initializeUser(action.payload)
     },
   },
 })
@@ -41,8 +41,9 @@ export const initializeUser = (id) => {
   //console.log("USER: ", id)
   return async (dispatch) => {
     const user = await consultantService.getSelectedConsultant(id)
-    dispatch(setSelectedConsultant(user))
+    // dispatch(setSelectedConsultant(user))
     dispatch(setActiveConsultant(user))
+    dispatch(setActiveUserId(id))
   }
 }
 

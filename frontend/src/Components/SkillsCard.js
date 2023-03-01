@@ -12,7 +12,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
-const SkillsCard = ({ user }) => {
+const SkillsCard = ({ user, activeUserId }) => {
   const [editable, setEditable] = useState(false)
   const [formValues, setFormValues] = useState([])
 
@@ -52,15 +52,15 @@ const SkillsCard = ({ user }) => {
     <div>
       <Card>
         <CardHeader
-          action={
+          title="Technical skills"
+          action={(user.id === activeUserId) && (
             <IconButton
               id="edit_skills_button"
               onClick={() => handleClick(editable)}
             >
               <EditIcon />
             </IconButton>
-          }
-          title="Technical skills"
+          )}
         />
         <CardContent>
           <Box
@@ -73,6 +73,7 @@ const SkillsCard = ({ user }) => {
                 <TextField
                   disabled={!editable}
                   id={skill.id}
+                  key={skill.id}
                   label={skill.tech}
                   name="skill_level"
                   defaultValue={skill.skillLevel}
