@@ -14,7 +14,8 @@ import consultantService from "../Services/consultantService"
 
 const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
-  const [formValues, setFormValues] = useState([])
+  // const [formValues, setFormValues] = useState([])
+  const [formValues, setFormValues] = useState({})
 
   const handleClick = (edit) => {
     setEditable(!edit)
@@ -23,7 +24,8 @@ const SkillsCard = ({ user }) => {
   const handleChange = (event) => {
     const value = event.target.value
     const id = event.target.id
-    setFormValues([...formValues, { skill_level: value, tech: id }])
+    setFormValues({...formValues, [event.target.name]: value, tech: id })
+    // setFormValues([...formValues, { skill_level: value, tech_preference: value, tech: id }]) //tech-pref lisätty?
   }
 
   const handleSubmit = (event) => {
