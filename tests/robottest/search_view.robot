@@ -30,3 +30,5 @@ Scenario: As a visitor I can view the profile page of selected consultant
   Click Link  Gwen
   Wait until page contains element  personalinfocard
   Page Should Contain Element  personalinfocard
+  Textfield Value Should Be  id=firstname  Gwen
+  Textfield Value Should Be  id=lastname  Stacy
