@@ -11,17 +11,24 @@ import verifyToken from "../Services/authenticationService"
 
 const AuthRoutes = () => {
   const dispatch = useDispatch()
+  const userInitialization = (token, userId) =>{
+    dispatch(setActiveSession(true))
+    dispatch(initializeUser(userId))
+    dispatch(initializeConsultants())
+    dispatch(setToken(`${token}`))
+  }
     useEffect(() => {
     //example in part5 uses JSON, here we test with token strin first
     const token = window.localStorage.getItem('token')//its setItem can be found from Component/AppRoutes.js
     console.log('useEffect token: ', token)
     if (token) {
       authenticationService.verifyToken({token}).then(response =>{
-        console.log('response.data[0]: ', response.data[0])
-        dispatch(setActiveSession(true))
-        dispatch(initializeUser(response.data[0]))
-        dispatch(initializeConsultants())
-        dispatch(setToken(`${token}`))
+        //console.log('response.data[0]: ', response.data[0])
+        userInitialization(token, response.data[0])
+        // dispatch(setActiveSession(true))
+        // dispatch(initializeUser(response.data[0]))
+        // dispatch(initializeConsultants())
+        // dispatch(setToken(`${token}`))
       }
       )
     }
@@ -42,13 +49,13 @@ const AuthRoutes = () => {
             //need to apply response when backend side is handeled
             console.log("login response", response)
             const newToken = response.data[1]//may utilize the value from response //now it is same to credentialResponse.credential's value
-            dispatch(setActiveSession(true))
-            dispatch(initializeUser(response.data[0]))
-            dispatch(initializeConsultants())
-            dispatch(setToken(`${newToken}`))
+            userInitialization(newToken, response.data[0])
+            // dispatch(setActiveSession(true))
+            // dispatch(initializeUser(response.data[0]))
+            // dispatch(initializeConsultants())
+            // dispatch(setToken(`${newToken}`))
             //saving the token to the browser's local storage
             window.localStorage.setItem('token', newToken)
-            window.localStorage.getItem('token')
           }
           )
         }}

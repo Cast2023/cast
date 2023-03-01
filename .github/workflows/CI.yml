@@ -26,7 +26,6 @@ jobs:
           cp .env backend/
           cp .env frontend/
           docker compose -f docker-compose-tests.yml up --exit-code-from robo
-
   deploy:
     needs: tests
 
