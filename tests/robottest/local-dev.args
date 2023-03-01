@@ -2,4 +2,4 @@
 --variable HOSTNAME:127.0.0.1
 --variable PORT:3000
 --variable SETUP:local-dev.Start Django and open browser
---variable RESOURCE:local-dev.robot
+--variable RESOURCE:resources.robot
