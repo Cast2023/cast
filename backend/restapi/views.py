@@ -6,7 +6,7 @@ import pandas as pd
 from rest_framework.response import Response
 
 
-from restapi.models import Employees, Techs, Certificates
+from restapi.models import Employees, Techs, Certificates, Employee_certificates
 from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer
 
 
@@ -58,6 +58,11 @@ class ImportCertificatesView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         file = serializer.validated_data['file']
         content = pd.read_csv(file)
+        data_as_dict = self.add_certificates_to_database(content)
+        result = self.add_certificates_to_employees(data_as_dict)
+        return Response({"status": "success", "result": result}, status.HTTP_201_CREATED)
+
+    def add_certificates_to_database(self, content):
         data_as_dict = {}
         for index, row in content.iterrows():
             name = row['Name']
@@ -71,5 +76,24 @@ class ImportCertificatesView(generics.CreateAPIView):
                 if not name in data_as_dict:
                     data_as_dict[name] = []
                 data_as_dict[name].append(certificate)
-        print(data_as_dict)
-        return Response({"status": "success"}, status.HTTP_201_CREATED)
+        return data_as_dict
+
+    def add_certificates_to_employees(self, data_as_dict: dict):
+        result = {
+            "found_employees": [],
+            "not_found_employees": []
+        }
+        for employee in data_as_dict.keys():
+            first_name, last_name = employee.split(" ")
+            if Employees.objects.filter(first_name=first_name, last_name=last_name).exists():
+                instance = Employees.objects.get(
+                    first_name=first_name, last_name=last_name)
+                certs = data_as_dict[employee]
+                for list_item in certs:
+                    certificate, valid_until = list_item
+                    Employee_certificates.objects.create(
+                        employee=instance, certificate=certificate, valid_until=valid_until)
+                result["found_employees"].append(employee)
+            else:
+                result["not_found_employees"].append(employee)
+        return result
