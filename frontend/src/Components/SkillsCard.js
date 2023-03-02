@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   TextField,
+  MenuItem,
 } from "@mui/material"
 
 import EditIcon from "@mui/icons-material/Edit"
@@ -30,8 +31,7 @@ const SkillsCard = ({ user }) => {
 
   const handleChange = (event) => {
     const value = event.target.value
-    const id = event.target.id
-    setFormValues([...formValues, { skill_level: value, tech: id }])
+    setFormValues([...formValues, { skill_level: value, tech: [event.target.name][0] }])
   }
   const handleTechChange = (event) => {
     const value = event.target.value
@@ -40,11 +40,13 @@ const SkillsCard = ({ user }) => {
 
   const handleNewSkill = async (event) => {
     event.preventDefault()
-    //console.log('adding new skill', event.target)
-    const values = {tech_name: techFormValues.new_skill_name}
-    const newObject = await techService.createTech(values)// new object contains the skill name and id of the created skill
-    console.log("newskill", newObject)
+    const newSkillName = {tech_name: techFormValues.new_skill_name}
+    const newSkillLevel = techFormValues.new_skill_level
+    const newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill
+    const skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.id}]}
+    consultantService.editConsultant(user.id, skillsList)
     setNewSkill(!newSkill)
+    setTechFormValues()
   }
 
   const handleSubmit = (event) => {
@@ -52,6 +54,7 @@ const SkillsCard = ({ user }) => {
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
     setEditable(!editable)
+    setFormValues([])
   }
 
   const skills = () => {
@@ -93,21 +96,29 @@ const SkillsCard = ({ user }) => {
         />
         <CardContent>
           <Box
+            
             sx={{
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
           >
-            <form onSubmit={handleSubmit} onChange={handleChange}>
+            <form onSubmit={handleSubmit}>
               {skills().map((skill) => (
                 <TextField
                   disabled={!editable}
-                  //disabled={!newSkill}
-                  id={skill.id}
+                  select
+                  id={skill.id.toString()}
                   label={skill.tech}
-                  name="skill_level"
+                  name={skill.id.toString()}
                   defaultValue={skill.skillLevel}
                   variant="standard"
-                />
+                  onChange={handleChange}
+                >
+                <MenuItem key="key1" value="1">Wants to learn</MenuItem>
+                <MenuItem key="key2" value="2">Can work with</MenuItem>
+                <MenuItem key="key3" value="3">Proficient</MenuItem>
+
+
+                </TextField>
               ))}
               
               {editable && (
@@ -117,23 +128,30 @@ const SkillsCard = ({ user }) => {
               )}
             </form>
             {newSkill && (
-                <form onSubmit={handleNewSkill} onChange={handleTechChange}>
+                <form onSubmit={handleNewSkill}>
                   <div><TextField
                       required
                       id="skill-name"
                       label="Add skill"
                       variant="standard"
                       name="new_skill_name"
+                      onChange={handleTechChange}
                     />
                     </div>
-                    <div><TextField
+                    <div>
+                      <TextField
                       required
                       id="skill-level"
                       label="Add skill level"
                       variant="standard"
                       name="new_skill_level"
-
-                    /></div>
+                      select
+                      onChange={handleTechChange}
+                      >
+                      <MenuItem key="key1" value="1">Wants to learn</MenuItem>
+                      <MenuItem key="key2" value="2">Can work with</MenuItem>
+                      <MenuItem key="key3" value="3">Proficient</MenuItem>
+                      </TextField></div>
                     
                     <div><Button type="submit" id="add_skills_button">
                       Add
