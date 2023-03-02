@@ -63,9 +63,13 @@ class ImportCertificatesView(generics.CreateAPIView):
             name = row['Name']
             certificate = [col for col in content.columns[1:]
                            if str(row[col]).lower() == 'x']
-            certificate.append(row["Expiration Date (DD/MM/YYYY)"])
-            if not name in data_as_dict:
-                data_as_dict[name] = []
-            data_as_dict[name].append(certificate)
+            if len(certificate):
+                if not Certificates.objects.filter(certificate_name__exact=certificate[0]).exists():
+                    Certificates.objects.create(
+                        certificate_name=certificate[0])
+                certificate.append(row["Expiration Date (DD/MM/YYYY)"])
+                if not name in data_as_dict:
+                    data_as_dict[name] = []
+                data_as_dict[name].append(certificate)
         print(data_as_dict)
         return Response({"status": "success"}, status.HTTP_201_CREATED)
