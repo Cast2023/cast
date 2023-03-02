@@ -31,7 +31,7 @@ Scenario: As A visitor I can inspect api page
   Go To  ${SERVER}
   Wait until page contains element  api
   Click element  api
-  Page Should Contain  Api
+  Page Should Contain  API
 
 Scenario: As a visitor clicking get started button opens a popup
   Go To  ${SERVER}
