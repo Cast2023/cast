@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from .models import Employees
-from .models import Employee_tech_skills
-from .models import Techs
+from .models import Employee_tech_skills, Employee_certificates
+from .models import Techs, Certificates
 
 
 class TechSerializer(serializers.ModelSerializer):
@@ -10,14 +10,27 @@ class TechSerializer(serializers.ModelSerializer):
         model = Techs
         fields = ('id', 'tech_name')
 
+class CertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certificates
+        fields = ('id', 'certificate_name')
+
 class TechSkillSerializer(serializers.ModelSerializer):
     tech_name = serializers.StringRelatedField(source='tech.tech_name')
     class Meta:
         model = Employee_tech_skills
         fields = ('skill_level', 'tech', 'tech_name')
 
+class EmployeeCertSerializer(serializers.ModelSerializer):
+    cert_name = serializers.StringRelatedField(source='certificate.certificate_name')
+
+    class Meta:
+        model = Employee_certificates
+        fields = ('certificate_name, valid_until')
+
 class ConsultantSerializer(serializers.ModelSerializer):
     skills = TechSkillSerializer(many=True)
+    certs = EmployeeCertSerializer(many=True)
     class Meta:
         model = Employees
         # fields = ('first_name', 'last_name', 'email', 'skills')

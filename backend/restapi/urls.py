@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import ConsultantAPIView, TechAPIView, ImportCertificatesView
+from .views import ConsultantAPIView, TechAPIView, ImportCertificatesView, CertAPIView
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -23,9 +23,15 @@ tech_list = TechAPIView.as_view({
     'post': 'create'
 })
 
+cert_list = CertAPIView.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
 urlpatterns = format_suffix_patterns([
     path('consultant/', consultant_list, name='consultant-list'),
     path('consultant/<int:pk>/', consultant_detail, name='consultant-detail'),
     path('tech/', tech_list, name='tech-list'),
+    path('certificates/', cert_list, name='cert-list'),
     path('import-certificates/', ImportCertificatesView.as_view(), name='upload-file'),
 ])

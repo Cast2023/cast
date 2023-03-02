@@ -5,11 +5,15 @@ from rest_framework.response import Response
 
 
 from restapi.models import Employees, Techs, Certificates
-from .serializers import TechSerializer, ConsultantSerializer, FileUploadSerializer
+from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer
 
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
     queryset = Techs.objects.all()
+
+class CertAPIView(viewsets.ModelViewSet):
+    serializer_class = CertSerializer
+    queryset = Certificates.objects.all()
 
 class EmployeeFilter(rest_filters.FilterSet):
     first_name = rest_filters.CharFilter(field_name='first_name', lookup_expr='icontains')
