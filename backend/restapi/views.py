@@ -4,7 +4,7 @@ import io, csv, pandas as pd
 from rest_framework.response import Response
 
 
-from restapi.models import Employees, Techs
+from restapi.models import Employees, Techs, Certificates
 from .serializers import TechSerializer, ConsultantSerializer, FileUploadSerializer
 
 class TechAPIView(viewsets.ModelViewSet):
@@ -45,14 +45,14 @@ class ImportCertificatesView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         file = serializer.validated_data['file']
         reader = pd.read_csv(file)
-        for _, row in reader.iterrows():
-            new_certificate = File(
-                       id = row['id'],
-                       staff_name= row["Staff Name"],
-                       position= row['Designated Position'],
-                       age= row["Age"],
-                       year_joined= row["Year Joined"]
-                       )
-            new_file.save()
-        return Response({"status": "success"},
-                        status.HTTP_201_CREATED)
+        print(reader)
+        # for _, row in reader.iterrows():
+        #     if Employees.objects.get(email=row['email']):
+        #         new_certificate = Employees(
+        #                 Certificates(
+        #                     valid_until = ["Expiration Date (DD/MM/YYYY)"]
+        #                 )
+        #                 )
+        #         new_certificate.save()
+        # return Response({"status": "success"},
+        #                 status.HTTP_201_CREATED)

@@ -26,6 +26,20 @@ class Techs(models.Model):
     def __str__(self):
         return self.tech_name
 
+class Certificates(models.Model):
+    employee = models.ManyToManyField(Employees, through='Employee_certificates')
+    certificate_name = models.TextField(unique=True)
+
+    def __str__(self):
+        return self.certificate_name
+
+class Employee_certificates(models.Model):
+    class Meta:
+        ordering = ['certificate']
+    
+    employee = models.ForeignKey(Employees, related_name='certs', on_delete=models.CASCADE)
+    certificate = models.ForeignKey(Certificates, related_name="certificate", on_delete=models.CASCADE)
+    valid_until = models.DateField(null=True)
 
 class Employee_tech_skills(models.Model):
     class Skill(models.IntegerChoices):
