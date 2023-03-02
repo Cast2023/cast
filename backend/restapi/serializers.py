@@ -57,3 +57,5 @@ class ConsultantSerializer(serializers.ModelSerializer):
                     Employee_tech_skills.objects.create(employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
         return instance
     
+class FileUploadSerializer(serializers.Serializer):
+    file = serializers.FileField()

@@ -1,9 +1,11 @@
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, generics
 from django_filters import rest_framework as rest_filters 
+import io, csv, pandas as pd
+from rest_framework.response import Response
 
 
 from restapi.models import Employees, Techs
-from .serializers import TechSerializer, ConsultantSerializer
+from .serializers import TechSerializer, ConsultantSerializer, FileUploadSerializer
 
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
@@ -35,3 +37,22 @@ class ConsultantAPIView(viewsets.ModelViewSet):
         'techs__tech_name'
         ]
 
+class ImportCertificatesView(generics.CreateAPIView):
+    serializer_class = FileUploadSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        file = serializer.validated_data['file']
+        reader = pd.read_csv(file)
+        for _, row in reader.iterrows():
+            new_certificate = File(
+                       id = row['id'],
+                       staff_name= row["Staff Name"],
+                       position= row['Designated Position'],
+                       age= row["Age"],
+                       year_joined= row["Year Joined"]
+                       )
+            new_file.save()
+        return Response({"status": "success"},
+                        status.HTTP_201_CREATED)
