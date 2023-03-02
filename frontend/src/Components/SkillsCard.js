@@ -14,8 +14,7 @@ import consultantService from "../Services/consultantService"
 
 const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
-  // const [formValues, setFormValues] = useState([])
-  const [formValues, setFormValues] = useState({})
+  const [formValues, setFormValues] = useState([])
 
   const handleClick = (edit) => {
     setEditable(!edit)
@@ -24,8 +23,9 @@ const SkillsCard = ({ user }) => {
   const handleChange = (event) => {
     const value = event.target.value
     const id = event.target.id
-    setFormValues({...formValues, [event.target.name]: value, tech: id })
-    // setFormValues([...formValues, { skill_level: value, tech_preference: value, tech: id }]) //tech-pref lisätty?
+    setFormValues([...formValues, { skill_level: value, tech: id }])
+    // setFormValues({...formValues, [event.target.name]: value, tech: id })
+    // setFormValues([...formValues, { [event.target.name]: value, tech: id }])
   }
 
   const handleSubmit = (event) => {
@@ -33,6 +33,7 @@ const SkillsCard = ({ user }) => {
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
     setEditable(!editable)
+    setFormValues([])
   }
 
   const skills = () => {
@@ -73,7 +74,7 @@ const SkillsCard = ({ user }) => {
           >
             <form onSubmit={handleSubmit} onChange={handleChange}>
               {skills().map((skill) => (
-                <div>
+                // <div>
                 <TextField
                   disabled={!editable}
                   id={skill.id}
@@ -82,15 +83,23 @@ const SkillsCard = ({ user }) => {
                   defaultValue={skill.skillLevel}
                   variant="standard"
                 />
-                <TextField
-                disabled={!editable}
-                id="preference"
-                label="Preferred"
-                name="tech_preference"
-                defaultValue={skill.techPreference}
-                variant="standard" 
-              />
-                </div>
+              //   {/* <Checkbox
+              //     disabled={!editable}
+              //     id="preference"
+              //     label="Preferred"
+              //     name="tech_preference"
+              //     defaultValue={skill.techPreference}
+              //     variant="standard" 
+              // /> */}
+              //   {/* <TextField
+              //     disabled={!editable}
+              //     id="preference"
+              //     label="Preferred"
+              //     name="tech_preference"
+              //     defaultValue={skill.techPreference}
+              //     variant="standard" 
+              // /> */}
+                // {/* </div> */}
               ))}
               {editable && (
                 <Button type="submit" id="submit_skills_button">
