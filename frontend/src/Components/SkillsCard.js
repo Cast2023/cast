@@ -15,11 +15,18 @@ import { useState } from "react"
 import consultantService from "../Services/consultantService"
 import techService from "../Services/techService";
 
+// MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
+// TODO next: 
+//    Testing (robot atleast). 
+//    If a skill exists already add skill just fails, needs to be refactored to add existing skill
+//    to the consultant. Might need some work in backend also, did not have time to think about this too much. 
+
+
 const SkillsCard = ({ user }) => {
   const [editable, setEditable] = useState(false)
   const [newSkill, setNewSkill] = useState(false)
-  const [formValues, setFormValues] = useState([])
-  const [techFormValues, setTechFormValues] = useState()
+  const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
+  const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these 
 
   const handleClick = (edit) => {
     setEditable(!edit)
@@ -37,6 +44,8 @@ const SkillsCard = ({ user }) => {
     const value = event.target.value
     setTechFormValues(({...techFormValues, [event.target.name]: value}))
   }
+  // This method now handles both, adding the new skill and updating the consultant afterwards.
+  // That means that there is some reduntant repetition of code, feel free to refactor.
 
   const handleNewSkill = async (event) => {
     event.preventDefault()
@@ -46,7 +55,7 @@ const SkillsCard = ({ user }) => {
     const skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.id}]}
     consultantService.editConsultant(user.id, skillsList)
     setNewSkill(!newSkill)
-    setTechFormValues()
+    setTechFormValues() // This empties the state after it is not needed anymore
   }
 
   const handleSubmit = (event) => {
@@ -54,7 +63,7 @@ const SkillsCard = ({ user }) => {
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
     setEditable(!editable)
-    setFormValues([])
+    setFormValues([]) // This empties the state after it is not needed anymore
   }
 
   const skills = () => {
@@ -72,6 +81,8 @@ const SkillsCard = ({ user }) => {
     return t
   }
 
+  // The free text fields are now refactored to dropdowns. Works better, but propably broke robot tests, because they expect inputs.
+  // No need to test wrong inputs anymore, so those tests can just go (robotests live in tests folder found in the root)
   return (
     <div>
       <Card>
@@ -101,6 +112,37 @@ const SkillsCard = ({ user }) => {
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
           >
+            {newSkill && (
+                <form onSubmit={handleNewSkill}>
+                  <div><TextField
+                      required
+                      id="skill-name"
+                      label="Add skill"
+                      variant="standard"
+                      name="new_skill_name"
+                      onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
+                    />
+                    </div>
+                    <div>
+                      <TextField
+                      required
+                      id="skill-level"
+                      label="Add skill level"
+                      variant="standard"
+                      name="new_skill_level"
+                      select
+                      onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
+                      >
+                      <MenuItem key="key1" value="1">Wants to learn</MenuItem>
+                      <MenuItem key="key2" value="2">Can work with</MenuItem>
+                      <MenuItem key="key3" value="3">Proficient</MenuItem>
+                      </TextField></div>
+                    
+                    <div><Button type="submit" id="add_skills_button">
+                      Add
+                    </Button></div>
+                </form>
+              )}
             <form onSubmit={handleSubmit}>
               {skills().map((skill) => (
                 <TextField
@@ -111,7 +153,7 @@ const SkillsCard = ({ user }) => {
                   name={skill.id.toString()}
                   defaultValue={skill.skillLevel}
                   variant="standard"
-                  onChange={handleChange}
+                  onChange={handleChange} // <- handleChange moved inside the Textfield element.
                 >
                 <MenuItem key="key1" value="1">Wants to learn</MenuItem>
                 <MenuItem key="key2" value="2">Can work with</MenuItem>
@@ -127,41 +169,8 @@ const SkillsCard = ({ user }) => {
                 </Button>
               )}
             </form>
-            {newSkill && (
-                <form onSubmit={handleNewSkill}>
-                  <div><TextField
-                      required
-                      id="skill-name"
-                      label="Add skill"
-                      variant="standard"
-                      name="new_skill_name"
-                      onChange={handleTechChange}
-                    />
-                    </div>
-                    <div>
-                      <TextField
-                      required
-                      id="skill-level"
-                      label="Add skill level"
-                      variant="standard"
-                      name="new_skill_level"
-                      select
-                      onChange={handleTechChange}
-                      >
-                      <MenuItem key="key1" value="1">Wants to learn</MenuItem>
-                      <MenuItem key="key2" value="2">Can work with</MenuItem>
-                      <MenuItem key="key3" value="3">Proficient</MenuItem>
-                      </TextField></div>
-                    
-                    <div><Button type="submit" id="add_skills_button">
-                      Add
-                    </Button></div>
-                </form>
-              )}
+            
           </Box>
-          <br />
-          Skill levels:
-          <br />1 = Wants to learn, 2 = Can work with, 3 = Proficient
         </CardContent>
       </Card>
     </div>
