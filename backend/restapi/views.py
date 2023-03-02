@@ -1,4 +1,4 @@
-from rest_framework import viewsets, filters, generics
+from rest_framework import viewsets, filters, generics, status
 from django_filters import rest_framework as rest_filters 
 import io, csv, pandas as pd
 from rest_framework.response import Response
@@ -51,12 +51,11 @@ class ImportCertificatesView(generics.CreateAPIView):
         reader = pd.read_csv(file)
         print(reader)
         # for _, row in reader.iterrows():
-        #     if Employees.objects.get(email=row['email']):
+        #     if Employees.objects.get(email=row['Name']):
         #         new_certificate = Employees(
         #                 Certificates(
         #                     valid_until = ["Expiration Date (DD/MM/YYYY)"]
         #                 )
         #                 )
         #         new_certificate.save()
-        # return Response({"status": "success"},
-        #                 status.HTTP_201_CREATED)
+        return Response({"status": "success"}, status.HTTP_201_CREATED)
