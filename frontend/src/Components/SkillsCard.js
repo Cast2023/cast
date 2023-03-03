@@ -132,20 +132,20 @@ const SkillsCard = ({ user }) => {
                     </div>
                     <div>
                       <TextField
-                      required
-                      id="skill-level"
-                      label="Add skill level"
-                      variant="standard"
-                      name="new_skill_level"
-                      select
-                      onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
+                        required
+                        id="skill-level"
+                        label="Add skill level"
+                        variant="standard"
+                        name="new_skill_level"
+                        select
+                        onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
                       >
-                      <MenuItem key="key1" value="1">Wants to learn</MenuItem>
-                      <MenuItem key="key2" value="2">Can work with</MenuItem>
-                      <MenuItem key="key3" value="3">Proficient</MenuItem>
+                        <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
+                        <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
+                        <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
                       </TextField></div>
                     
-                    <div><Button type="submit" id="add_skills_button">
+                    <div><Button type="submit" id="submit_new_skill_button">
                       Add
                     </Button></div>
                 </form>
@@ -162,9 +162,9 @@ const SkillsCard = ({ user }) => {
                   variant="standard"
                   onChange={handleChange} // <- handleChange moved inside the Textfield element.
                 >
-                <MenuItem key="key1" value="1">Wants to learn</MenuItem>
-                <MenuItem key="key2" value="2">Can work with</MenuItem>
-                <MenuItem key="key3" value="3">Proficient</MenuItem>
+                <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
+                <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
+                <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
 
 
                 </TextField>
