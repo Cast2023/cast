@@ -1,3 +1,4 @@
+import * as React from 'react'
 import {
   Card,
   CardHeader,
@@ -6,6 +7,8 @@ import {
   Box,
   Button,
   TextField,
+  Checkbox,
+  FormControlLabel
 } from "@mui/material"
 
 import EditIcon from "@mui/icons-material/Edit"
@@ -24,9 +27,23 @@ const SkillsCard = ({ user }) => {
     const value = event.target.value
     const id = event.target.id
     setFormValues([...formValues, { skill_level: value, tech: id }])
-    // setFormValues({...formValues, [event.target.name]: value, tech: id })
+    // setFormValues({...formValues, [event.target.name]: value})
     // setFormValues([...formValues, { [event.target.name]: value, tech: id }])
   }
+
+  const [checked, setChecked] = React.useState([true, false]);
+
+  const handleChangeLike = (event) => {
+    setChecked([event.target.checked, event.target.checked]);
+  };
+
+  // const handleChangeDx = (event) => {
+  //   setChecked([event.target.checked, checked[1]]);
+  // };
+
+  const handleChangeDis = (event) => {
+    setChecked([checked[0], event.target.checked]);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -74,7 +91,7 @@ const SkillsCard = ({ user }) => {
           >
             <form onSubmit={handleSubmit} onChange={handleChange}>
               {skills().map((skill) => (
-                // <div>
+              <div>
                 <TextField
                   disabled={!editable}
                   id={skill.id}
@@ -83,23 +100,42 @@ const SkillsCard = ({ user }) => {
                   defaultValue={skill.skillLevel}
                   variant="standard"
                 />
-              //   {/* <Checkbox
-              //     disabled={!editable}
-              //     id="preference"
-              //     label="Preferred"
-              //     name="tech_preference"
-              //     defaultValue={skill.techPreference}
-              //     variant="standard" 
-              // /> */}
-              //   {/* <TextField
-              //     disabled={!editable}
-              //     id="preference"
-              //     label="Preferred"
-              //     name="tech_preference"
-              //     defaultValue={skill.techPreference}
-              //     variant="standard" 
-              // /> */}
-                // {/* </div> */}
+                {/* <Checkbox label='Like'/>
+                <Checkbox label='Do not like'/> */}              
+                {/* const children = ( */}
+                {/* <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}> */}
+                <FormControlLabel
+                control={
+                  <Checkbox
+                    name="like"
+                    id={skill.id}
+                    value="whatisvalue"
+                    checked={checked[0]}
+                    onChange={handleChangeLike}
+                  />
+                }
+                label='Like' />
+                <FormControlLabel
+                control={
+                  <Checkbox
+                    name="dislike"
+                    id={skill.id}
+                    value="whatisvalue"
+                    checked={checked[1]}
+                    onChange={handleChangeDis}
+                    />
+                }
+                label='Dislike' />
+
+                {/* <TextField
+                  disabled={!editable}
+                  id="preference"
+                  label="Preferred"
+                  name="tech_preference"
+                  defaultValue={skill.techPreference}
+                  variant="standard" 
+                /> */}
+              </div>
               ))}
               {editable && (
                 <Button type="submit" id="submit_skills_button">
