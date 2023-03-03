@@ -5,9 +5,21 @@ from django_filters import rest_framework as rest_filters
 from restapi.models import Employees, Techs
 from .serializers import TechSerializer, ConsultantSerializer
 
+class TechsFilter(rest_filters.FilterSet):
+    tech_name = rest_filters.CharFilter(field_name='tech_name')
+
+    class Meta:
+        fields = ("tech_name",)
+        model = Techs
+
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
     queryset = Techs.objects.all()
+    filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = TechsFilter
+    search_fields = [
+        'tech_name'
+        ]
 
 class EmployeeFilter(rest_filters.FilterSet):
     first_name = rest_filters.CharFilter(field_name='first_name', lookup_expr='icontains')

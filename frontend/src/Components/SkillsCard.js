@@ -18,8 +18,6 @@ import techService from "../Services/techService";
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
 //    Testing (robot atleast). 
-//    If a skill exists already add skill just fails, needs to be refactored to add existing skill
-//    to the consultant. Might need some work in backend also, did not have time to think about this too much. 
 
 
 const SkillsCard = ({ user }) => {
@@ -51,9 +49,18 @@ const SkillsCard = ({ user }) => {
     event.preventDefault()
     const newSkillName = {tech_name: techFormValues.new_skill_name}
     const newSkillLevel = techFormValues.new_skill_level
-    const newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill
-    const skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.id}]}
-    consultantService.editConsultant(user.id, skillsList)
+    let newObject = null
+    let skillsList = null
+    try{ // if adding of the new skill fails, catch finds a skill with same name from the DB. Probably should be moved elsewere
+      newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill 
+      skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.id}]}
+      consultantService.editConsultant(user.id, skillsList)
+    } catch{
+        newObject = await techService.getSelectedTechByName(newSkillName.tech_name)
+        skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject[0].id}]}
+        consultantService.editConsultant(user.id, skillsList)
+
+      }
     setNewSkill(!newSkill)
     setTechFormValues() // This empties the state after it is not needed anymore
   }

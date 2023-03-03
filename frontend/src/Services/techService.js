@@ -18,7 +18,10 @@ const getSelectedTech =  (id) => {
   const request = axios.get(`${baseUrl}${id}/`)
   return request.then((response) => response.data)
 }
-
+const getSelectedTechByName =  (name) => {
+  const request = axios.get(`${baseUrl}?tech_name=${name}`)
+  return request.then((response) => response.data)
+}
 //const editTech = (id, payload) => {
 //    //Todo if we need it
 //}
@@ -27,5 +30,6 @@ export default {
   getAllTechs,
   createTech,
   getSelectedTech,
+  getSelectedTechByName,
 //  editConsultant,
 }
