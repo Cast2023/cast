@@ -1,10 +1,8 @@
 from rest_framework import viewsets, filters, generics, status
 from django_filters import rest_framework as rest_filters
-import io
-import csv
 import pandas as pd
 from rest_framework.response import Response
-
+import datetime
 
 from restapi.models import Employees, Techs, Certificates, Employee_certificates
 from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer
@@ -80,8 +78,8 @@ class ImportCertificatesView(generics.CreateAPIView):
 
     def add_certificates_to_employees(self, data_as_dict: dict):
         result = {
-            "found_employees": [],
-            "not_found_employees": []
+            "accepted": [],
+            "rejected": []
         }
         for employee in data_as_dict.keys():
             first_name, last_name = employee.split(" ")
@@ -90,10 +88,25 @@ class ImportCertificatesView(generics.CreateAPIView):
                     first_name=first_name, last_name=last_name)
                 certs = data_as_dict[employee]
                 for list_item in certs:
-                    certificate, valid_until = list_item
-                    Employee_certificates.objects.create(
-                        employee=instance, certificate=certificate, valid_until=valid_until)
-                result["found_employees"].append(employee)
+                    if len(list_item) < 2:
+                        result['rejected'].append([employee, "rejected due to unknown error"])
+                        continue
+                    certificate_str, valid_until = list_item
+                    certificate_obj = Certificates.objects.get(certificate_name=certificate_str)
+                    date_is_valid, formatted_valid_until = self.validate_valid_until_date(valid_until)
+                    if date_is_valid:
+                        Employee_certificates.objects.create(
+                            employee=instance, certificate=certificate_obj, valid_until=formatted_valid_until)
+                        result["accepted"].append([employee, certificate_str, valid_until])
+                    else:
+                        result["rejected"].append([employee, certificate_str, valid_until])
             else:
-                result["not_found_employees"].append(employee)
+                result["rejected"].append([employee, "Employee not in database"])
         return result
+    def validate_valid_until_date(self, date):
+        try:
+            date = datetime.datetime.strptime(date, '%d/%m/%Y').date()
+            return True, date
+        except ValueError as error:
+            return False, None
+
