@@ -11,9 +11,11 @@ import {
 
 import EditIcon from "@mui/icons-material/Edit"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useState } from "react"
+import { useState } from "react"//
 import consultantService from "../Services/consultantService"
 import techService from "../Services/techService";
+import { useSelector, useDispatch } from "react-redux"
+import { updateEditability, updateNewSkillAddability } from "../Reducers/skillCardReducer";
 
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
@@ -21,26 +23,30 @@ import techService from "../Services/techService";
 
 
 const SkillsCard = ({ user, activeUserId }) => {
-  const [editable, setEditable] = useState(false)
-  const [newSkill, setNewSkill] = useState(false)
+  const dispatch = useDispatch()
+
+  const editable = useSelector((state) => state.skillCard.editable)
+  // const [newSkill, setNewSkill] = useState(false)
+  const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
   const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
   const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these 
 
   const handleClick = (edit) => {
-    setEditable(!edit)
+    dispatch(updateEditability(!edit))
   }
 
   const handleAdd = (edit) => {
-    setNewSkill(!edit)
+    dispatch(updateNewSkillAddability(!edit))
   }
 
   const handleChange = (event) => {
     const value = event.target.value
     setFormValues([...formValues, { skill_level: value, tech: [event.target.name][0] }])
+    console.log("event:", event.target)
   }
   const handleTechChange = (event) => {
     const value = event.target.value
-    setTechFormValues(({...techFormValues, [event.target.name]: value}))
+    setTechFormValues({...techFormValues, [event.target.name]: value})
   }
   // This method now handles both, adding the new skill and updating the consultant afterwards.
   // That means that there is some reduntant repetition of code, feel free to refactor.
@@ -61,7 +67,7 @@ const SkillsCard = ({ user, activeUserId }) => {
         consultantService.editConsultant(user.id, skillsList)
 
       }
-    setNewSkill(!newSkill)
+    dispatch(updateNewSkillAddability(!newSkillAddable))
     setTechFormValues() // This empties the state after it is not needed anymore
   }
 
@@ -69,7 +75,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     event.preventDefault()
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
-    setEditable(!editable)
+    dispatch(updateEditability(!editable))
     setFormValues([]) // This empties the state after it is not needed anymore
   }
 
@@ -98,7 +104,7 @@ const SkillsCard = ({ user, activeUserId }) => {
             <Box>
               <IconButton
                 id="add_skills_button"
-                onClick={() => handleAdd(newSkill)}
+                onClick={() => handleAdd(newSkillAddable)}
               >
                 <AddCircleIcon />
               </IconButton>
@@ -120,7 +126,7 @@ const SkillsCard = ({ user, activeUserId }) => {
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
           >
-            {newSkill && (
+            {newSkillAddable && (
                 <form onSubmit={handleNewSkill}>
                   <div><TextField
                       required
@@ -154,6 +160,7 @@ const SkillsCard = ({ user, activeUserId }) => {
             <form onSubmit={handleSubmit}>
               {skills().map((skill) => (
                 <TextField
+                  key = {skill.id}
                   disabled={!editable}
                   select
                   id={skill.id.toString()}
