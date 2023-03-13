@@ -10,11 +10,10 @@ class TechSerializer(serializers.ModelSerializer):
         model = Techs
         fields = ('id', 'tech_name')
 
-
 class CertSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certificate
-        fields = ('id', 'certificate_name')
+        fields = ('__all__')
 
 
 class TechSkillSerializer(serializers.ModelSerializer):
@@ -26,13 +25,17 @@ class TechSkillSerializer(serializers.ModelSerializer):
 
 
 class EmployeeCertSerializer(serializers.ModelSerializer):
-    certificate_name = serializers.StringRelatedField(
-        source='certificates.certificate_name')
-
+    # certificate_details = serializers.SerializerMethodField()    
+    vendor = serializers.StringRelatedField(source='cert.vendor')
+    certificate = serializers.StringRelatedField(source='cert.certificate_name')
     class Meta:
         model = Employee_certificates
-        fields = ('valid_until', 'certificate_name')
-
+        fields = ('vendor', 'certificate', 'valid_until')
+    
+    # def get_certificate_details(self, obj):
+    #     values = Certificate.objects.filter(cert_id=obj).distinct()
+    #     return CertSerializer(values).data
+    
 
 class ConsultantSerializer(serializers.ModelSerializer):
     skills = TechSkillSerializer(many=True)

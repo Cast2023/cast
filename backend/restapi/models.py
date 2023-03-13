@@ -31,16 +31,16 @@ class Certificate(models.Model):
     vendor = models.TextField(null=True)
     certificate_name = models.TextField(unique=True)
 
-    def __str__(self):
-        return self.certificate_name
-
 class Employee_certificates(models.Model):
     class Meta:
-        ordering = ['cert']
+        ordering = ['cert_id']
     
     employee = models.ForeignKey(Employees, related_name='certificates', on_delete=models.CASCADE)
-    cert = models.ForeignKey(Certificate, related_name='cert', on_delete=models.CASCADE)
+    cert = models.ForeignKey(Certificate, related_name='cert_id', on_delete=models.CASCADE)
     valid_until = models.DateField(null=True)
+
+    def __str__(self):
+        return f"{self.cert} {self.valid_until}" 
 
 class Employee_tech_skills(models.Model):
     class Skill(models.IntegerChoices):
