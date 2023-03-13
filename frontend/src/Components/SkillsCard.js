@@ -20,7 +20,7 @@ import techService from "../Services/techService";
 //    Testing (robot atleast). 
 
 
-const SkillsCard = ({ user }) => {
+const SkillsCard = ({ user, activeUserId }) => {
   const [editable, setEditable] = useState(false)
   const [newSkill, setNewSkill] = useState(false)
   const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
@@ -111,6 +111,7 @@ const SkillsCard = ({ user }) => {
             </Box>
           }
           title="Technical skills"
+
         />
         <CardContent>
           <Box

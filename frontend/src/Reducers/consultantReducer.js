@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit"
+ import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 
 const initialState = {
   allConsultants: [],
   filteredConsultants: [],
-  selectedConsultant: [],
+  // selectedConsultant: [],
   activeConsultant: [],
 }
 
@@ -28,12 +28,6 @@ const consultantSlice = createSlice({
       const searchTerm = action.payload
       state.filteredConsultants = state.allConsultants.filter((consultant) => {
         return (
-          // consultant.first_name
-          //   .toLowerCase()
-          //   .includes(searchTerm.toLowerCase()) ||
-          // consultant.last_name
-          //   .toLowerCase()
-          //   .includes(searchTerm.toLowerCase()) ||
           consultant.first_name
             .concat(" ", consultant.last_name)
             .toLowerCase()
@@ -41,11 +35,16 @@ const consultantSlice = createSlice({
         )
       })
     },
-    setSelectedConsultant(state, action) {
-      state.selectedConsultant = action.payload
-    },
+    // setSelectedConsultant(state, action) {
+    //   state.selectedConsultant = action.payload
+    // },
     setActiveConsultant(state, action) {
-      state.activeConsultant = action.payload
+      //state.activeConsultant = action.payload
+      return {
+        ...state,
+        activeConsultant: action.payload,
+      }
+        
     },
   },
 })

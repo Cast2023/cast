@@ -13,7 +13,7 @@ import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
 
-const PersonalInfoCard = ({ user }) => {
+const PersonalInfoCard = ({ user, activeUserId }) => {
   const [editable, setEditable] = useState(false)
   const [formValues, setFormValues] = useState(({}))
 
@@ -26,7 +26,6 @@ const PersonalInfoCard = ({ user }) => {
     const values = formValues
     consultantService.editConsultant(user.id, values)
     handleClick()
-  
   }
   
   const handleChange = (event) => {
@@ -38,12 +37,12 @@ const PersonalInfoCard = ({ user }) => {
     <div>
       <Card id="personalinfocard">
         <CardHeader
-          action={
+          title="Personal info"
+          action={(user.id === activeUserId) && (
             <IconButton onClick={() => handleClick()} id="editPersonalInfoButton">
               <EditIcon />
             </IconButton>
-          }
-          title="Personal info"
+          )}
         />
         <CardContent>
           <Box
