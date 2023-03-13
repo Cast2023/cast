@@ -22,7 +22,7 @@ class TechSkillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Employee_tech_skills
-        fields = ('skill_level', 'tech', 'tech_name')
+        fields = ('skill_level', 'tech', 'tech_name', 'tech_preference')
 
 
 class EmployeeCertSerializer(serializers.ModelSerializer):
@@ -80,6 +80,8 @@ class ConsultantSerializer(serializers.ModelSerializer):
                 for skill in consultant_skills:
                     if updated_skill['tech'] == skill.tech:
                         skill.skill_level = updated_skill['skill_level']
+                        if 'tech_preference' in updated_skill:
+                            skill.tech_preference = updated_skill['tech_preference']
                         skill.save()
                         updated = True
                 if not updated:
