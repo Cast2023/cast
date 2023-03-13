@@ -4,7 +4,7 @@ import pandas as pd
 from rest_framework.response import Response
 import datetime
 
-from restapi.models import Employees, Techs, Certificates, Employee_certificates
+from restapi.models import Employees, Techs, Certificate, Employee_certificates
 from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer
 
 
@@ -15,7 +15,7 @@ class TechAPIView(viewsets.ModelViewSet):
 
 class CertAPIView(viewsets.ModelViewSet):
     serializer_class = CertSerializer
-    queryset = Certificates.objects.all()
+    queryset = Certificate.objects.all()
 
 
 class EmployeeFilter(rest_filters.FilterSet):
@@ -34,18 +34,6 @@ class ConsultantAPIView(viewsets.ModelViewSet):
     serializer_class = ConsultantSerializer
     filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
     filterset_class = EmployeeFilter
-    search_fields = [
-        'first_name',
-        'last_name',
-        'location_city',
-        'location_country',
-        'email',
-        'phone_number',
-        'worktime_allocation',
-        'wants_to_do',
-        'wants_not_to_do',
-        'techs__tech_name'
-    ]
 
 
 class ImportCertificatesView(generics.CreateAPIView):
@@ -67,8 +55,8 @@ class ImportCertificatesView(generics.CreateAPIView):
             certificate = [col for col in content.columns[1:]
                            if str(row[col]).lower() == 'x']
             if len(certificate):
-                if not Certificates.objects.filter(certificate_name__exact=certificate[0]).exists():
-                    Certificates.objects.create(
+                if not Certificate.objects.filter(certificate_name__exact=certificate[0]).exists():
+                    Certificate.objects.create(
                         certificate_name=certificate[0])
                 certificate.append(row["Expiration Date (DD/MM/YYYY)"])
                 if not name in data_as_dict:
@@ -92,7 +80,7 @@ class ImportCertificatesView(generics.CreateAPIView):
                         result['rejected'].append([employee, "rejected due to unknown error"])
                         continue
                     certificate_str, valid_until = list_item
-                    certificate_obj = Certificates.objects.get(certificate_name=certificate_str)
+                    certificate_obj = Certificate.objects.get(certificate_name=certificate_str)
                     date_is_valid, formatted_valid_until = self.validate_valid_until_date(valid_until)
                     if date_is_valid:
                         Employee_certificates.objects.create(
