@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from .models import Employees
-from .models import Employee_tech_skills, Employee_certificates
-from .models import Techs, Certificate
+from .models import Employee_tech_skills, Employee_certificates, Employee_projects
+from .models import Techs, Certificate, Project
 
 
 class TechSerializer(serializers.ModelSerializer):
@@ -23,6 +23,22 @@ class TechSkillSerializer(serializers.ModelSerializer):
         model = Employee_tech_skills
         fields = ('skill_level', 'tech', 'tech_name', 'tech_preference')
 
+class ProjectSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Project
+        fields = ('id', 'project_name', 'project_start_date', 'project_end_date', 'confidential')
+
+
+class EmployeeProjectSerializer(serializers.ModelSerializer):
+    project_name = serializers.StringRelatedField(source='project.project_name')
+    project_start_date = serializers.StringRelatedField(source='project.project_start_date')
+    project_end_date = serializers.StringRelatedField(source='project.project_end_date')
+    confidential = serializers.StringRelatedField(source="project.confidential")
+
+    class Meta:
+        model = Employee_projects
+        fields = ('project_name', 'project_start_date', 'employee_participation_start_date', 'employee_participation_end_date', 'project_end_date', 'allocation_busy', 'confidential')
 
 class EmployeeCertSerializer(serializers.ModelSerializer):
     # certificate_details = serializers.SerializerMethodField()    
@@ -40,6 +56,7 @@ class EmployeeCertSerializer(serializers.ModelSerializer):
 class ConsultantSerializer(serializers.ModelSerializer):
     skills = TechSkillSerializer(many=True)
     certificates = EmployeeCertSerializer(many=True)
+    projects = EmployeeProjectSerializer(many=True)
 
     class Meta:
         model = Employees

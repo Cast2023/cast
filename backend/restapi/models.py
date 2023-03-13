@@ -58,3 +58,21 @@ class Employee_tech_skills(models.Model):
 
     def __str__(self):
         return f"{self.tech}: {self.skill_level} {self.tech_preference}"        
+
+class Project(models.Model):
+    employee = models.ManyToManyField(Employees, through='Employee_projects')
+    project_name = models.TextField(null=True)
+    project_start_date = models.DateField(null=True)
+    project_end_date = models.DateField(null=True)
+    confidential = models.BooleanField(null=True)
+
+class Employee_projects(models.Model):
+    class Meta:
+        ordering = ['project']
+    
+    employee = models.ForeignKey(Employees, related_name='projects', on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, related_name='employee_project', on_delete=models.CASCADE)
+    employee_participation_start_date = models.DateField(null=True)
+    employee_participation_end_date = models.DateField(null=True)
+    allocation_busy = models.IntegerField(null=True)
+
