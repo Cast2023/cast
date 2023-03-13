@@ -22,10 +22,15 @@ tech_list = TechAPIView.as_view({
     'get': 'list',
     'post': 'create'
 })
-
+tech_detail = TechAPIView.as_view({
+    'get': 'retrieve',
+    'post': 'create'
+})
 urlpatterns = format_suffix_patterns([
     path('consultant/', consultant_list, name='consultant-list'),
     path('consultant/<int:pk>/', consultant_detail, name='consultant-detail'),
     path('tech/', tech_list, name='tech-list'),
+    path('tech/<int:pk>', tech_detail, name='tech-detail'),
+
 ])
 
