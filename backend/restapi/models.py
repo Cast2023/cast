@@ -23,8 +23,7 @@ class Techs(models.Model):
     '''
     employee = models.ManyToManyField(Employees, through='Employee_tech_skills')
     tech_name = models.TextField(unique=True)
-    def __str__(self):
-        return self.tech_name
+
 
 class Certificate(models.Model):
     employee = models.ManyToManyField(Employees, through='Employee_certificates')
@@ -39,8 +38,6 @@ class Employee_certificates(models.Model):
     cert = models.ForeignKey(Certificate, related_name='cert_id', on_delete=models.CASCADE)
     valid_until = models.DateField(null=True)
 
-    def __str__(self):
-        return f"{self.cert} {self.valid_until}" 
 
 class Employee_tech_skills(models.Model):
     class Skill(models.IntegerChoices):
@@ -54,10 +51,7 @@ class Employee_tech_skills(models.Model):
     employee = models.ForeignKey(Employees, related_name='skills', on_delete=models.CASCADE)
     tech = models.ForeignKey(Techs, related_name='tech', on_delete=models.CASCADE)
     skill_level = models.IntegerField(choices=Skill.choices)
-    tech_preference = models.BooleanField(null=True)
-
-    def __str__(self):
-        return f"{self.tech}: {self.skill_level} {self.tech_preference}"        
+    tech_preference = models.BooleanField(null=True)      
 
 class Project(models.Model):
     employee = models.ManyToManyField(Employees, through='Employee_projects')
