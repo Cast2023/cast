@@ -19,6 +19,7 @@ Scenario: As a visitor I can write text to search bar
 Scenario: As a visitor I can filter shown consultants
   Refresh & Navigate to Selected View  search
   Click element  search_bar
+  Sleep  1s
   Set Value  search_bar  Gwen
   Page Should Not Contain  Bruce
   Page Should Contain  Gwen
@@ -26,6 +27,7 @@ Scenario: As a visitor I can filter shown consultants
 Scenario: As a visitor I can view the profile page of selected consultant
   Refresh & Navigate to Selected View  search
   Click element  search_bar
+  Sleep  1s
   Set Value  search_bar  Gwen
   Click Link  Gwen
   Wait until page contains element  personalinfocard
@@ -36,6 +38,7 @@ Scenario: As a visitor I can view the profile page of selected consultant
 Scenario: As a visitor I can still see the search results after visiting another page
   Refresh & Navigate to Selected View  search
   Click Element  search_bar
+  Sleep  1s
   Set Value  search_bar  Gwen
   Page Should Not Contain  Bruce
   Page Should Contain  Gwen

@@ -15,6 +15,7 @@ Scenario: As a visitor I can't edit other user's certificates
   Wait until page contains element  search
   Click element  search
   Wait Until Page Contains Element  searchresults
+  Sleep  1s
   Click Link  Janet
   Wait Until Page Contains Element  certscard
   Page Should Not Contain Button  editCertsButton

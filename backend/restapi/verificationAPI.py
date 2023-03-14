@@ -26,6 +26,7 @@ class VerifyOAuthTokenApi(APIView):
         except ValueError as error:
             return Response(f"Invalid token, you shall not pass! {error}", status=401) # Token invalid
  
+        # user = self.get_user_from_db(userinfo['email'])
         user = self.get_user_from_db(userinfo['email'])
 
         if not user:

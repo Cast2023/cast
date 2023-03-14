@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from .models import Employees
-from .models import Employee_tech_skills
-from .models import Techs
+from .models import Employee_tech_skills, Employee_certificates, Employee_projects
+from .models import Techs, Certificate, Project
 
 
 class TechSerializer(serializers.ModelSerializer):
@@ -10,36 +10,85 @@ class TechSerializer(serializers.ModelSerializer):
         model = Techs
         fields = ('id', 'tech_name')
 
+class CertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certificate
+        fields = ('__all__')
+
+
 class TechSkillSerializer(serializers.ModelSerializer):
     tech_name = serializers.StringRelatedField(source='tech.tech_name')
+
     class Meta:
         model = Employee_tech_skills
-        fields = ('skill_level', 'tech', 'tech_name')
+        fields = ('skill_level', 'tech', 'tech_name', 'tech_preference')
+
+class ProjectSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Project
+        fields = ('id', 'project_name', 'project_start_date', 'project_end_date', 'confidential')
+
+
+class EmployeeProjectSerializer(serializers.ModelSerializer):
+    project_name = serializers.StringRelatedField(source='project.project_name')
+    project_start_date = serializers.StringRelatedField(source='project.project_start_date')
+    project_end_date = serializers.StringRelatedField(source='project.project_end_date')
+    confidential = serializers.StringRelatedField(source="project.confidential")
+
+    class Meta:
+        model = Employee_projects
+        fields = ('project_name', 'project_start_date', 'employee_participation_start_date', 'employee_participation_end_date', 'project_end_date', 'allocation_busy', 'confidential')
+
+class EmployeeCertSerializer(serializers.ModelSerializer):
+    # certificate_details = serializers.SerializerMethodField()    
+    vendor = serializers.StringRelatedField(source='cert.vendor')
+    certificate = serializers.StringRelatedField(source='cert.certificate_name')
+    class Meta:
+        model = Employee_certificates
+        fields = ('vendor', 'certificate', 'valid_until')
+    
+    # def get_certificate_details(self, obj):
+    #     values = Certificate.objects.filter(cert_id=obj).distinct()
+    #     return CertSerializer(values).data
+    
 
 class ConsultantSerializer(serializers.ModelSerializer):
     skills = TechSkillSerializer(many=True)
+    certificates = EmployeeCertSerializer(many=True)
+    projects = EmployeeProjectSerializer(many=True)
+
     class Meta:
         model = Employees
-        # fields = ('first_name', 'last_name', 'email', 'skills')
+        # fields = ('first_name', 'last_name,', 'email', 'skills')
         fields = ('__all__')
         depth = 2
-    
+
     def update(self, instance, validated_data):
         '''
             TBD: change changes to all employee-fields. 
             Con
         '''
-           
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
+
+        instance.first_name = validated_data.get(
+            'first_name', instance.first_name)
+        instance.last_name = validated_data.get(
+            'last_name', instance.last_name)
         instance.email = validated_data.get('email', instance.email)
-        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
-        instance.location_country = validated_data.get('location_country', instance.location_country)
-        instance.location_city = validated_data.get('location_city', instance.location_city)
-        instance.worktime_allocation = validated_data.get('worktime_allocation', instance.worktime_allocation)
-        instance.allocation_until = validated_data.get('allocation_until', instance.allocation_until)
-        instance.wants_to_do = validated_data.get('wants_to_do', instance.wants_to_do)
-        instance.wants_not_to_do = validated_data.get('wants_not_to_do', instance.wants_not_to_do)
+        instance.phone_number = validated_data.get(
+            'phone_number', instance.phone_number)
+        instance.location_country = validated_data.get(
+            'location_country', instance.location_country)
+        instance.location_city = validated_data.get(
+            'location_city', instance.location_city)
+        instance.worktime_allocation = validated_data.get(
+            'worktime_allocation', instance.worktime_allocation)
+        instance.allocation_until = validated_data.get(
+            'allocation_until', instance.allocation_until)
+        instance.wants_to_do = validated_data.get(
+            'wants_to_do', instance.wants_to_do)
+        instance.wants_not_to_do = validated_data.get(
+            'wants_not_to_do', instance.wants_not_to_do)
         instance.save()
 
         if 'skills' in validated_data:
@@ -49,11 +98,17 @@ class ConsultantSerializer(serializers.ModelSerializer):
             for updated_skill in updated_skill_list:
                 updated = False
                 for skill in consultant_skills:
-                    if updated_skill['tech']== skill.tech:
+                    if updated_skill['tech'] == skill.tech:
                         skill.skill_level = updated_skill['skill_level']
+                        if 'tech_preference' in updated_skill:
+                            skill.tech_preference = updated_skill['tech_preference']
                         skill.save()
                         updated = True
                 if not updated:
-                    Employee_tech_skills.objects.create(employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
+                    Employee_tech_skills.objects.create(
+                        employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
         return instance
-    
+
+
+class FileUploadSerializer(serializers.Serializer):
+    file = serializers.FileField()
