@@ -1,6 +1,7 @@
 # Database structure
 
-![image](https://user-images.githubusercontent.com/72031938/217218103-8e3ba0fa-7d61-4e25-a436-9f9f7363681d.png)
+(![image](https://user-images.githubusercontent.com/72031938/225011561-66c541a3-4068-4fae-b374-40e44bd5be95.png)
+
 
 ## Instructions for viewing file in graphical interface with VSC
 
