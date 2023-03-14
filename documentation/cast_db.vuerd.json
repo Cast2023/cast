@@ -3,8 +3,8 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -309.12056770033547,
-    "scrollLeft": -392.5051969753375,
+    "scrollTop": -347.4538995104378,
+    "scrollLeft": -150.00520661142104,
     "zoomLevel": 0.85,
     "show": {
       "tableComment": true,
@@ -44,7 +44,7 @@
     "tables": [
       {
         "name": "employees",
-        "comment": "",
+        "comment": "(exists as)",
         "columns": [
           {
             "name": "id",
@@ -117,7 +117,7 @@
           },
           {
             "name": "email_address",
-            "comment": "X",
+            "comment": "UNIQUE",
             "dataType": "",
             "default": "",
             "option": {
@@ -324,12 +324,12 @@
           }
         ],
         "ui": {
-          "active": false,
+          "active": true,
           "left": 149.6583,
           "top": 549.3055,
-          "zIndex": 31,
+          "zIndex": 76,
           "widthName": 67.96205139160156,
-          "widthComment": 60
+          "widthComment": 61.150054931640625
         },
         "visible": true,
         "id": "ca2124b9-8cf2-4dba-b0d4-64d9af10694c"
@@ -410,9 +410,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 1431.0734,
-          "top": 976.5993,
-          "zIndex": 2,
+          "left": 1549.7011,
+          "top": 1001.1093,
+          "zIndex": 50,
           "widthName": 91.96009826660156,
           "widthComment": 60
         },
@@ -421,7 +421,7 @@
       },
       {
         "name": "techs",
-        "comment": "",
+        "comment": "(exists as)",
         "columns": [
           {
             "name": "id",
@@ -474,16 +474,16 @@
           "active": false,
           "left": 1402.5467,
           "top": 592.8751,
-          "zIndex": 8,
+          "zIndex": 71,
           "widthName": 60,
-          "widthComment": 60
+          "widthComment": 61.150054931640625
         },
         "visible": true,
         "id": "ef3b8830-5347-49fc-a47b-2709cc78f056"
       },
       {
         "name": "employee_tech_skills",
-        "comment": "",
+        "comment": "(exists as)",
         "columns": [
           {
             "name": "id",
@@ -604,10 +604,10 @@
         "ui": {
           "active": false,
           "left": 790.8979,
-          "top": 573.5352,
-          "zIndex": 40,
+          "top": 548.0448,
+          "zIndex": 74,
           "widthName": 129.03610229492188,
-          "widthComment": 60,
+          "widthComment": 61.150054931640625,
           "color": "#141414"
         },
         "visible": true,
@@ -615,7 +615,7 @@
       },
       {
         "name": "projects",
-        "comment": "",
+        "comment": "(exists as)",
         "columns": [
           {
             "name": "id",
@@ -665,7 +665,7 @@
           },
           {
             "name": "project_start_date",
-            "comment": "needed?",
+            "comment": "",
             "dataType": "DATE",
             "default": "",
             "option": {
@@ -688,7 +688,7 @@
           },
           {
             "name": "project_end_date",
-            "comment": "needed?",
+            "comment": "",
             "dataType": "DATE",
             "default": "",
             "option": {
@@ -735,18 +735,18 @@
         ],
         "ui": {
           "active": false,
-          "left": 850.707,
-          "top": 977.5203,
-          "zIndex": 7,
+          "left": 956.5898,
+          "top": 960.8535,
+          "zIndex": 62,
           "widthName": 60,
-          "widthComment": 60
+          "widthComment": 61.150054931640625
         },
         "visible": true,
         "id": "3a2ce21d-334e-44cd-88b2-6b0c0421bafc"
       },
       {
         "name": "employee_projects",
-        "comment": "",
+        "comment": "(exists as)",
         "columns": [
           {
             "name": "id",
@@ -818,7 +818,7 @@
             "id": "bb040931-5dc6-48d8-b747-822dd7519b47"
           },
           {
-            "name": "start_date",
+            "name": "employee_participation_start_date",
             "comment": "",
             "dataType": "DATE",
             "default": "default from projects table?",
@@ -833,7 +833,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 63.36004638671875,
+              "widthName": 212.17117309570312,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 170.03814697265625
@@ -841,7 +841,7 @@
             "id": "75a3c65e-ba33-4ca1-b866-d54c2d95a8ce"
           },
           {
-            "name": "end_date",
+            "name": "employee_participation_end_date",
             "comment": "",
             "dataType": "DATE",
             "default": "default from projects table?",
@@ -856,7 +856,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 60,
+              "widthName": 207.25717163085938,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 170.03814697265625
@@ -885,45 +885,22 @@
               "widthDefault": 60
             },
             "id": "15720c92-1446-4cfa-9352-2fe6c714e220"
-          },
-          {
-            "name": "project_status",
-            "comment": "needed? current, history, next?",
-            "dataType": "",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 87.52708435058594,
-              "widthComment": 120,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "65046995-5b0a-42bc-a98d-8ffa7fee0da0"
           }
         ],
         "ui": {
           "active": false,
           "left": 80.4938,
           "top": 951.5222,
-          "zIndex": 1,
+          "zIndex": 64,
           "widthName": 116.32209777832031,
-          "widthComment": 60
+          "widthComment": 61.150054931640625
         },
         "visible": true,
         "id": "d4ca7186-21e2-4eb8-b2cf-397682c2cb2c"
       },
       {
         "name": "employee_certificates",
-        "comment": "",
+        "comment": "(exists as)",
         "columns": [
           {
             "name": "id",
@@ -995,29 +972,6 @@
             "id": "139755c5-324c-400e-881e-62490f2ada7b"
           },
           {
-            "name": "valid_from",
-            "comment": "wanted?",
-            "dataType": "DATE",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 65.97305297851562,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "3b8953b8-5cf6-443b-8732-7b45143bb842"
-          },
-          {
             "name": "valid_until",
             "comment": "",
             "dataType": "DATE",
@@ -1045,16 +999,16 @@
           "active": false,
           "left": 795.6492,
           "top": 747.891,
-          "zIndex": 5,
+          "zIndex": 66,
           "widthName": 134.10609436035156,
-          "widthComment": 60
+          "widthComment": 61.150054931640625
         },
         "visible": true,
         "id": "18cc0408-2572-4c1f-83c3-c0910c67ab4c"
       },
       {
         "name": "certificates",
-        "comment": "",
+        "comment": "(exists as)",
         "columns": [
           {
             "name": "id",
@@ -1080,8 +1034,31 @@
             "id": "d8fb560f-367e-4b7b-b41f-84cf5f4cf3df"
           },
           {
-            "name": "certificate_name",
+            "name": "vendor",
             "comment": "",
+            "dataType": "TEXT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "f5ee06bf-686d-4e20-bc0a-0eaa5826494f"
+          },
+          {
+            "name": "certificate_name",
+            "comment": "UNIQUE",
             "dataType": "TEXT",
             "default": "",
             "option": {
@@ -1105,11 +1082,11 @@
         ],
         "ui": {
           "active": false,
-          "left": 1377.9174,
-          "top": 735.4896,
-          "zIndex": 6,
+          "left": 1382.819,
+          "top": 742.3524,
+          "zIndex": 69,
           "widthName": 68.59904479980469,
-          "widthComment": 60
+          "widthComment": 61.150054931640625
         },
         "visible": true,
         "id": "ca0b4357-acea-43c6-bd24-f61edcaea753"
@@ -1272,7 +1249,7 @@
           "active": false,
           "left": 1158.3852907997846,
           "top": 290.7119754839232,
-          "zIndex": 10,
+          "zIndex": 9,
           "width": 364.2814063190407,
           "height": 149.7129722951053
         },
@@ -1301,7 +1278,7 @@
             "0084892e-1ac4-4bb3-ae76-6bab1cecd670"
           ],
           "x": 790.8979,
-          "y": 659.2852,
+          "y": 633.7948,
           "direction": "left"
         },
         "constraintName": "fk_employees_to_employee_tech_skills",
@@ -1327,7 +1304,7 @@
             "b46e1d5f-dbae-4b52-aec4-c79acb614bea"
           ],
           "x": 1247.5261196044921,
-          "y": 659.2852,
+          "y": 633.7948,
           "direction": "right"
         },
         "constraintName": "fk_tech_skills_to_employee_tech_skills",
@@ -1352,7 +1329,7 @@
           "columnIds": [
             "96915ac1-56f4-4219-9602-7fb91735f73f"
           ],
-          "x": 391.64948542480465,
+          "x": 449.7335308349609,
           "y": 951.5222,
           "direction": "top"
         },
@@ -1379,7 +1356,7 @@
             "c01f9f86-3866-414f-9250-1d33d7e4ec96"
           ],
           "x": 795.6492,
-          "y": 833.641,
+          "y": 823.391,
           "direction": "left"
         },
         "constraintName": "fk_employees_to_employee_certificates",
@@ -1395,8 +1372,8 @@
           "columnIds": [
             "d8fb560f-367e-4b7b-b41f-84cf5f4cf3df"
           ],
-          "x": 1377.9174,
-          "y": 790.4896,
+          "x": 1382.819,
+          "y": 807.6024,
           "direction": "left"
         },
         "end": {
@@ -1405,7 +1382,7 @@
             "139755c5-324c-400e-881e-62490f2ada7b"
           ],
           "x": 1231.412398852539,
-          "y": 833.641,
+          "y": 823.391,
           "direction": "right"
         },
         "constraintName": "fk_certificates_to_employee_certificates",
@@ -1421,8 +1398,8 @@
           "columnIds": [
             "4a37f9e7-4aae-4fea-90da-1c614b2a2463"
           ],
-          "x": 850.707,
-          "y": 1063.2703000000001,
+          "x": 956.5898,
+          "y": 1046.6035000000002,
           "direction": "left"
         },
         "end": {
@@ -1430,8 +1407,8 @@
           "columnIds": [
             "bb040931-5dc6-48d8-b747-822dd7519b47"
           ],
-          "x": 702.8051708496093,
-          "y": 1057.7721999999999,
+          "x": 818.9732616699218,
+          "y": 1047.5221999999999,
           "direction": "right"
         },
         "constraintName": "fk_projects_to_employee_projects",
