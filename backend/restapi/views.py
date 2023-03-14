@@ -23,10 +23,26 @@ class EmployeeFilter(rest_filters.FilterSet):
         field_name='first_name', lookup_expr='icontains')
     last_name = rest_filters.CharFilter(
         field_name='last_name', lookup_expr='icontains')
+    tech_name = rest_filters.CharFilter(method='filter_by_tech_name')
+    project = rest_filters.CharFilter(method='filter_by_project')
+    vendor = rest_filters.CharFilter(method='filter_by_vendor')
+    certificate = rest_filters.CharFilter(method='filter_by_certificate')
 
     class Meta:
-        fields = ("first_name",)
+        fields = ('first_name', 'last_name', 'tech_name', 'project', 'vendor', 'certificate')
         model = Employees
+    
+    def filter_by_tech_name(self, queryset, tech_name, value):
+        return queryset.filter(skills__tech__tech_name__icontains=value).distinct()
+    
+    def filter_by_project(self, queryset, project, value):
+        return queryset.filter(projects__project__project_name__icontains=value).distinct()
+    
+    def filter_by_vendor(self, queryset, vendor, value):
+        return queryset.filter(certificates__cert__vendor__icontains=value).distinct()
+    
+    def filter_by_certificate(self, queryset, certificate, value):
+        return queryset.filter(certificates__cert__certificate_name__icontains=value).distinct()
 
 
 class ConsultantAPIView(viewsets.ModelViewSet):
