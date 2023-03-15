@@ -32,13 +32,13 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SERVER }} >> ~/.ssh/known_hosts
 
       - name: Sync files with rsync
-        run: rsync -avz . ${{ secrets.PRODUCTION_USER }}@${{ secrets.SERVER }}:${{ secrets.PRODUCTION_DEPLOY_PATH }}
+        run: rsync -avz . ${{ secrets.PRODUCTION_SSH_USER }}@${{ secrets.SERVER }}:${{ secrets.PRODUCTION_DEPLOY_PATH }}
 
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SERVER }}
-          username: ${{ secrets.PRODUCTION_USER }}
+          username: ${{ secrets.PRODUCTION_SSH_USER }}
           key: ${{ secrets.PRODUCTION_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
