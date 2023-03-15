@@ -16,7 +16,7 @@ import json
 from dotenv import dotenv_values
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project like this: BASE_DIR / 'subdir'. does branch work 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV = dotenv_values(Path(BASE_DIR).joinpath(".env"))
 
