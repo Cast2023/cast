@@ -33,6 +33,24 @@ The data is serialized in standard JSON-format:
         "tech_name": "PosgreSQL"
       }
     ],
+    "certificates": [
+      {
+        "vendor": "AWS",
+        "certificate": "AWS Certified Cloud Practitioner",
+        "valid_until": "2021-12-31"
+      }
+    ]
+    "projects": [
+      {
+        "project_name": "Cast 2023",
+        "project_start_date": "2023-01-01",
+        "employee_participation_start_date": "2023-03-01",
+        "employee_participation_end_date": "2023-05-15",
+        "project_end_date": "2023-05-15",
+        "allocation_busy": 80,
+        "confidential": "False"
+      }
+    ]
     "first_name": "Alex",
     "last_name": "Consultant",
     "email": "alex@gmail.com",
@@ -47,36 +65,35 @@ The data is serialized in standard JSON-format:
 ]
 ```
 
-### Search for matches
+## Filter based on given parameters:
 
-The API provides an option to search consultants:
-
-```
-<application address>/api/consultant/?search=<string>
-```
-
-The search returns matches in which one of the following fields contains the search string:
-
-```
-['first_name', 'last_name', 'location_city', 'location_country', 'email', 'phone_number', 'worktime_allocation', 'wants_to_do', 'wants_not_to_do']
-```
-
-### Filter based on given parameters:
-
-The API provides an option to filter results. Filtering is done by giving parameters
+The API provides options to filter results. Filtering is done by giving parameters
 
 ```
 <application address>/api/consultant/?<field>=<string>
 ```
 
-For instance to filter based on fields `first_name` and `last_name` would happen with
+Results can be filtered with the following parameters. All string searches are case-insensitive and filter based on partial matches (field contains the given string)
 
 ```
-<application address>/api/consultant/?first_name=<string>&last_name=<string>
+first_name=<str>                            # First name contains
+last_name=<str>                             # Last name contains
+tech=<str>                                  # tech skill name contains (e.g. python)
+project=<str>                               # Project name contains
+cert_vendor=<str>                           # Certificate vendor contains
+certificate=<str>                           # Certificate name contains
+cert_valid_until__gte=<YYYY-MM-DD>          # Certificate validity greater than or equal
+cert_valid_until__lte=<YYYY-MM-DD>          # Certificate validity less than or equal
 ```
 
-Results can be filtered based on the following parameters:
+The parameters can be chained together. For instance
 
 ```
-['id','first_name', 'last_name', 'location_city', 'location_country', 'email', 'phone_number', 'worktime_allocation', 'wants_to_do', 'wants_not_to_do']
+api/consultant?tech=python&cert_vendor=aws&cert_valid_until_gte=2024-12-31
+```
+
+Additionally the same parameter can be used multiple times
+
+```
+api/consultant?tech=python&tech=javascript
 ```
