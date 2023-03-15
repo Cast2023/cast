@@ -24,6 +24,8 @@ class EmployeeFilter(rest_filters.FilterSet):
     last_name = rest_filters.CharFilter(
         field_name='last_name', lookup_expr='icontains')
     tech = rest_filters.CharFilter(method='filter_by_tech_name')
+    tech_and_pref = rest_filters.CharFilter(method='filter_by_tech_and_pref')
+    tech_and_level = rest_filters.CharFilter(method='filter_by_tech_and_level')
     project = rest_filters.CharFilter(method='filter_by_project')
     cert_vendor = rest_filters.CharFilter(method='filter_by_vendor')
     certificate = rest_filters.CharFilter(method='filter_by_certificate')
@@ -38,11 +40,22 @@ class EmployeeFilter(rest_filters.FilterSet):
     )
 
     class Meta:
-        fields = ('first_name', 'last_name', 'tech', 'project', 'cert_vendor', 'certificate', 'cert_valid_until__gte', 'cert_valid_until__lte')
+        fields = (
+            'first_name', 
+            'last_name', 
+            'tech', 
+            'project', 
+            'cert_vendor', 
+            'certificate', 
+            'cert_valid_until__gte', 
+            'cert_valid_until__lte', 
+            'tech_and_pref',
+            'tech_and_level'
+            )
         model = Employees
     
-    def filter_by_tech_name(self, queryset, tech_name, value):
-        return queryset.filter(skills__tech__tech_name__icontains=value).distinct()
+    def filter_by_tech_name(self, queryset, tech, value):
+        return queryset.filter(skills__tech__tech_name__icontains=value, skills__tech_preference=True).distinct()
     
     def filter_by_project(self, queryset, project, value):
         return queryset.filter(projects__project__project_name__icontains=value).distinct()
@@ -52,6 +65,28 @@ class EmployeeFilter(rest_filters.FilterSet):
     
     def filter_by_certificate(self, queryset, certificate, value):
         return queryset.filter(certificates__cert__certificate_name__icontains=value).distinct()
+
+    def filter_by_tech_and_pref(self, queryset, tech_and_pref, value):
+        if ',' in value:
+            tech, pref = value.split(",")
+        else:
+            tech = value
+            pref = None
+        if not pref:
+            pref = 'true'
+        pref = bool(pref.lower() == "true")
+        return queryset.filter(skills__tech__tech_name__icontains=tech, skills__tech_preference=pref).distinct()
+
+    def filter_by_tech_and_level(self, queryset, tech_and_level, value):
+        if ',' in value:
+            tech, level = value.split(",")
+        else:
+            tech = value
+            level = "1"
+        if not level.isdigit():
+            level = "1"
+        level = max(0, min(int(level), 3))
+        return queryset.filter(skills__tech__tech_name__icontains=tech, skills__skill_level__gte=level).distinct()
 
 
 class ConsultantAPIView(viewsets.ModelViewSet):
