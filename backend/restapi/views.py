@@ -23,13 +23,22 @@ class EmployeeFilter(rest_filters.FilterSet):
         field_name='first_name', lookup_expr='icontains')
     last_name = rest_filters.CharFilter(
         field_name='last_name', lookup_expr='icontains')
-    tech_name = rest_filters.CharFilter(method='filter_by_tech_name')
+    tech = rest_filters.CharFilter(method='filter_by_tech_name')
     project = rest_filters.CharFilter(method='filter_by_project')
-    vendor = rest_filters.CharFilter(method='filter_by_vendor')
+    cert_vendor = rest_filters.CharFilter(method='filter_by_vendor')
     certificate = rest_filters.CharFilter(method='filter_by_certificate')
+    cert_valid_until__gte = rest_filters.DateFilter(
+        field_name='certificates__valid_until', lookup_expr='gte')
+    cert_valid_until__lte = rest_filters.DateFilter(field_name='certificates__valid_until', lookup_expr='lte')
+
+    field = (
+        ('first_name', 'first_name'),
+        ('last_name', 'last_name'),
+        ('tech_name', 'tech'),
+    )
 
     class Meta:
-        fields = ('first_name', 'last_name', 'tech_name', 'project', 'vendor', 'certificate')
+        fields = ('first_name', 'last_name', 'tech', 'project', 'cert_vendor', 'certificate', 'cert_valid_until__gte', 'cert_valid_until__lte')
         model = Employees
     
     def filter_by_tech_name(self, queryset, tech_name, value):
