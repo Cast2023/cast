@@ -2,52 +2,57 @@ name: CI
 
 on:
   push:
-    branches: 
+    branches:
       - development
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-  
+
     steps:
       - uses: actions/checkout@v3
-  
+
       - name: Login container registry
         run: echo ${{ secrets.REGISTRY_PWORD }} | docker login ${{ secrets.SERVER }} -u ${{ secrets.REGISTRY_UNAME }} --password-stdin
 
       - name: Pull base image
         run: docker pull ${{ secrets.IMAGE }}
 
-      - name : Run robot tests
+      - name: Run robot tests
         env:
           BASE: ${{ secrets.TESTS_ENV_FILE }}
         run: |
           echo "${{ secrets.TESTS_ENV_FILE }}" | base64 -d > .env
           cp .env backend/
           cp .env frontend/
-          docker compose -f docker-compose-tests.yml up --exit-code-from robo
-  
+          docker compose -f docker-compose.tests.yml up --exit-code-from robo
+
   deploy:
     needs: tests
 
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
+      - name: Remove Roboroute
+        run: sed -i '/Roboroute\|<*Routes>\|Routes,/d' frontend/src/Components/AuthRoutes.js
+
+      - name: Remove File
+        run: rm -rf frontend/src/Components/Roboroute.js
+
       - name: Create .env file
         run: |
           echo "${{ secrets.DEPLOY_ENV_FILE }}" | base64 -d > .env
-
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          known_hosts: 'allyourbasearebelongtous'
-          
+          known_hosts: "allyourbasearebelongtous"
+
       - name: Add Known Hosts
         run: ssh-keyscan -H ${{ secrets.SERVER }} >> ~/.ssh/known_hosts
-          
+
       - name: Sync files with rsync
         run: rsync -avz . ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.SERVER }}:/home/deploytest/deploy/
 
@@ -62,4 +67,4 @@ jobs:
             cd deploy
             cp .env backend/
             cp .env frontend/
-            docker compose up -d --build
+            docker compose -f docker-compose.staging.yml up -d --build

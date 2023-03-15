@@ -1,10 +1,8 @@
 *** Variables ***
 
 *** Settings ***
-Resource        resource.robot
-Suite Setup     Init Browser
-Suite Teardown  Stop Django and close Browser
-#Test Teardown   Flush Database
+Resource        ${RESOURCE}
+Suite Setup     ${SETUP}
 
 *** Test Cases ***
 
@@ -13,11 +11,9 @@ Scenario: As a visitor I can visit the home page
   Wait until page contains element  home
   Page Should Contain  Welcome to CAS-tracker
 
-Scenario: As A visitor I can inspect profile page
-  Go To  ${SERVER}
-  Wait until page contains element  profile
-  Click element  profile
-  Page Should Contain  Profile
+#Scenario: As A visitor I can inspect profile page
+#  Refresh & Navigate to Profile Page
+#  Page Should Contain  Profile
 
 Scenario: As A visitor I can inspect my team page
   Go To  ${SERVER}
@@ -29,16 +25,26 @@ Scenario: As A visitor I can inspect search page
   Go To  ${SERVER}
   Wait until page contains element  search
   Click element  search
-  Page Should Contain  Search consults
+  Page Should Contain  Search consultants
 
 Scenario: As A visitor I can inspect api page
   Go To  ${SERVER}
   Wait until page contains element  api
   Click element  api
-  Page Should Contain  Api
+  Page Should Contain  API
 
-Scenario: As A visitor clicking get started button opens a popup
+Scenario: As a visitor clicking get started button opens a popup
   Go To  ${SERVER}
   Wait until page contains element  getstarted
   Click element  getstarted
   Page Should Contain  This is very helpful
+
+Scenario: As a visitor I can see the profile page structure
+  Refresh & Navigate to Profile Page
+  Page Should Contain Element  container
+
+Scenario: As a visitor I can see the grid on profile page
+  Refresh & Navigate to Profile Page
+  Page Should Contain Element  grid
+
+

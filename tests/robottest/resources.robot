@@ -1,16 +1,10 @@
 *** Variables ***
 
-${HOSTNAME}             frontend
-${PORT}                 3000
 ${SERVER}               http://${HOSTNAME}:${PORT}/roboroute
-${BROWSER}              headlessChrome
-
 
 *** Settings ***
 
-Documentation   Django Robot Tests
 Library         SeleniumLibrary  timeout=10  implicit_wait=0
-Library         Process
 
 *** Keywords ***
 
@@ -22,18 +16,27 @@ Init Browser
     Create Webdriver    driver_name=Chrome    alias=google    chrome_options=${chrome_options}    executable_path=/usr/local/bin/chromedriver
     Set Window Size    1200    1000  #run on docker can't use Maximize Browser Window
 
-Start Django and open Browser
-  ${django process}=  Start process  python3  backend/manage.py  runserver
-  Set suite variable  ${django process}
+Open Local Browser
   Open Browser  ${SERVER}  ${BROWSER}
 
-Stop Django and close browser
+Close Local Browser
   Close Browser
-  #Terminate Process  ${django process}
-  
-Set Message
-  [arguments]  ${message}
-  Input Text  messge input  ${message}
 
-#Flush Database  
-   #TODO 
+Set Skill
+  [arguments]  ${id}  ${level} 
+  Input Text  ${id}  ${level}
+
+Set Value
+  [arguments]  ${id}  ${value}
+  Input Text  ${id}  ${value}
+
+Refresh & Navigate to Profile Page
+  Go To  ${SERVER}
+  Wait until page contains element  profile
+  Click element  profile
+
+Refresh & Navigate to Selected View
+  [arguments]  ${element}
+  Go To  ${SERVER}
+  Wait until page contains element  ${element}
+  Click element  ${element}

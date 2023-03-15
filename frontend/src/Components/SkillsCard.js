@@ -1,0 +1,99 @@
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  IconButton,
+  Box,
+  Button,
+  TextField,
+} from "@mui/material"
+
+import EditIcon from "@mui/icons-material/Edit"
+import { useState } from "react"
+import consultantService from "../Services/consultantService"
+
+const SkillsCard = ({ user, activeUserId }) => {
+  const [editable, setEditable] = useState(false)
+  const [formValues, setFormValues] = useState([])
+
+  const handleClick = (edit) => {
+    setEditable(!edit)
+  }
+
+  const handleChange = (event) => {
+    const value = event.target.value
+    const id = event.target.id
+    setFormValues([...formValues, { skill_level: value, tech: id }])
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const skillsList = { skills: formValues }
+    consultantService.editConsultant(user.id, skillsList)
+    setEditable(!editable)
+  }
+
+  const skills = () => {
+    let t = []
+    user.skills?.map(
+      (skill) =>
+        (t = t.concat([
+          {
+            id: skill.tech,
+            tech: skill.tech_name,
+            skillLevel: skill.skill_level,
+          },
+        ]))
+    )
+    return t
+  }
+
+  return (
+    <div>
+      <Card>
+        <CardHeader
+          title="Technical skills"
+          action={(user.id === activeUserId) && (
+            <IconButton
+              id="edit_skills_button"
+              onClick={() => handleClick(editable)}
+            >
+              <EditIcon />
+            </IconButton>
+          )}
+        />
+        <CardContent>
+          <Box
+            sx={{
+              "& .MuiTextField-root": { m: 1, width: "25ch" },
+            }}
+          >
+            <form onSubmit={handleSubmit} onChange={handleChange}>
+              {skills().map((skill) => (
+                <TextField
+                  disabled={!editable}
+                  id={skill.id}
+                  key={skill.id}
+                  label={skill.tech}
+                  name="skill_level"
+                  defaultValue={skill.skillLevel}
+                  variant="standard"
+                />
+              ))}
+              {editable && (
+                <Button type="submit" id="submit_skills_button">
+                  Submit
+                </Button>
+              )}
+            </form>
+          </Box>
+          <br />
+          Skill levels:
+          <br />1 = Wants to learn, 2 = Can work with, 3 = Proficient
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+export default SkillsCard

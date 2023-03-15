@@ -27,7 +27,7 @@ ENV = dotenv_values(Path(BASE_DIR).joinpath(".env"))
 SECRET_KEY = ENV['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = ENV['DEBUG']
 
 ALLOWED_HOSTS = json.loads(ENV['ALLOWED_HOST'])
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'restapi',
     'corsheaders',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cast_backend.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -126,7 +130,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+# STATIC_ROOT = os.path.join(BASE_DIR, "static") 
 STATIC_URL = 'static/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
