@@ -9,20 +9,25 @@ class EmployeeGetTests(APITestCase):
     url = reverse('consultant-list')
     
     def setUp(self):
-
         self.client = Client()
 
         Employees.objects.create(
             first_name='John',
             last_name='Doe',
             email='tester@gmail.com'
-            )
-        
+        )
         Employees.objects.create(
             first_name='Jane',
             last_name='Watson',
-            email='watson@gmail.com'
-            )
+            email='watson@gmail.com',
+            phone_number='+358502345678',
+            location_country='Finland',
+            location_city='Helsinki',
+            worktime_allocation=100,
+            allocation_until='2029-12-31',
+            wants_to_do='Manufacturing sector',
+            wants_not_to_do='Banking sector'
+        )
 
     def test_get_employees_returns_status_code_ok(self):
         response = self.client.get(self.url)
@@ -36,7 +41,16 @@ class EmployeeGetTests(APITestCase):
     def test_get_employees_returns_a_created_user(self):
         response = self.client.get(self.url)
         result = response.json()
-        self.assertEqual(result[0]['email'], 'tester@gmail.com')
+        self.assertEqual(result[1]['first_name'], 'Jane')
+        self.assertEqual(result[1]['last_name'], 'Watson')
+        self.assertEqual(result[1]['email'], 'watson@gmail.com')
+        self.assertEqual(result[1]['phone_number'], '+358502345678')
+        self.assertEqual(result[1]['location_country'], 'Finland')
+        self.assertEqual(result[1]['location_city'], 'Helsinki')
+        self.assertEqual(result[1]['worktime_allocation'], 100)
+        self.assertEqual(result[1]['allocation_until'], '2029-12-31')
+        self.assertEqual(result[1]['wants_to_do'], 'Manufacturing sector')
+        self.assertEqual(result[1]['wants_not_to_do'], 'Banking sector')
 
 
 class EmployeeUpdateTests(APITestCase):
@@ -52,13 +66,12 @@ class EmployeeUpdateTests(APITestCase):
             first_name='John',
             last_name='Doe',
             email='tester@gmail.com'
-            )
-        
+        )
         Employees.objects.create(
             first_name='Jane',
             last_name='Watson',
             email='watson@gmail.com'
-            )
+        )
         tech1 = Techs.objects.create(
             tech_name='Python'
         )
@@ -87,7 +100,6 @@ class EmployeeUpdateTests(APITestCase):
             'last_name': 'Doe',
             'email': 'tester@gmail.com',
         }
-        
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Employees.objects.filter(email = 'tester@gmail.com')[0].first_name, 'Jackie')
@@ -125,7 +137,6 @@ class EmployeeUpdateTests(APITestCase):
                 }
             ]
         }
-        
         self.client.patch(url, data, format='json')
         response = self.client.get(url)
         result = response.json()
