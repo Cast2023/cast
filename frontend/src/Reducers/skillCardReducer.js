@@ -5,7 +5,7 @@ const initialState = {
   editable: false,
   newSkillAddable: false,
   allSkills: [],
-  addableSkill: null,//{new_skill_level: "", new_skill_name: ""}
+  addableSkillDetail: null,//{new_skill_level: "", new_skill_name: ""}
 
 }
 
@@ -25,18 +25,18 @@ const skillCardSlice = createSlice({
         newSkillAddable: action.payload
       }
     },
-    setAddableSkill(state, action){
-      return{
-        ...state,
-        addableSkill: action.payload
-      }
-    },
     setAllSkills(state,action) {
       return {
         ...state,
         allSkills: action.payload
       }
-    }
+    },
+    setAddableSkillDetail(state, action){
+      return{
+        ...state,
+        addableSkillDetail : action.payload
+      }
+    },
   },
 })
 
@@ -50,8 +50,8 @@ export const initializeSkillCard = () => {
 export const {
   updateEditability,
   updateNewSkillAddability,
-  setAddableSkill,
-  setAllSkills
+  setAllSkills,
+  setAddableSkillDetail,
 } = skillCardSlice.actions
 
 export default skillCardSlice.reducer

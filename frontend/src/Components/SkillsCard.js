@@ -15,7 +15,7 @@ import { useState } from "react"//
 import consultantService from "../Services/consultantService"
 import techService from "../Services/techService";
 import { useSelector, useDispatch } from "react-redux"
-import { updateEditability, updateNewSkillAddability } from "../Reducers/skillCardReducer";
+import { updateEditability, updateNewSkillAddability, setAllSkills, setAddableSkillDetail } from "../Reducers/skillCardReducer";
 
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
@@ -26,10 +26,9 @@ const SkillsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
 
   const editable = useSelector((state) => state.skillCard.editable)
-  // const [newSkill, setNewSkill] = useState(false)
   const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
-  const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these 
+  const allSkills = useSelector((state) => state.skillCard.allSkills) // This handles the changes in existing skills
+  const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
 
   const handleClick = (edit) => {
     dispatch(updateEditability(!edit))
@@ -41,20 +40,20 @@ const SkillsCard = ({ user, activeUserId }) => {
 
   const handleChange = (event) => {
     const value = event.target.value
-    setFormValues([...formValues, { skill_level: value, tech: [event.target.name][0] }])
+    dispatch(allSkills([...allSkills, { skill_level: value, tech: [event.target.name][0] }]))
     console.log("event:", event.target)
   }
   const handleTechChange = (event) => {
     const value = event.target.value
-    setTechFormValues({...techFormValues, [event.target.name]: value})
+    dispatch(setAddableSkillDetail({...addableSkillDetail, [event.target.name]: value}))
   }
   // This method now handles both, adding the new skill and updating the consultant afterwards.
   // That means that there is some reduntant repetition of code, feel free to refactor.
 
   const handleNewSkill = async (event) => {
     event.preventDefault()
-    const newSkillName = {tech_name: techFormValues.new_skill_name}
-    const newSkillLevel = techFormValues.new_skill_level
+    const newSkillName = {tech_name: addableSkillDetail.new_skill_name}
+    const newSkillLevel = addableSkillDetail.new_skill_level
     let newObject = null
     let skillsList = null
     try{ // if adding of the new skill fails, catch finds a skill with same name from the DB. Probably should be moved elsewere
@@ -68,15 +67,15 @@ const SkillsCard = ({ user, activeUserId }) => {
 
       }
     dispatch(updateNewSkillAddability(!newSkillAddable))
-    setTechFormValues() // This empties the state after it is not needed anymore
+    dispatch(addableSkillDetail())// This empties the state after it is not needed anymore
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const skillsList = { skills: formValues }
+    const skillsList = { skills: allSkills }
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
-    setFormValues([]) // This empties the state after it is not needed anymore
+    dispatch(setAllSkills([])) // This empties the state after it is not needed anymore
   }
 
   const skills = () => {
