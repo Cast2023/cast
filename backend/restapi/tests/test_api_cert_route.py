@@ -66,4 +66,6 @@ class CertificatePostTests(APITestCase):
         self.client.post(self.url, content, content_type=content_type)
         response = self.client.get(self.url)
         result = response.json()
+        
         self.assertEqual(result[0]['vendor'] + result[1]['vendor'], 'AmazonMicrosoft')
+        self.assertEqual(result[1]['certificate_name'], 'AZ 900: Microsoft Azure Fundamental')

@@ -76,4 +76,8 @@ class TechPostTests(APITestCase):
         self.client.post(self.url, content, content_type=content_type)
         response = self.client.get(self.url)
         result = response.json()
+        
         self.assertEqual(result[0]['project_name'] + result[1]['project_name'], 'CastbookCastCorp')
+        self.assertEqual(result[1]['project_start_date'], '2021-10-19')
+        self.assertEqual(result[1]['project_end_date'], '2022-05-15')
+        self.assertFalse(result[1]['confidential'])
