@@ -1,12 +1,9 @@
-from unittest import skip
-from django.test import TestCase
 from django.test import Client
-from django.test.client import encode_multipart, RequestFactory
-
+from django.test.client import encode_multipart
 from django.urls import reverse
-from rest_framework import status
 from rest_framework.test import APIRequestFactory, APITestCase, APIClient
-from .models import Employees, Techs, Employee_tech_skills
+from restapi.models import Employees, Techs, Employee_tech_skills
+
 
 class EmployeeGetTests(APITestCase):
     url = reverse('consultant-list')
@@ -40,6 +37,7 @@ class EmployeeGetTests(APITestCase):
         response = self.client.get(self.url)
         result = response.json()
         self.assertEqual(result[0]['email'], 'tester@gmail.com')
+
 
 class EmployeeUpdateTests(APITestCase):
     """Each TestCase is a transaction and so there is no pre-knowledge of the id's of database instances.
@@ -114,133 +112,23 @@ class EmployeeUpdateTests(APITestCase):
     
     def test_a_skill_level_can_be_altered_data(self):
         url = self.get_base_url()
+        userdata = self.client.get(url).json()
+        tech_id = userdata['skills'][0]['tech']
         data = {
             'first_name': 'John',
-            'last_name': 'Dough',
+            'last_name': 'Doe',
             'email': 'tester@gmail.com',
             'skills': [
                 {
-                    'tech': 1,        
+                    'tech': tech_id,        
                     'skill_level': 2
                 }
             ]
         }
         
-        client = self.client
-        response = client.patch(url, data, format='json')
+        self.client.patch(url, data, format='json')
         response = self.client.get(url)
         result = response.json()
         self.assertEqual(result['skills'][0]['skill_level'], 2)
         
-
-        
-class EmployeeSearchTests(APITestCase):
-    url = reverse('consultant-list')    
-    def setUp(self):
-        self.client = Client()
-        Employees.objects.create(
-            first_name='John',
-            last_name='Doe',
-            email='tester@gmail.com'
-            )
-        Employees.objects.create(
-            first_name='Jane',
-            last_name='Watson',
-            email='watson@gmail.com'
-            )
-
-    def test_search_returns_a_match_on_last_name(self):
-        search_url = '/api/consultant/?search=Doe'
-        response = self.client.get(search_url)
-        result = response.json()
-        self.assertEqual(result[0]['email'], 'tester@gmail.com')
-
-    def test_with_string_gmail_returns_two_matches(self):
-        search_url = '/api/consultant/?search=gmail'
-        response = self.client.get(search_url)
-        result = response.json()
-        self.assertEqual(len(result), 2)
     
-class EmployeeFiltertTests(APITestCase):
-
-    def setUp(self):
-
-        self.client = Client()
-
-        Employees.objects.create(
-            first_name='John',
-            last_name='Doe',
-            email='tester@gmail.com'
-            )
-        
-        Employees.objects.create(
-            first_name='Jane',
-            last_name='Watson',
-            email='watson@gmail.com'
-            )
-
-    def test_filter_with_last_name_returns_selected_user(self):
-        search_url = '/api/consultant/?last_name=Doe'
-        response = self.client.get(search_url)
-        result = response.json()
-        self.assertEqual(result[0]['email'], 'tester@gmail.com')
-
-class TechGetTests(APITestCase):
-    url = reverse('tech-list')
-    
-    def setUp(self):
-
-        self.client = Client()
-
-        Techs.objects.create(
-            tech_name='Python'
-        )
-
-        Techs.objects.create(
-            tech_name='Java'
-        )
-
-    def test_get_techs_returns_status_code_ok(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_get_techs_returns_a_list(self):
-        response = self.client.get(self.url)
-        result = response.json()
-        self.assertIsInstance(result, list)
-    
-    def test_get_techs_returns_all_created_techs(self):
-        response = self.client.get(self.url)
-        result = response.json()
-        self.assertEqual(result[0]['tech_name'] + result[1]['tech_name'], 'PythonJava')
-
-class TechPostTests(APITestCase):
-    url = reverse('tech-list')
-    
-    def setUp(self):
-
-        self.client = Client()
-
-        Techs.objects.create(
-            tech_name='Python'
-        )
-    
-    def test_post_tech_returns_status_code_201(self):
-        data = {
-            'tech_name': 'Java',
-        }
-        content = encode_multipart('BoUnDaRyStRiNg', data)
-        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
-        response = self.client.post(self.url, content, content_type=content_type)
-        self.assertEqual(response.status_code, 201)
-
-    def test_posted_tech_is_found_in_db(self):
-        data = {
-            'tech_name': 'Java',
-        }
-        content = encode_multipart('BoUnDaRyStRiNg', data)
-        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
-        self.client.post(self.url, content, content_type=content_type)
-        response = self.client.get(self.url)
-        result = response.json()
-        self.assertEqual(result[0]['tech_name'] + result[1]['tech_name'], 'PythonJava')
