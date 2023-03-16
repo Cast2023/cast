@@ -20,7 +20,7 @@ consultant_detail = ConsultantAPIView.as_view({
 
 tech_list = TechAPIView.as_view({
     'get': 'list',
-    'post': 'create'
+    'post': 'get_or_create'
 })
 
 tech_detail = TechAPIView.as_view({

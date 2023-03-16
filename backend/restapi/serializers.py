@@ -9,7 +9,7 @@ class TechSerializer(serializers.ModelSerializer):
     class Meta:
         model = Techs
         fields = ('id', 'tech_name')
-
+    
 
 class CertSerializer(serializers.ModelSerializer):
     class Meta:

@@ -22,7 +22,13 @@ class TechAPIView(viewsets.ModelViewSet):
     search_fields = [
         'tech_name'
         ]
-
+    def get_or_create(self, request, *args):
+        print("techapi", request.data)
+        instance, created = Techs.objects.get_or_create(tech_name=request.data['tech_name'])
+        print(instance.id, created)
+        result = {"id": instance.id, "tech_name": instance.tech_name}
+        print (result)
+        return Response({"status": "success", "result": result}, status.HTTP_201_CREATED)
 
 class CertAPIView(viewsets.ModelViewSet):
     serializer_class = CertSerializer
