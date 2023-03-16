@@ -26,10 +26,11 @@ const skillCardSlice = createSlice({
       }
     },
     setAllSkills(state,action) {
-      return {
-        ...state,
-        allSkills: action.payload
-      }
+      state.allSkills = action.payload
+      // return {
+      //   ...state,
+      //   allSkills: action.payload
+      // }
     },
     setAddableSkillDetail(state, action){
       return{

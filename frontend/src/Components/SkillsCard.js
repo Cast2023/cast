@@ -15,6 +15,7 @@ import consultantService from "../Services/consultantService"
 import techService from "../Services/techService";
 import { useSelector, useDispatch } from "react-redux"
 import { updateEditability, updateNewSkillAddability, setAllSkills, setAddableSkillDetail } from "../Reducers/skillCardReducer";
+import { useEffect } from "react";
 
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
@@ -28,6 +29,11 @@ const SkillsCard = ({ user, activeUserId }) => {
   const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
   const allSkills = useSelector((state) => state.skillCard.allSkills) // This handles the changes in existing skills
   const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
+
+  useEffect(() =>{
+    console.log("SkillsCard is reredered")
+    
+  }, [allSkills])
 
   const handleClick = (edit) => {
     dispatch(updateEditability(!edit))
@@ -55,18 +61,15 @@ const SkillsCard = ({ user, activeUserId }) => {
     const newSkillLevel = addableSkillDetail.new_skill_level
     let newObject = null
     let skillsList = null
-    try{ // if adding of the new skill fails, catch finds a skill with same name from the DB. Probably should be moved elsewere
-      newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill 
-      skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.id}]}
-      consultantService.editConsultant(user.id, skillsList)
-    } catch{
-        newObject = await techService.getSelectedTechByName(newSkillName.tech_name)
-        skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject[0].id}]}
-        consultantService.editConsultant(user.id, skillsList)
-
-      }
+    newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill 
+    skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.result.id}]}
+    consultantService.editConsultant(user.id, skillsList)
     dispatch(updateNewSkillAddability(!newSkillAddable))
-    dispatch(addableSkillDetail())// This empties the state after it is not needed anymore
+    dispatch(setAddableSkillDetail())// This empties the state after it is not needed anymore
+    //update allSkills
+    const newAllSkills = [...allSkills, { skill_level: newSkillLevel, tech: newObject.result.id }]
+    console.log(newAllSkills)
+    dispatch(setAllSkills(newAllSkills))
   }
 
   const handleSubmit = (event) => {
