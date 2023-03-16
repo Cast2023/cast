@@ -13,10 +13,15 @@ class TechsFilter(rest_filters.FilterSet):
     class Meta:
         fields = ("tech_name",)
         model = Techs
-        
+
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
     queryset = Techs.objects.all()
+    filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = TechsFilter
+    search_fields = [
+        'tech_name'
+        ]
 
 
 class CertAPIView(viewsets.ModelViewSet):

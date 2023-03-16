@@ -23,7 +23,8 @@ class Techs(models.Model):
     '''
     employee = models.ManyToManyField(Employees, through='Employee_tech_skills')
     tech_name = models.TextField(unique=True)
-
+    def __str__(self):
+        return self.tech_name
 
 class Certificate(models.Model):
     employee = models.ManyToManyField(Employees, through='Employee_certificates')
