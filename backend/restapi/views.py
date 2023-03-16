@@ -61,7 +61,12 @@ class EmployeeFilter(rest_filters.FilterSet):
         model = Employees
     
     def filter_by_tech_name(self, queryset, tech, value):
-        return queryset.filter(skills__tech__tech_name__icontains=value, skills__tech_preference=True).distinct()
+        if ',' in value:
+            tech_list = value.split(",")
+            for tech in tech_list:
+                queryset = queryset.filter(skills__tech__tech_name__icontains=tech).distinct()
+            return queryset
+        return queryset.filter(skills__tech__tech_name__icontains=value).distinct()
     
     def filter_by_project(self, queryset, project, value):
         return queryset.filter(projects__project__project_name__icontains=value).distinct()
