@@ -10,6 +10,7 @@ class TechSerializer(serializers.ModelSerializer):
         model = Techs
         fields = ('id', 'tech_name')
 
+
 class CertSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certificate

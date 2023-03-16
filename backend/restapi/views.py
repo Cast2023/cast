@@ -7,7 +7,13 @@ import datetime
 from restapi.models import Employees, Techs, Certificate, Employee_certificates
 from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer
 
+class TechsFilter(rest_filters.FilterSet):
+    tech_name = rest_filters.CharFilter(field_name='tech_name')
 
+    class Meta:
+        fields = ("tech_name",)
+        model = Techs
+        
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
     queryset = Techs.objects.all()
