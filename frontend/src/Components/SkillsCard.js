@@ -11,7 +11,6 @@ import {
 
 import EditIcon from "@mui/icons-material/Edit"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useState } from "react"//
 import consultantService from "../Services/consultantService"
 import techService from "../Services/techService";
 import { useSelector, useDispatch } from "react-redux"
@@ -40,7 +39,7 @@ const SkillsCard = ({ user, activeUserId }) => {
 
   const handleChange = (event) => {
     const value = event.target.value
-    dispatch(allSkills([...allSkills, { skill_level: value, tech: [event.target.name][0] }]))
+    dispatch(setAllSkills([...allSkills, { skill_level: value, tech: [event.target.name][0] }]))
     console.log("event:", event.target)
   }
   const handleTechChange = (event) => {
