@@ -14,9 +14,12 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import consultantService from "../Services/consultantService"
 import techService from "../Services/techService";
 import { useSelector, useDispatch } from "react-redux"
-import { updateEditability, updateNewSkillAddability, setAllSkills, setAddableSkillDetail } from "../Reducers/skillCardReducer";
+import { updateEditability, 
+        updateNewSkillAddability, 
+        setSkillChanges,  
+        setAddableSkillDetail, 
+        initializeSkillCard,setAllSkills, } from "../Reducers/skillCardReducer";
 import { useEffect } from "react";
-
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
 //    Testing (robot atleast). 
@@ -24,16 +27,17 @@ import { useEffect } from "react";
 
 const SkillsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
-
   const editable = useSelector((state) => state.skillCard.editable)
   const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const allSkills = useSelector((state) => state.skillCard.allSkills) // This handles the changes in existing skills
+  const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills
   const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
+  const allSkills = useSelector((state) => state.skillCard.allSkills)
 
   useEffect(() =>{
-    console.log("SkillsCard is reredered")
-    
-  }, [allSkills])
+    const id = (activeUserId===user.id)? activeUserId : user.id
+    dispatch(initializeSkillCard(id))
+    // console.log("allSkills are", allSkills)
+  }, [skillChanges])
 
   const handleClick = (edit) => {
     dispatch(updateEditability(!edit))
@@ -45,7 +49,7 @@ const SkillsCard = ({ user, activeUserId }) => {
 
   const handleChange = (event) => {
     const value = event.target.value
-    dispatch(setAllSkills([...allSkills, { skill_level: value, tech: [event.target.name][0] }]))
+    dispatch(setSkillChanges([...skillChanges, { skill_level: value, tech: [event.target.name][0] }]))
     console.log("event:", event.target)
   }
   const handleTechChange = (event) => {
@@ -66,23 +70,22 @@ const SkillsCard = ({ user, activeUserId }) => {
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateNewSkillAddability(!newSkillAddable))
     dispatch(setAddableSkillDetail())// This empties the state after it is not needed anymore
-    //update allSkills
-    const newAllSkills = [...allSkills, { skill_level: newSkillLevel, tech: newObject.result.id }]
-    console.log(newAllSkills)
-    dispatch(setAllSkills(newAllSkills))
+    //update skillChanges
+    const newSkillChanges = [...skillChanges, { skill_level: newSkillLevel, tech: newObject.result.id }]
+    dispatch(setSkillChanges(newSkillChanges))
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const skillsList = { skills: allSkills }
+    const skillsList = { skills: skillChanges }
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
-    dispatch(setAllSkills([])) // This empties the state after it is not needed anymore
+    dispatch(setSkillChanges([])) // This empties the state after it is not needed anymore
   }
 
   const skills = () => {
     let t = []
-    user.skills?.map(
+    allSkills?.map(
       (skill) =>
         (t = t.concat([
           {

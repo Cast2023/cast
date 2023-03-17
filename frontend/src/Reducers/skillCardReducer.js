@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit"
 import techService from "../Services/techService"
+import consultantService from "../Services/consultantService"
 
 const initialState = {
   editable: false,
   newSkillAddable: false,
-  allSkills: [],
+  skillChanges: [],
   addableSkillDetail: null,//{new_skill_level: "", new_skill_name: ""}
+  allSkills: null,//from consultant
 
 }
 
@@ -25,34 +27,41 @@ const skillCardSlice = createSlice({
         newSkillAddable: action.payload
       }
     },
-    setAllSkills(state,action) {
-      state.allSkills = action.payload
-      // return {
-      //   ...state,
-      //   allSkills: action.payload
-      // }
+    setSkillChanges(state,action) {
+      return {
+        ...state,
+        skillChanges: action.payload
+      }
     },
     setAddableSkillDetail(state, action){
       return{
         ...state,
-        addableSkillDetail : action.payload
+        addableSkillDetail: action.payload
       }
     },
+    setAllSkills(state,action){
+      return{
+        ...state,
+        allSkills: action.payload
+      }
+    }
   },
 })
 
-export const initializeSkillCard = () => {
+export const initializeSkillCard = (id) => {
   return async (dispatch) => {
-    const consultants = await techService.getAllTechs()
-    dispatch(setAllSkills(consultants))
+    const consultant = await consultantService.getSelectedConsultant(id)
+    const skills = consultant.skills
+    dispatch(setAllSkills(skills))
   }
 }
 
 export const {
   updateEditability,
   updateNewSkillAddability,
-  setAllSkills,
+  setSkillChanges,
   setAddableSkillDetail,
+  setAllSkills
 } = skillCardSlice.actions
 
 export default skillCardSlice.reducer
