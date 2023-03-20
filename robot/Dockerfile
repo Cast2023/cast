@@ -2,4 +2,6 @@ ARG IMAGE
 
 FROM $IMAGE
 
-COPY ./robottest ./robottest/
+COPY ./tests ./tests/
+COPY ./resources ./resources/
+COPY ./variables ./variables/
