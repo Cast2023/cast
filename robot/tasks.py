@@ -12,3 +12,7 @@ def container_test(ctx):
 @task
 def dryrun_test(ctx):
     ctx.run("robot --dryrun --argumentfile variables/local-dev.args tests")
+
+@task
+def dryrun_container_test(ctx):
+    ctx.run("robot --dryrun --argumentfile variables/container.args tests")
