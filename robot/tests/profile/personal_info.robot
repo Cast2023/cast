@@ -1,7 +1,7 @@
 *** Variables ***
 
 *** Settings ***
-Resource        ${RESOURCE}
+Resource        ../../resources/common.resource
 Suite Setup     ${SETUP}
 
 *** Test Cases ***
