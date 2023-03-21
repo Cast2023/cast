@@ -78,7 +78,7 @@ Results can be filtered with the following parameters. All string searches are c
 ```
 first_name=<str>                            # First name contains
 last_name=<str>                             # Last name contains
-tech=<str>                                  # tech skill name contains (e.g. python)
+tech=<str>,<str>,...                        # one or multiple tech skill names (notes below)
 tech_and_pref=<str>,<str>                   # tech skill and preference (true, false)*
 tech_and_level=<str>,<str>                  # tech skill and level (1,2,3)
 project=<str>                               # Project name contains
@@ -103,18 +103,25 @@ api/consultant?tech=python&tech=javascript
 **Parameters with multiple arguments**
 Arguments must be separated with a comma (",").
 
-`tech_and_pref` converts other values than lowercase "true" to `False` for the second argument given. If second parameter is missing, second parameter is considered to be `True`. Examples:
+`tech`: user can filter queries with tech skills. User can give one or multiple skills to be filtered with. If multiple skills are given, employees with a skills that contain given strings are reviewed. There is now upper limit for the $n$ of skills. Examples:
 
 ```
-api/consultants/?tech_and_pref=cobol,true                     # Returns workers with Cobol as skill and preference True
-api/consultants/?tech_and_pref=python,false                   # Returns workers with Python as skill and preference False
-api/consultants/?tech_and_pref=JavaScript                     # Returns workers with JavaScript as skill and preference True
+api/consultant/?tech=python                         # returns employees with string python in one of their skills
+api/consultant/?tech=python,cobol                   # returns employees with string python in one and string cobol in one of their skills
+```
+
+`tech_and_pref`: converts other values than lowercase "true" to `False` for the second argument given. If second parameter is missing, second parameter is considered to be `True`. Examples:
+
+```
+api/consultants/?tech_and_pref=cobol,true           # returns employees with Cobol as skill and preference True
+api/consultants/?tech_and_pref=python,false         # returns employees with Python as skill and preference False
+api/consultants/?tech_and_pref=JavaScript           # returns workers with JavaScript as skill and preference True
 ```
 
 `tech_and_level`: the second argument is converted into an integer in range 1-3. If the given value is not an integer, the value is transformed into 1. Integers will be handled with the rule $\texttt{value}\ge\max\{0, \min\{\texttt{value}, 3\}\}$. Examples:
 
 ```
-api/consultants/?tech_and_pref=cobol,2                     # Returns workers with Cobol as skill and level gte 2
-api/consultants/?tech_and_pref=python                      # Returns workers with Python as skill and level gte 1
-api/consultants/?tech_and_pref=JavaScript,500              # Returns workers with JavaScript as skill and level gte 3
+api/consultants/?tech_and_pref=cobol,2                     # returns employees with Cobol as skill and level gte 2
+api/consultants/?tech_and_pref=python                      # returns employees with Python as skill and level gte 1
+api/consultants/?tech_and_pref=JavaScript,500              # returns employees with JavaScript as skill and level gte 3
 ```

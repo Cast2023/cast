@@ -4,10 +4,16 @@ import pandas as pd
 from rest_framework.response import Response
 import datetime
 
-from restapi.models import Employees, Techs, Certificate, Employee_certificates
-from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer
+from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project
+from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer
 
+class TechsFilter(rest_filters.FilterSet):
+    tech_name = rest_filters.CharFilter(field_name='tech_name')
 
+    class Meta:
+        fields = ("tech_name",)
+        model = Techs
+        
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
     queryset = Techs.objects.all()
@@ -16,6 +22,11 @@ class TechAPIView(viewsets.ModelViewSet):
 class CertAPIView(viewsets.ModelViewSet):
     serializer_class = CertSerializer
     queryset = Certificate.objects.all()
+    
+    
+class ProjectAPIView(viewsets.ModelViewSet):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
 
 
 class EmployeeFilter(rest_filters.FilterSet):
@@ -55,7 +66,12 @@ class EmployeeFilter(rest_filters.FilterSet):
         model = Employees
     
     def filter_by_tech_name(self, queryset, tech, value):
-        return queryset.filter(skills__tech__tech_name__icontains=value, skills__tech_preference=True).distinct()
+        if ',' in value:
+            tech_list = value.split(",")
+            for tech in tech_list:
+                queryset = queryset.filter(skills__tech__tech_name__icontains=tech).distinct()
+            return queryset
+        return queryset.filter(skills__tech__tech_name__icontains=value).distinct()
     
     def filter_by_project(self, queryset, project, value):
         return queryset.filter(projects__project__project_name__icontains=value).distinct()
