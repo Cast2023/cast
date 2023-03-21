@@ -25,14 +25,14 @@ The initial design is to use the following stack for the project. Information wi
 - [Documentation](https://github.com/Cast2023/cast/tree/development/documentation)
 
 ### Project progress
-[Product Backlog](https://github.com/orgs/Cast2023/projects/2){:target="_blank"}
+[Product Backlog](https://github.com/orgs/Cast2023/projects/2)
 
 Spring Backlogs
-- [Sprint 4](https://github.com/orgs/Cast2023/projects/8){:target="_blank"}
-- [Sprint 3](https://github.com/orgs/Cast2023/projects/7){:target="_blank"}
-- [Sprint 2](https://github.com/orgs/Cast2023/projects/5){:target="_blank"}
-- [Sprint 1](https://github.com/orgs/Cast2023/projects/2/views/1?layout=board){:target="_blank"}
-- [Sprint 0](https://docs.google.com/spreadsheets/d/1wXlovJIC06ALvSr0M8b3VLNFiQBl1FqVd2ohvP6ofAQ/edit#gid=0){:target="_blank"}
+- [Sprint 4](https://github.com/orgs/Cast2023/projects/8)
+- [Sprint 3](https://github.com/orgs/Cast2023/projects/7)
+- [Sprint 2](https://github.com/orgs/Cast2023/projects/5)
+- [Sprint 1](https://github.com/orgs/Cast2023/projects/2/views/1?layout=board)
+- [Sprint 0](https://docs.google.com/spreadsheets/d/1wXlovJIC06ALvSr0M8b3VLNFiQBl1FqVd2ohvP6ofAQ/edit#gid=0)
 
 Other
 - [Retro notes](https://drive.google.com/drive/u/0/folders/1b6o-C2-OCTkozW5lMW37FBeKggW2jbtV){:target="_blank"}
