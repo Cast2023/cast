@@ -23,10 +23,10 @@ The initial design is to use the following stack for the project. Information wi
 
 ### Documentation
 - [Documentation](https://github.com/Cast2023/cast/tree/development/documentation)
+- [Definition of Done](https://docs.google.com/document/d/1p4CsCFcm2ePFmxsqkQ7I0mt9tyTYYlAqzxWl63oserw/edit)
 
 ### Project progress
 - [Product Backlog](https://github.com/orgs/Cast2023/projects/2)
-
 - Sprint Backlogs
   - [Sprint 4](https://github.com/orgs/Cast2023/projects/8)
   - [Sprint 3](https://github.com/orgs/Cast2023/projects/7)
@@ -38,7 +38,6 @@ The initial design is to use the following stack for the project. Information wi
 
 
 ## Developer links
-- [Definition of Done](https://docs.google.com/document/d/1p4CsCFcm2ePFmxsqkQ7I0mt9tyTYYlAqzxWl63oserw/edit)
 - [Group best practice](https://docs.google.com/document/d/1NonQrUMyR0aYnCJGbhKkU74uqanqBfKQ1cmjqPz5Bu8/edit) (in Finnish)
 - [Sprint roles](https://docs.google.com/spreadsheets/d/1Q4MoQU1m7zkIFaSLqo1c0bxwS7ynKVRr_-0KvGd1d-M/edit#gid=0)
 - [Repo for instructions for project](https://github.com/Cast2023/ohjeita)
