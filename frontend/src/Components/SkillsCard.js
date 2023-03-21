@@ -18,7 +18,7 @@ import { updateEditability,
         updateNewSkillAddability, 
         setSkillChanges,  
         setAddableSkillDetail, 
-        initializeSkillCard,setAllSkills, } from "../Reducers/skillCardReducer";
+        initializeSkillCard, } from "../Reducers/skillCardReducer";
 import { useEffect } from "react";
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
@@ -149,6 +149,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                         variant="standard"
                         name="new_skill_level"
                         select
+                        defaultValue=""
                         onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
                       >
                         <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
