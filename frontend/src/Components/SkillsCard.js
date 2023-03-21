@@ -37,7 +37,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     const id = (activeUserId===user.id)? activeUserId : user.id
     dispatch(initializeSkillCard(id))
     // console.log("allSkills are", allSkills)
-  }, [skillChanges])
+  }, [skillChanges, allSkills])
 
   const handleClick = (edit) => {
     dispatch(updateEditability(!edit))
