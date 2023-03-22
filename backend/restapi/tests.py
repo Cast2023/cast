@@ -185,6 +185,26 @@ class EmployeeFiltertTests(APITestCase):
         result = response.json()
         self.assertEqual(result[0]['email'], 'tester@gmail.com')
 
+class TechFilterTests(APITestCase):
+    url = reverse('tech-list')
+    
+    def setUp(self):
+
+        self.client = Client()
+
+        Techs.objects.create(
+            tech_name='Python'
+        )
+
+        Techs.objects.create(
+            tech_name='Java'
+        )
+    def test_filter_tech_name_returns_correct_tech(self):
+        search_url = '/api/tech/?tech_name=Java'
+        response = self.client.get(search_url)
+        result = response.json()
+        self.assertEqual(result[0]['tech_name'], 'Java')
+
 class TechGetTests(APITestCase):
     url = reverse('tech-list')
     
@@ -244,3 +264,18 @@ class TechPostTests(APITestCase):
         response = self.client.get(self.url)
         result = response.json()
         self.assertEqual(result[0]['tech_name'] + result[1]['tech_name'], 'PythonJava')
+
+    def test_posting_existing_tech_returns_existing_tech(self):
+        data = {
+            'tech_name': 'Python',
+        }
+        search_url = '/api/tech/?tech_name=Python'
+
+        get_original = self.client.get(search_url)
+        original = get_original.json()
+        content = encode_multipart('BoUnDaRyStRiNg', data)
+        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
+        self.client.post(self.url, content, content_type=content_type)
+        response = self.client.get(self.url)
+        result = response.json()
+        self.assertEqual(str(result[0]['id'])+result[0]['tech_name'], str(original[0]['id'])+original[0]['tech_name'])
