@@ -10,10 +10,8 @@ import {
 } from "@mui/material"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import EditIcon from "@mui/icons-material/Edit"
-// import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { useState } from "react"
 import consultantService from "../Services/consultantService"
-// import techService from "../Services/techService"
 import { useSelector, useDispatch } from "react-redux"
 import {
   updateEditability,
