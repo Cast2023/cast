@@ -38,6 +38,9 @@ class EmployeeGetTests(APITestCase):
         tech1 = Techs.objects.create(
             tech_name='Python'
         )
+        tech2 = Techs.objects.create(
+            tech_name='Java'
+        )
         cert1 = Certificate.objects.create(
             vendor='Amazon',
             certificate_name='AWS Certified Cloud Practitioner'
@@ -55,7 +58,13 @@ class EmployeeGetTests(APITestCase):
         Employee_tech_skills.objects.create(
             employee = user1,
             tech = tech1,
-            skill_level = 3
+            skill_level = 3,
+            tech_preference = True
+        )
+        Employee_tech_skills.objects.create(
+            employee = user1,
+            tech = tech2,
+            skill_level = 1
         )  
         Employee_certificates.objects.create(
             employee = user1,
@@ -103,6 +112,16 @@ class EmployeeGetTests(APITestCase):
         self.assertEqual(self.result[1]['wants_to_do'], 'Manufacturing sector')
         self.assertEqual(self.result[1]['wants_not_to_do'], 'Banking sector')
         
+    def test_get_employees_returns_correct_tech_skills_for_single_user(self):
+        skills = self.result[0]['skills']
+        self.assertEqual(len(skills), 2)
+        self.assertEqual(skills[0]['tech_name'], 'Python')
+        self.assertEqual(skills[0]['skill_level'], 3)
+        self.assertEqual(skills[0]['tech_preference'], True)
+        self.assertEqual(skills[1]['tech_name'], 'Java')
+        self.assertEqual(skills[1]['skill_level'], 1)
+        self.assertEqual(skills[1]['tech_preference'], None)    
+        
     def test_get_employees_returns_correct_certs_for_single_user(self):
         certs = self.result[0]['certificates']
         self.assertEqual(len(certs), 2)
@@ -123,7 +142,6 @@ class EmployeeGetTests(APITestCase):
         self.assertEqual(projects[0]['project_end_date'], '2022-05-15')
         self.assertEqual(projects[0]['allocation_busy'], 60)
         self.assertEqual(projects[0]['confidential'], "False")
-
 
         
 class EmployeeUpdateTests(APITestCase):
@@ -215,4 +233,3 @@ class EmployeeUpdateTests(APITestCase):
         result = response.json()
         self.assertEqual(result['skills'][0]['skill_level'], 2)
         
-    
