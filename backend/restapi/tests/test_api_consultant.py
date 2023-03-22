@@ -42,6 +42,10 @@ class EmployeeGetTests(APITestCase):
             vendor='Amazon',
             certificate_name='AWS Certified Cloud Practitioner'
         )
+        cert2 = Certificate.objects.create(
+            vendor='Microsoft',
+            certificate_name='AZ 900: Microsoft Azure Fundamental'
+        )
         project1 = Project.objects.create(
             project_name='CastCorp',
             project_start_date='2021-10-19',
@@ -57,6 +61,11 @@ class EmployeeGetTests(APITestCase):
             employee = user1,
             cert = cert1,
             valid_until = '2025-01-01'
+        )
+        Employee_certificates.objects.create(
+            employee = user1,
+            cert = cert2,
+            valid_until = '2027-06-01'
         )
         Employee_projects.objects.create(
             employee = user1,
@@ -96,10 +105,13 @@ class EmployeeGetTests(APITestCase):
         
     def test_get_employees_returns_correct_certs_for_single_user(self):
         certs = self.result[0]['certificates']
-        self.assertEqual(len(certs), 1)
+        self.assertEqual(len(certs), 2)
         self.assertEqual(certs[0]['vendor'], 'Amazon')
         self.assertEqual(certs[0]['certificate'], 'AWS Certified Cloud Practitioner')
         self.assertEqual(certs[0]['valid_until'], '2025-01-01')
+        self.assertEqual(certs[1]['vendor'], 'Microsoft')
+        self.assertEqual(certs[1]['certificate'], 'AZ 900: Microsoft Azure Fundamental')
+        self.assertEqual(certs[1]['valid_until'], '2027-06-01')
         
     def test_get_employees_returns_correct_projects_for_single_user(self):
         projects = self.result[0]['projects']
