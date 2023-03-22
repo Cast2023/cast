@@ -56,32 +56,32 @@ class EmployeeGetTests(APITestCase):
             confidential=False
         )
         Employee_tech_skills.objects.create(
-            employee = user1,
-            tech = tech1,
-            skill_level = 3,
-            tech_preference = True
+            employee=user1,
+            tech=tech1,
+            skill_level=3,
+            tech_preference=True
         )
         Employee_tech_skills.objects.create(
-            employee = user1,
-            tech = tech2,
-            skill_level = 1
+            employee=user1,
+            tech=tech2,
+            skill_level=1
         )  
         Employee_certificates.objects.create(
-            employee = user1,
-            cert = cert1,
-            valid_until = '2025-01-01'
+            employee=user1,
+            cert=cert1,
+            valid_until='2025-01-01'
         )
         Employee_certificates.objects.create(
-            employee = user1,
-            cert = cert2,
-            valid_until = '2027-06-01'
+            employee=user1,
+            cert=cert2,
+            valid_until='2027-06-01'
         )
         Employee_projects.objects.create(
-            employee = user1,
-            project = project1,
-            employee_participation_start_date = '2022-01-01',
-            employee_participation_end_date = '2022-03-30',
-            allocation_busy = 60,
+            employee=user1,
+            project=project1,
+            employee_participation_start_date='2022-01-01',
+            employee_participation_end_date='2022-03-30',
+            allocation_busy=60,
         )
         self.response = client.get(self.url)
         self.result = self.response.json()
@@ -167,9 +167,9 @@ class EmployeeUpdateTests(APITestCase):
             tech_name='Python'
         )
         Employee_tech_skills.objects.create(
-            employee = user1,
-            tech = tech1,
-            skill_level = 3
+            employee=user1,
+            tech=tech1,
+            skill_level=3
         )
         self.url_base = reverse('consultant-list')
     
