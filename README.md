@@ -4,6 +4,10 @@
 
 Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.
 
+## License
+
+[MIT License](https://github.com/Cast2023/cast/blob/readme-update/LICENSE)
+
 ## Stack information
 The initial design is to use the following stack for the project. Information will be more detailed in the near future. 
 - Backend
