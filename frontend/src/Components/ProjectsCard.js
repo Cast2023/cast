@@ -1,30 +1,34 @@
-import { 
-  Card,
-  CardHeader, 
-  CardContent, 
-  IconButton,
-  Box,
-} from "@mui/material"
-  
-import { DataGrid } from '@mui/x-data-grid'
-import EditIcon from '@mui/icons-material/Edit'
-  
-  
+import { Card, CardHeader, CardContent, IconButton, Box } from "@mui/material"
+import AddCircleIcon from "@mui/icons-material/AddCircle"
+import EditIcon from "@mui/icons-material/Edit"
+
 const ProjectsCard = ({ user, activeUserId }) => {
+  const changeAddProjectState = () => {
+    console.log("Add project button clicked")
+  }
+
   return (
     <div>
       <Card>
         <CardHeader
           title="Projects"
-          action={(user.id === activeUserId) && (
-            <IconButton id="editProjectsButton">
-              <EditIcon />
-            </IconButton>
-          )}
-          />
-        <CardContent> 
-        
-        </CardContent>
+          action={
+            user.id === activeUserId && (
+              <Box>
+                <IconButton
+                  id="add_skills_button"
+                  onClick={() => changeAddProjectState()}
+                >
+                  <AddCircleIcon />
+                </IconButton>
+                <IconButton id="editProjectsButton">
+                  <EditIcon />
+                </IconButton>
+              </Box>
+            )
+          }
+        />
+        <CardContent></CardContent>
       </Card>
     </div>
   )
