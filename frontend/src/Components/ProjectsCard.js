@@ -1,29 +1,32 @@
-import { 
+import {
   Card,
-  CardHeader, 
-  CardContent, 
+  CardHeader,
+  CardContent,
   IconButton,
   Box,
   Button,
   TextField,
   MenuItem,
 } from "@mui/material"
-  
-import EditIcon from '@mui/icons-material/Edit'
+import AddCircleIcon from "@mui/icons-material/AddCircle"
+import EditIcon from "@mui/icons-material/Edit"
 // import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { useState } from "react"
 import consultantService from "../Services/consultantService"
 // import techService from "../Services/techService"
 import { useSelector, useDispatch } from "react-redux"
-import { updateEditability, updateNewSkillAddability } from "../Reducers/skillCardReducer"
-  
+import {
+  updateEditability,
+  updateNewSkillAddability,
+} from "../Reducers/skillCardReducer"
+
 const ProjectsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
 
   const editable = useSelector((state) => state.skillCard.editable)
   // const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
   const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
-  // const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these 
+  // const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these
 
   // const handleChange = (event) => {
   //   const value = event.target.value
@@ -37,6 +40,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
     setFormValues([]) // This empties the state after it is not needed anymore
+  }
+  const activateAddProject = () => {
+    console.log("activateAddProject")
   }
 
   const projects = () => {
@@ -61,15 +67,24 @@ const ProjectsCard = ({ user, activeUserId }) => {
       <Card>
         <CardHeader
           title="Projects"
-          action={(user.id === activeUserId) && (
-            <IconButton id="editProjectsButton">
-              <EditIcon />
-            </IconButton>
-          )}
-          />
-        <CardContent> 
+          action={
+            user.id === activeUserId && (
+              <Box>
+                <IconButton
+                  id="add_skills_button"
+                  onClick={() => activateAddProject()}
+                >
+                  <AddCircleIcon />
+                </IconButton>
+                <IconButton id="editProjectsButton">
+                  <EditIcon />
+                </IconButton>
+              </Box>
+            )
+          }
+        />
+        <CardContent>
           <Box
-            
             sx={{
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
@@ -110,10 +125,10 @@ const ProjectsCard = ({ user, activeUserId }) => {
               {projects().map((project) => (
                 <div key={project.name}>
                   {project.name}
-                  <p/>
+                  <p />
                   <TextField
                     disabled={!editable}
-                    label = "Participation starts"
+                    label="Participation starts"
                     // select
                     // id={skill.id.toString()}
                     // name={skill.id.toString()}
@@ -123,35 +138,44 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   />
                   <TextField
                     disabled={!editable}
-                    label= "Participation ends"
+                    label="Participation ends"
                     defaultValue={project.emplEndDate}
                     variant="standard"
                     // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   />
                   <TextField
                     disabled={!editable}
-                    label= "Allocation"
+                    label="Allocation"
                     select
                     defaultValue={project.allocation}
                     variant="standard"
-                  // onChange={handleChange} // <- handleChange moved inside the Textfield element.
+                    // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   >
-                    <MenuItem id= "Key1" key="key1" value="20">20%</MenuItem>
-                    <MenuItem id= "Key2" key="key2" value="40">40%</MenuItem>
-                    <MenuItem id= "Key3" key="key3" value="60">60%</MenuItem>
-                    <MenuItem id= "Key4" key="key4" value="80">80%</MenuItem>
-                    <MenuItem id= "Key5" key="key5" value="100">100%</MenuItem>
+                    <MenuItem id="Key1" key="key1" value="20">
+                      20%
+                    </MenuItem>
+                    <MenuItem id="Key2" key="key2" value="40">
+                      40%
+                    </MenuItem>
+                    <MenuItem id="Key3" key="key3" value="60">
+                      60%
+                    </MenuItem>
+                    <MenuItem id="Key4" key="key4" value="80">
+                      80%
+                    </MenuItem>
+                    <MenuItem id="Key5" key="key5" value="100">
+                      100%
+                    </MenuItem>
                   </TextField>
                 </div>
               ))}
-              
+
               {/* {editable && (
                 <Button type="submit" id="submit_skills_button">
                   Submit
                 </Button>
               )} */}
             </form>
-            
           </Box>
         </CardContent>
       </Card>

@@ -1,0 +1,1 @@
+skills: [OrderedDict([('skill_level', 3), ('tech', <Techs: Techs object (1)>)]), OrderedDict([('skill_level', 2), ('tech', <Techs: Techs object (3)>)])]
