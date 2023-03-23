@@ -11,12 +11,15 @@ import {
 
 import EditIcon from "@mui/icons-material/Edit"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useState } from "react"//
 import consultantService from "../Services/consultantService"
 import techService from "../Services/techService";
 import { useSelector, useDispatch } from "react-redux"
-import { updateEditability, updateNewSkillAddability } from "../Reducers/skillCardReducer";
-
+import { updateEditability, 
+        updateNewSkillAddability, 
+        setSkillChanges,  
+        setAddableSkillDetail, 
+        initializeSkillCard, } from "../Reducers/skillCardReducer";
+import { useEffect, useState } from "react";
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
 //    Testing (robot atleast). 
@@ -24,12 +27,16 @@ import { updateEditability, updateNewSkillAddability } from "../Reducers/skillCa
 
 const SkillsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
-
   const editable = useSelector((state) => state.skillCard.editable)
-  // const [newSkill, setNewSkill] = useState(false)
   const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
-  const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these 
+  const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills
+  const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
+  const allSkills = useSelector((state) => state.skillCard.allSkills)
+  const [trigger, setTrigger] = useState(false)
+  useEffect(() =>{
+    const id = (activeUserId===user.id)? activeUserId : user.id
+    dispatch(initializeSkillCard(id))// fetch consultant from database and initialize/update skills
+  }, [trigger])
 
   const handleClick = (edit) => {
     dispatch(updateEditability(!edit))
@@ -41,47 +48,44 @@ const SkillsCard = ({ user, activeUserId }) => {
 
   const handleChange = (event) => {
     const value = event.target.value
-    setFormValues([...formValues, { skill_level: value, tech: [event.target.name][0] }])
+    dispatch(setSkillChanges([...skillChanges, { skill_level: value, tech: [event.target.name][0] }]))
     console.log("event:", event.target)
   }
   const handleTechChange = (event) => {
     const value = event.target.value
-    setTechFormValues({...techFormValues, [event.target.name]: value})
+    dispatch(setAddableSkillDetail({...addableSkillDetail, [event.target.name]: value}))
   }
   // This method now handles both, adding the new skill and updating the consultant afterwards.
   // That means that there is some reduntant repetition of code, feel free to refactor.
 
   const handleNewSkill = async (event) => {
     event.preventDefault()
-    const newSkillName = {tech_name: techFormValues.new_skill_name}
-    const newSkillLevel = techFormValues.new_skill_level
+    const newSkillName = {tech_name: addableSkillDetail.new_skill_name}
+    const newSkillLevel = addableSkillDetail.new_skill_level
     let newObject = null
     let skillsList = null
-    try{ // if adding of the new skill fails, catch finds a skill with same name from the DB. Probably should be moved elsewere
-      newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill 
-      skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.id}]}
-      consultantService.editConsultant(user.id, skillsList)
-    } catch{
-        newObject = await techService.getSelectedTechByName(newSkillName.tech_name)
-        skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject[0].id}]}
-        consultantService.editConsultant(user.id, skillsList)
-
-      }
+    newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill 
+    skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.result.id}]}
+    consultantService.editConsultant(user.id, skillsList)
     dispatch(updateNewSkillAddability(!newSkillAddable))
-    setTechFormValues() // This empties the state after it is not needed anymore
+    dispatch(setAddableSkillDetail())// This empties the state after it is not needed anymore
+    //update skillChanges
+    const newSkillChanges = [...skillChanges, { skill_level: newSkillLevel, tech: newObject.result.id }]
+    dispatch(setSkillChanges(newSkillChanges))
+    setTrigger(!trigger)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const skillsList = { skills: formValues }
+    const skillsList = { skills: skillChanges }
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
-    setFormValues([]) // This empties the state after it is not needed anymore
+    dispatch(setSkillChanges([])) // This empties the state after it is not needed anymore
   }
 
   const skills = () => {
     let t = []
-    user.skills?.map(
+    allSkills?.map(
       (skill) =>
         (t = t.concat([
           {
@@ -100,7 +104,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     <div>
       <Card>
         <CardHeader
-          action={
+          action={(user.id === activeUserId) && (
             <Box>
               <IconButton
                 id="add_skills_button"
@@ -115,7 +119,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                 <EditIcon />
               </IconButton>
             </Box>
-          }
+          )}
           title="Technical skills"
 
         />
@@ -145,6 +149,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                         variant="standard"
                         name="new_skill_level"
                         select
+                        defaultValue=""
                         onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
                       >
                         <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>

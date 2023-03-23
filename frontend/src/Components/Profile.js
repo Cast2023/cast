@@ -15,7 +15,7 @@ const Profile = ({ consultant }) => {
   // const selectedConsultant = useSelector(
   //   (state) => state.consultants.selectedConsultant
   // )
-  console.log(selectedConsultant)
+  // console.log(selectedConsultant)
   // if (!selectedConsultant.length) {
   //   return <div>Nothing to render</div>
   // }
