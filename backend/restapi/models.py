@@ -56,7 +56,7 @@ class Employee_tech_skills(models.Model):
 
 class Project(models.Model):
     employee = models.ManyToManyField(Employees, through='Employee_projects')
-    project_name = models.TextField(null=True)
+    project_name = models.TextField(unique=True)
     project_start_date = models.DateField(null=True)
     project_end_date = models.DateField(null=True)
     confidential = models.BooleanField(null=True)
