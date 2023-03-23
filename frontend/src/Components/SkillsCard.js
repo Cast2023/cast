@@ -7,6 +7,13 @@ import {
   Button,
   TextField,
   MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead,
+  Paper,
 } from "@mui/material"
 
 import EditIcon from "@mui/icons-material/Edit"
@@ -126,13 +133,14 @@ const SkillsCard = ({ user, activeUserId }) => {
         <CardContent>
           <Box
             
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-            }}
+            // sx={{
+            //   "& .MuiTextField-root": { m: 1, width: "25ch" },
+            // }}
           >
             {newSkillAddable && (
                 <form onSubmit={handleNewSkill}>
                   <div><TextField
+                      sx= {{ m: 1, width: "25ch" }}
                       required
                       id="skill-name"
                       label="Add skill"
@@ -143,6 +151,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                     </div>
                     <div>
                       <TextField
+                        sx= {{ m: 1, width: "25ch" }}
                         required
                         id="skill-level"
                         label="Add skill level"
@@ -163,25 +172,82 @@ const SkillsCard = ({ user, activeUserId }) => {
                 </form>
               )}
             <form onSubmit={handleSubmit}>
-              {skills().map((skill) => (
-                <TextField
-                  key = {skill.id}
-                  disabled={!editable}
-                  select
-                  id={skill.id.toString()}
-                  label={skill.tech}
-                  name={skill.id.toString()}
-                  defaultValue={skill.skillLevel}
-                  variant="standard"
-                  onChange={handleChange} // <- handleChange moved inside the Textfield element.
-                >
-                <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
-                <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
-                <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
+              {/* {skills().map((skill) => ( 
+                // <TextField
+                //   key = {skill.id}
+                //   disabled={!editable}
+                //   select
+                //   id={skill.id.toString()}
+                //   label={skill.tech}
+                //   name={skill.id.toString()}
+                //   defaultValue={skill.skillLevel}
+                //   variant="standard"
+                //   onChange={handleChange} // <- handleChange moved inside the Textfield element.
+                // >
+                // <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
+                // <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
+                // <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
+                
+
+                // </TextField> */}
+
+                <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Tech</TableCell>
+                      <TableCell>Skill level</TableCell>
+                      <TableCell>Perference</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  {skills().map((skill) => (
+                  <TableBody key={skill.id}>
+                      <TableRow key={skill.id}>
+                        {/* Tech */}
+                        <TableCell>{skill.tech}</TableCell>
+
+                        {/* Skill level */}
+                        <TableCell>            
+                          <TextField      key = {skill.id}
+                          disabled={!editable}
+                          select
+                          id={skill.id.toString()}
+                          name={skill.id.toString()}
+                          defaultValue={skill.skillLevel}
+                          variant="standard"
+                          onChange={handleChange} // <- handleChange moved inside the Textfield element.
+                        >
+                        <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
+                        <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
+                        <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
+                          </TextField>
+                        </TableCell>
 
 
-                </TextField>
-              ))}
+                        {/* Perference */}
+                        <TableCell>
+                        <TextField      key = {skill.id}
+                          disabled={!editable}
+                          select
+                          id={skill.id.toString()}
+                          name={skill.id.toString()}
+                          defaultValue={skill.skillLevel}
+                          variant="standard"
+                          onChange={handleChange} // <- handleChange moved inside the Textfield element.
+                        >
+                        <MenuItem id= "Key1" key="key1" value="1">Perferred</MenuItem>
+                        <MenuItem id= "Key2" key="key2" value="2">NA</MenuItem>
+                        <MenuItem id= "Key3" key="key3" value="3">NO!</MenuItem>
+                          </TextField>
+                        </TableCell>
+                      </TableRow>
+                  </TableBody>
+                  ))}
+                </Table>
+                </TableContainer>
+
+
+              
               
               {editable && (
                 <Button type="submit" id="submit_skills_button">
