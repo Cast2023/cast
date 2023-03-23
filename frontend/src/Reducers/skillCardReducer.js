@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit"
 import techService from "../Services/techService"
+import consultantService from "../Services/consultantService"
 
 const initialState = {
   editable: false,
   newSkillAddable: false,
-  allSkills: [],
-  addableSkill: null,//{new_skill_level: "", new_skill_name: ""}
+  skillChanges: [],
+  addableSkillDetail: null,//{new_skill_level: "", new_skill_name: ""}
+  allSkills: null,//from consultant
 
 }
 
@@ -25,14 +27,20 @@ const skillCardSlice = createSlice({
         newSkillAddable: action.payload
       }
     },
-    setAddableSkill(state, action){
-      return{
+    setSkillChanges(state,action) {
+      return {
         ...state,
-        addableSkill: action.payload
+        skillChanges: action.payload
       }
     },
-    setAllSkills(state,action) {
-      return {
+    setAddableSkillDetail(state, action){
+      return{
+        ...state,
+        addableSkillDetail: action.payload
+      }
+    },
+    setAllSkills(state,action){
+      return{
         ...state,
         allSkills: action.payload
       }
@@ -40,17 +48,19 @@ const skillCardSlice = createSlice({
   },
 })
 
-export const initializeSkillCard = () => {
+export const initializeSkillCard = (id) => {
   return async (dispatch) => {
-    const consultants = await techService.getAllTechs()
-    dispatch(setAllSkills(consultants))
+    const consultant = await consultantService.getSelectedConsultant(id)
+    const skills = consultant.skills
+    dispatch(setAllSkills(skills))
   }
 }
 
 export const {
   updateEditability,
   updateNewSkillAddability,
-  setAddableSkill,
+  setSkillChanges,
+  setAddableSkillDetail,
   setAllSkills
 } = skillCardSlice.actions
 

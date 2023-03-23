@@ -32,6 +32,7 @@ Scenario: As a visitor I can edit my skills
   Element Should Contain  id=1  Proficient
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
+  sleep  1s
   Element Should Contain  id=1  Proficient
   
 
@@ -43,10 +44,10 @@ Scenario: As a visitor I can edit many skills
   Wait until Page Contains Element  Key1
   Click Element  Key1
   Click Element  id=3
-  Wait until Page Contains Element  Key1
-  Click Element  Key1
+  Wait until Page Contains Element  Key2
+  Click Element  Key2
   Element Should Contain  id=1  Wants to learn
-  Element Should Contain  id=3  Wants to learn
+  Element Should Contain  id=3  Can work with
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
   Click Button  edit_skills_button
@@ -54,30 +55,29 @@ Scenario: As a visitor I can edit many skills
   Wait until Page Contains Element  Key3
   Click Element  Key3
   Click Element  id=3
+  Wait until Page Contains Element  Key1
+  Click Element  Key1
+  Click Button  submit_skills_button
+  Sleep  1s
+  Refresh & Navigate to Profile Page
+  Sleep  1s 
+  Element Should Contain  id=1  Proficient
+  Element Should Contain  id=3  Wants to learn
+
+
+Scenario: As a visitor I can Add a new skill
+  Refresh & Navigate to Profile Page
+  Click Button  add_skills_button
+  Set Value  skill-name  ristipisto
+  Click Element  skill-level
   Wait until Page Contains Element  Key2
   Click Element  Key2
-  Click Button  submit_skills_button
+  Sleep  1s
+  Click Button  submit_new_skill_button
+  Sleep  1s
   Refresh & Navigate to Profile Page
+  Page Should Contain  ristipisto
 
-  Element Should Contain  id=1  Proficient
-  Element Should Contain  id=3  Can work with
-
-# TODO: FIX THIS!
-#Scenario: As a visitor I can Add a new skill
-#  Refresh & Navigate to Profile Page
-#  Click Button  add_skills_button
-#  Set Value  skill-name  ristipisto
-#  Click Element  skill-level
-#  Wait until Page Contains Element  Key2
-#  Click Element  Key2
-#  Sleep  1s
-#  Click Button  submit_new_skill_button
-#  Sleep  1s
-#  Refresh & Navigate to Profile Page
-#  Page Should Contain  ristipisto
-#
-#  Textfield Value Should Be  id=1  3
-#  Textfield Value Should Be  id=3  2
 
 Scenario: As a visitor I can't edit other user's tech skills
   Go To  ${SERVER}
