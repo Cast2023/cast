@@ -44,8 +44,10 @@ const ProjectsCard = ({ user, activeUserId }) => {
       projects: [
         {
           project: newProjectId,
-          participation_start_date: dayjs(newStartDate).format("YYYY-MM-DD"),
-          participation_end_date: dayjs(newEndDate).format("YYYY-MM-DD"),
+          employee_participation_start_date:
+            dayjs(newStartDate).format("YYYY-MM-DD"),
+          employee_participation_end_date:
+            dayjs(newEndDate).format("YYYY-MM-DD"),
           allocation_busy: newAllocation,
         },
       ],
