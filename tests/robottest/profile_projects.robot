@@ -9,6 +9,8 @@ Suite Setup     ${SETUP}
 Scenario: As a visitor I can see the projects card on profile page
   Refresh & Navigate to Profile Page
   Page Should Contain Element  projectscard
+
+
   
 Scenario: As a visitor I can't edit other user's projects
   Go To  ${SERVER}
@@ -20,3 +22,6 @@ Scenario: As a visitor I can't edit other user's projects
   Wait Until Page Contains Element  projectscard
   Page Should Not Contain Button  editProjectsButton
   
+Scenario: As a visitor I can see correct projects in personal info on profile page
+  Refresh & Navigate to Profile Page
+  Page Should Contain  JawCorp

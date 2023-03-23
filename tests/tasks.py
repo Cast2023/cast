@@ -3,7 +3,7 @@ from invoke import task
 
 @task
 def test(ctx):
-    ctx.run("robot --argumentfile robottest/local-dev.args robottest")
+    ctx.run("robot --argumentfile robottest/local-dev.args robottest/profile_projects.robot")
 
 @task
 def container_test(ctx):
