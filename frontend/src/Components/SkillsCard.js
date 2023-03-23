@@ -54,10 +54,14 @@ const SkillsCard = ({ user, activeUserId }) => {
     dispatch(updateNewSkillAddability(!edit))
   }
 
-  const handleChange = (event) => {
+  const handleSkillChange = (event) => {
     const value = event.target.value
-    dispatch(setSkillChanges([...skillChanges, { skill_level: value, tech: [event.target.name][0] }]))
-    console.log("event:", event.target)
+    dispatch(setSkillChanges([...skillChanges, { skill_level: value, tech: [event.target.name][0]}]))
+  }
+
+  const handlePrefrenceChange = (event) => {
+    const value = event.target.checked
+    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0], tech_preference: value }]))
   }
   const handleTechChange = (event) => {
     const value = event.target.value
@@ -100,6 +104,7 @@ const SkillsCard = ({ user, activeUserId }) => {
             id: skill.tech,
             tech: skill.tech_name,
             skillLevel: skill.skill_level,
+            preference: skill.tech_preference,
           },
         ]))
     )
@@ -147,7 +152,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                       label="Add skill"
                       variant="standard"
                       name="new_skill_name"
-                      onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
+                      onChange={handleTechChange} // <- handleSkillChange moved inside the Textfield element.
                     />
                     </div>
                     <div>
@@ -191,14 +196,15 @@ const SkillsCard = ({ user, activeUserId }) => {
 
                         {/* Skill level */}
                         <TableCell>            
-                          <TextField      key = {skill.id}
+                          <TextField      
+                          key = {skill.id}
                           disabled={!editable}
                           select
                           id={skill.id.toString()}
                           name={skill.id.toString()}
                           defaultValue={skill.skillLevel}
                           variant="standard"
-                          onChange={handleChange} // <- handleChange moved inside the Textfield element.
+                          onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
                         >
                         <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
                         <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
@@ -207,7 +213,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                         </TableCell>
 
 
-                        {/* Perference */}
+                        {/* Preference */}
                         <TableCell>
                         {/* <TextField      key = {skill.id}
                           disabled={!editable}
@@ -223,8 +229,10 @@ const SkillsCard = ({ user, activeUserId }) => {
                         <MenuItem id= "Key3" key="key3" value="3">NO!</MenuItem>
                         </TextField> */}
                         <Checkbox 
-                        key = {skill.id}
-                        defaultChecked
+                          key = {skill.id}
+                          onChange={handlePrefrenceChange}
+                          name = {skill.id}
+                          checked = {skill.preference}
                         >
                         </Checkbox>
                         </TableCell>
