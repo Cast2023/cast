@@ -1,4 +1,4 @@
- import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 
 const initialState = {
@@ -35,6 +35,16 @@ const consultantSlice = createSlice({
         )
       })
     },
+    updateFilteredConsultantsByTech(state, action) {
+      const searchTerm = action.payload
+      state.filteredConsultants = state.allConsultants.filter((consultant) => {
+        return (
+          consultant.skill.tech_name //TÄMÄ TÄSSÄ EI TOIMI, MIKÄ ARVO
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        )
+      })
+    },
     // setSelectedConsultant(state, action) {
     //   state.selectedConsultant = action.payload
     // },
@@ -61,6 +71,7 @@ export const {
   setAllConsultants,
   setFilteredConsultants,
   updateFilteredConsultantsByName,
+  updateFilteredConsultantsByTech,
   setSelectedConsultant,
   setActiveConsultant,
 } = consultantSlice.actions

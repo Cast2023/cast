@@ -10,7 +10,9 @@ import {
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setNameFilter } from "../Reducers/searchReducer"
+import { setTechFilter } from "../Reducers/searchReducer"
 import { updateFilteredConsultantsByName } from "../Reducers/consultantReducer"
+import { updateFilteredConsultantsByTech } from "../Reducers/consultantReducer"
 import { Link } from "react-router-dom"
 
 const Search = () => {
@@ -19,6 +21,8 @@ const Search = () => {
     (state) => state.consultants.filteredConsultants
   )
   const nameFilter = useSelector((state) => state.search.nameFilter)
+  const techFilter = useSelector((state) => state.search.techFilter)
+
 
   useEffect(() => {
     if (consultants) {
@@ -26,11 +30,17 @@ const Search = () => {
     } else {
       dispatch(updateFilteredConsultantsByName(null))
     }
-  }, [nameFilter])
+  }, [nameFilter], [techFilter])
+  //if (!(techFilter==null)) {
+  //  dispatch(updateFilteredConsultantsByTech(techFilter))
+  //} 
 
   const dispatch = useDispatch()
   const changeSearchTerm = (e) => {
     dispatch(setNameFilter(e.target.value))
+  }
+  const changeTechSearchTerm = (e) => {
+    dispatch(setTechFilter(e.target.value))
   }
 
   return (
@@ -42,12 +52,20 @@ const Search = () => {
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <TextField
-              fullWidth
+              size="medium"
               onChange={changeSearchTerm}
-              placeholder="search with first and last name"
+              placeholder="First and/or last name"
               type="text"
               value={nameFilter}
               id="search_bar"
+            />
+            <TextField
+              size="medium"
+              onChange={changeTechSearchTerm}
+              placeholder="Technology"
+              type="text"
+              value={techFilter}
+              id="search_bar_tech"
             />
           </Grid>
           {/* <Grid item xs={4}>
