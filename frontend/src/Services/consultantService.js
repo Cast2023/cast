@@ -17,9 +17,15 @@ const getSelectedConsultant = (id) => {
   return request.then((response) => response.data)
 }
 
+const getSelectedConsultantSkills = (id) => {
+  const request = axios.get(`${baseUrl}${id}/`)
+  return request.then((response) => response.data)
+}
+
 const editConsultant = (id, payload) => {
-  console.log('editcons payload:', payload)
+  console.log("editcons payload:", payload)
   const request = axios.patch(`${baseUrl}${id}/`, payload)
+  console.log(request)
   return request.then((response) => response.data)
 }
 
@@ -28,4 +34,5 @@ export default {
   createConsultants,
   getSelectedConsultant,
   editConsultant,
+  getSelectedConsultantSkills,
 }

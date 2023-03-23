@@ -9,7 +9,7 @@ class TechSerializer(serializers.ModelSerializer):
     class Meta:
         model = Techs
         fields = ('id', 'tech_name')
-
+    
 
 class CertSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,10 +63,6 @@ class ConsultantSerializer(serializers.ModelSerializer):
             Update and return an existing `Consultant` instance, given the validated data.
             This action should be refactored if time permits. 
         '''
-
-        with open ("partial_update.log", "w") as file:
-            for key, value in validated_data.items():
-                file.write(f"{key}: {value}\n")
 
         instance.first_name = validated_data.get(
             'first_name', instance.first_name)

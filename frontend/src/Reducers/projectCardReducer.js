@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import projectService from "../Services/projectService"
+import consultantService from "../Services/consultantService"
 
 const initialState = {
   editProjectsActivated: false,
@@ -37,6 +38,17 @@ export const initializeProjects = () => {
   return async (dispatch) => {
     const projects = await projectService.getAllProjects()
     dispatch(setAllProjects(projects))
+  }
+}
+
+export const addNewProject = (newProject) => {
+  return async (dispatch) => {
+    const addedProject = await consultantService.editConsultant(
+      newProject.id,
+      newProject
+    )
+    dispatch(setAllProjects(addedProject))
+    dispatch(updateAddState(false))
   }
 }
 

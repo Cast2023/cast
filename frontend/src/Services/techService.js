@@ -10,7 +10,7 @@ const getAllTechs = () => {
 const createTech = async (newObject) => {
   const request = await axios.post(baseUrl, newObject)
   
-  console.log("req", request.data) 
+  //console.log("req", request.data) 
   return request.data
 }
 
