@@ -19,7 +19,7 @@ import { updateEditability,
         setSkillChanges,  
         setAddableSkillDetail, 
         initializeSkillCard, } from "../Reducers/skillCardReducer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // MAJOR DRAWBACK: To see the changes a refresh of the page is needed. This needs to be fixed, but can be pushed to the nex sprint
 // TODO next: 
 //    Testing (robot atleast). 
@@ -32,12 +32,12 @@ const SkillsCard = ({ user, activeUserId }) => {
   const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills
   const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
   const allSkills = useSelector((state) => state.skillCard.allSkills)
-
+  const [trigger, setTrigger] = useState(false)
   useEffect(() =>{
     const id = (activeUserId===user.id)? activeUserId : user.id
     dispatch(initializeSkillCard(id))
     // console.log("allSkills are", allSkills)
-  }, [skillChanges, allSkills])
+  }, [trigger])
 
   const handleClick = (edit) => {
     dispatch(updateEditability(!edit))
@@ -73,6 +73,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     //update skillChanges
     const newSkillChanges = [...skillChanges, { skill_level: newSkillLevel, tech: newObject.result.id }]
     dispatch(setSkillChanges(newSkillChanges))
+    setTrigger(!trigger)
   }
 
   const handleSubmit = (event) => {
