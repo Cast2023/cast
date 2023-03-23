@@ -35,8 +35,7 @@ const SkillsCard = ({ user, activeUserId }) => {
   const [trigger, setTrigger] = useState(false)
   useEffect(() =>{
     const id = (activeUserId===user.id)? activeUserId : user.id
-    dispatch(initializeSkillCard(id))
-    // console.log("allSkills are", allSkills)
+    dispatch(initializeSkillCard(id))// fetch consultant from database and initialize/update skills
   }, [trigger])
 
   const handleClick = (edit) => {
@@ -105,7 +104,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     <div>
       <Card>
         <CardHeader
-          action={
+          action={(user.id === activeUserId) && (
             <Box>
               <IconButton
                 id="add_skills_button"
@@ -120,7 +119,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                 <EditIcon />
               </IconButton>
             </Box>
-          }
+          )}
           title="Technical skills"
 
         />

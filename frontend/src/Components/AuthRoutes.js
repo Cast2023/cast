@@ -20,7 +20,6 @@ const AuthRoutes = () => {
     useEffect(() => {
     //example in part5 uses JSON, here we test with token strin first
     const token = window.localStorage.getItem('token')//its setItem can be found from Component/AppRoutes.js
-    console.log('useEffect token: ', token)
     if (token) {
       authenticationService.verifyToken({token}).then(response =>{
         //console.log('response.data[0]: ', response.data[0])
