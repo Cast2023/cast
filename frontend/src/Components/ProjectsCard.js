@@ -16,6 +16,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import { useState } from "react"
+import dayjs from "dayjs"
+import { addNewProject } from "../Reducers/projectCardReducer"
 
 const ProjectsCard = ({ user, activeUserId }) => {
   const [newProject, setNewProject] = useState(null)
@@ -38,12 +40,17 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const handleSubmitNewProject = (event) => {
     event.preventDefault()
     const newEmployeeProjectParticipation = {
-      employee_id: user.id,
-      project_id: newProjectId,
-      participation_start_date: newStartDate,
-      participation_end_date: newEndDate,
-      allocation_busy: newAllocation,
+      id: user.id,
+      projects: [
+        {
+          project: newProjectId,
+          participation_start_date: dayjs(newStartDate).format("YYYY-MM-DD"),
+          participation_end_date: dayjs(newEndDate).format("YYYY-MM-DD"),
+          allocation_busy: newAllocation,
+        },
+      ],
     }
+    dispatch(addNewProject(newEmployeeProjectParticipation))
     console.log(newEmployeeProjectParticipation)
   }
 
