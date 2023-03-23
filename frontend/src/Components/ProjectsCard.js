@@ -56,7 +56,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
             user.id === activeUserId && (
               <Box>
                 <IconButton
-                  id="add_skills_button"
+                  id="add_project_button"
                   onClick={() => updateAddProjectState(addProjectState)}
                 >
                   <AddCircleIcon />
