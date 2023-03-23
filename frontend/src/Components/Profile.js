@@ -22,22 +22,20 @@ const Profile = ({ consultant }) => {
 
   return selectedConsultant.id ? (
     <div>
-      <Container id="container">
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} id="grid">
-          <Grid item xs={12} sm={6} md={6} id="personalinfocard">
-            <PersonalInfoCard user={selectedConsultant} activeUserId={activeUserId} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} id="projectscard">
-            <ProjectsCard user={selectedConsultant} activeUserId={activeUserId} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} id="skillscard">
-            <SkillsCard user={selectedConsultant} activeUserId={activeUserId} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} id="certscard">
-            <CertsCard user={selectedConsultant} activeUserId={activeUserId} />
-          </Grid>
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} id="grid">
+        <Grid item xs={12} sm={6} md={6} id="personalinfocard">
+          <PersonalInfoCard user={selectedConsultant} activeUserId={activeUserId} />
         </Grid>
-      </Container>
+        <Grid item xs={12} sm={6} md={6} id="projectscard">
+          <ProjectsCard user={selectedConsultant} activeUserId={activeUserId} />
+        </Grid>
+        <Grid item xs={12} sm={6} md={6} id="skillscard">
+          <SkillsCard user={selectedConsultant} activeUserId={activeUserId} />
+        </Grid>
+        <Grid item xs={12} sm={6} md={6} id="certscard">
+          <CertsCard user={selectedConsultant} activeUserId={activeUserId} />
+        </Grid>
+      </Grid>
     </div>
   ) : (
     <div>Loading data... spinner here </div>

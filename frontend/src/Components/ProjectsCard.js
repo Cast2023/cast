@@ -63,7 +63,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
   }
 
 
-  const editable = useSelector((state) => state.skillCard.editable)
+  const editable = false //useSelector((state) => state.skillCard.editable)
   // const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
   const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
   // const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these
@@ -186,7 +186,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     id="allocation_busy"
                     name="allocation_busy"
                     type="number"
-                    inputProps={{ min: 0, max: 100, step: "5" }}
+                    inputProps={{ min: 0, max: 100, step: "10" }}
                     onChange={(event) => setNewAllocation(event.target.value)}
                     defaultValue={newAllocation}
                   ></TextField>
@@ -262,19 +262,34 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     variant="standard"
                     // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   >
-                    <MenuItem id="Key1" key="key1" value="20">
+                    <MenuItem id="Key10" key="key10" value="10">
+                      10%
+                    </MenuItem>
+                    <MenuItem id="Key20" key="key20" value="20">
                       20%
                     </MenuItem>
-                    <MenuItem id="Key2" key="key2" value="40">
+                    <MenuItem id="Key30" key="key30" value="30">
+                      30%
+                    </MenuItem>
+                    <MenuItem id="Key40" key="key40" value="40">
                       40%
                     </MenuItem>
-                    <MenuItem id="Key3" key="key3" value="60">
+                    <MenuItem id="Key50" key="key50" value="50">
+                      50%
+                    </MenuItem>
+                    <MenuItem id="Key60" key="key60" value="60">
                       60%
                     </MenuItem>
-                    <MenuItem id="Key4" key="key4" value="80">
+                    <MenuItem id="Key70" key="key70" value="70">
+                      70%
+                    </MenuItem>
+                    <MenuItem id="Key80" key="key80" value="80">
                       80%
                     </MenuItem>
-                    <MenuItem id="Key5" key="key5" value="100">
+                    <MenuItem id="Key90" key="key90" value="90">
+                      90%
+                    </MenuItem>
+                    <MenuItem id="Key100" key="key100" value="100">
                       100%
                     </MenuItem>
                   </TextField>
