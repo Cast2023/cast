@@ -64,10 +64,6 @@ class ConsultantSerializer(serializers.ModelSerializer):
             This action should be refactored if time permits. 
         '''
 
-        with open ("partial_update.log", "w") as file:
-            for key, value in validated_data.items():
-                file.write(f"{key}: {value}\n")
-
         instance.first_name = validated_data.get(
             'first_name', instance.first_name)
         instance.last_name = validated_data.get(
