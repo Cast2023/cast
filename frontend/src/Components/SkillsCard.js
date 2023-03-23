@@ -56,12 +56,13 @@ const SkillsCard = ({ user, activeUserId }) => {
 
   const handleSkillChange = (event) => {
     const value = event.target.value
-    dispatch(setSkillChanges([...skillChanges, { skill_level: value, tech: [event.target.name][0]}]))
+    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0], skill_level: value}]))
   }
 
   const handlePrefrenceChange = (event) => {
     const value = event.target.checked
-    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0], tech_preference: value }]))
+    console.log(event.target)
+    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0], skill_level: event.target.id, tech_preference: value }]))
   }
   const handleTechChange = (event) => {
     const value = event.target.value
@@ -232,7 +233,8 @@ const SkillsCard = ({ user, activeUserId }) => {
                           key = {skill.id}
                           onChange={handlePrefrenceChange}
                           name = {skill.id}
-                          checked = {skill.preference}
+                          id= {skill.skillLevel}
+                          defaultChecked = {skill.preference}
                         >
                         </Checkbox>
                         </TableCell>
