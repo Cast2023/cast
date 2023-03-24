@@ -15,7 +15,7 @@ import Autocomplete from "@mui/material/Autocomplete"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import dayjs from "dayjs"
 import { addNewProject } from "../Reducers/projectCardReducer"
 
@@ -25,13 +25,14 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const [newAllocation, setNewAllocation] = useState(0)
   const [newStartDate, setNewStartDate] = useState(null)
   const [newEndDate, setNewEndDate] = useState(null)
+  const [projects, setProjects] = useState(
+    useSelector((state) => state.projectCard.allProjects)
+  )
 
   const dispatch = useDispatch()
   const addProjectState = useSelector(
     (state) => state.projectCard.addProjectActivated
   )
-
-  const projects = useSelector((state) => state.projectCard.allProjects)
 
   const updateAddProjectState = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
