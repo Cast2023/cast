@@ -234,7 +234,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                           onChange={handlePrefrenceChange}
                           name = {skill.id}
                           id= {skill.skillLevel}
-                          
+                          disabled={!editable}
                           defaultChecked = {skill.preference}
                         >
                         </Checkbox>
