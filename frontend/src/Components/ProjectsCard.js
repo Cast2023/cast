@@ -25,13 +25,14 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const [newAllocation, setNewAllocation] = useState(0)
   const [newStartDate, setNewStartDate] = useState(null)
   const [newEndDate, setNewEndDate] = useState(null)
+  const [projects, setProjects] = useState(
+    useSelector((state) => state.projectCard.allProjects)
+  )
 
   const dispatch = useDispatch()
   const addProjectState = useSelector(
     (state) => state.projectCard.addProjectActivated
   )
-
-  const projects = useSelector((state) => state.projectCard.allProjects)
 
   const updateAddProjectState = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
