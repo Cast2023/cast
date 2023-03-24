@@ -156,20 +156,99 @@ class EmployeeUpdateTests(APITestCase):
         user1 = Employees.objects.create(
             first_name='John',
             last_name='Doe',
-            email='tester@gmail.com'
+            email='doe@gmail.com',
+            phone_number='+358412123218',
+            location_country='Finland',
+            location_city='Vaasa',
+            worktime_allocation=80,
+            allocation_until='2024-01-01',
+            wants_to_do='Frontend',
+            wants_not_to_do='Backend'
         )
-        Employees.objects.create(
+        user2 = Employees.objects.create(
             first_name='Jane',
             last_name='Watson',
-            email='watson@gmail.com'
+            email='watson@gmail.com',
+            phone_number='+358502345678',
+            location_country='Finland',
+            location_city='Helsinki',
+            worktime_allocation=100,
+            allocation_until='2029-12-31',
+            wants_to_do='Manufacturing sector',
+            wants_not_to_do='Banking sector'
         )
         tech1 = Techs.objects.create(
             tech_name='Python'
         )
+        tech2 = Techs.objects.create(
+            tech_name='Java'
+        )
+        self.cert1 = Certificate.objects.create(
+            vendor='Amazon',
+            certificate_name='AWS Certified Cloud Practitioner'
+        )
+        self.cert2 = Certificate.objects.create(
+            vendor='Microsoft',
+            certificate_name='AZ 900: Microsoft Azure Fundamental'
+        )
+        self.project1 = Project.objects.create(
+            project_name='CastCorp',
+            project_start_date='2021-10-19',
+            project_end_date='2022-05-15',
+            confidential=False
+        )
+
+        self.project2 = Project.objects.create(
+            project_name='CastBook',
+            project_start_date='2010-10-19',
+            project_end_date='2030-05-15',
+            confidential=True
+        )
         Employee_tech_skills.objects.create(
             employee=user1,
             tech=tech1,
+            skill_level=3,
+            tech_preference=False
+        )
+        Employee_tech_skills.objects.create(
+            employee=user1,
+            tech=tech2,
+            skill_level=1
+        ) 
+        Employee_tech_skills.objects.create(
+            employee=user2,
+            tech=tech1,
+            skill_level=1,
+            tech_preference=False
+        )
+        Employee_tech_skills.objects.create(
+            employee=user2,
+            tech=tech2,
             skill_level=3
+        )  
+        Employee_certificates.objects.create(
+            employee=user1,
+            cert=self.cert1,
+            valid_until='2025-01-01'
+        )
+        Employee_certificates.objects.create(
+            employee=user2,
+            cert=self.cert2,
+            valid_until='2027-06-01'
+        )
+        Employee_projects.objects.create(
+            employee=user1,
+            project=self.project1,
+            employee_participation_start_date='2022-01-01',
+            employee_participation_end_date='2022-03-30',
+            allocation_busy=60,
+        )
+        Employee_projects.objects.create(
+            employee=user2,
+            project=self.project1,
+            employee_participation_start_date='2020-01-01',
+            employee_participation_end_date='2024-03-30',
+            allocation_busy=80,
         )
         self.url_base = reverse('consultant-list')
     
@@ -232,4 +311,98 @@ class EmployeeUpdateTests(APITestCase):
         response = self.client.get(url)
         result = response.json()
         self.assertEqual(result['skills'][0]['skill_level'], 2)
-        
+
+    def test_a_skill_preference_can_be_altered_data(self):
+        url = self.get_base_url()
+        userdata = self.client.get(url).json()
+        tech_id = userdata['skills'][0]['tech']
+        data = {
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'skills': [
+                {
+                    'tech': tech_id,
+                    'skill_level': 2,
+                    'tech_preference': True
+                }
+            ]  
+        }
+        self.client.patch(url, data, format='json')
+        response = self.client.get(url)
+        result = response.json()
+        self.assertEqual(result['skills'][0]['tech_preference'], True)
+    
+    def test_a_project_can_be_added_to_an_employee(self):
+        url = self.get_base_url()
+        project_id = self.project2.id
+        data = {
+            'projects': [
+                {
+                    'project': project_id,
+                    'employee_participation_start_date': '2022-01-01',
+                    'employee_participation_end_date': '2022-03-30',
+                    'allocation_busy': 60,
+                }
+            ]
+        }
+        self.client.patch(url, data, format='json')
+        response = self.client.get(url)
+        result = response.json()
+        self.assertEqual(result['projects'][1]['project'], project_id)
+        self.assertEqual(result['projects'][1]['employee_participation_start_date'], '2022-01-01')
+        self.assertEqual(result['projects'][1]['employee_participation_end_date'], '2022-03-30')
+        self.assertEqual(result['projects'][1]['allocation_busy'], 60)
+
+    def test_an_existing_project_information_can_be_edited(self):
+        url = self.get_base_url()
+        project_id = self.project1.id
+        data = {
+            'projects': [
+                {
+                    'project': project_id,
+                    'employee_participation_start_date': '2020-01-01',
+                    'employee_participation_end_date': '2024-12-31',
+                    'allocation_busy': 100,
+                }
+            ]
+        }
+        self.client.patch(url, data, format='json')
+        response = self.client.get(url)
+        result = response.json()
+        self.assertEqual(result['projects'][0]['project'], project_id)
+        self.assertEqual(result['projects'][0]['employee_participation_start_date'], '2020-01-01')
+        self.assertEqual(result['projects'][0]['employee_participation_end_date'], '2024-12-31')
+        self.assertEqual(result['projects'][0]['allocation_busy'], 100)
+
+    def test_certificate_valid_until_can_be_updated(self):
+        url = self.get_base_url()
+        cert_id = self.cert1.id
+        data = {
+            'certificates': [
+                {
+                    'cert': cert_id,
+                    'valid_until': '2022-01-01'
+                }
+            ]
+        }
+        self.client.patch(url, data, format='json')
+        response = self.client.get(url)
+        result = response.json()
+        self.assertEqual(result['certificates'][0]['valid_until'], '2022-01-01')
+    
+    def test_new_certificate_can_be_added(self):
+        url = self.get_base_url()
+        cert_id = self.cert2.id
+        data = {
+            'certificates': [
+                {
+                    'cert': cert_id,
+                    'valid_until': '2022-01-01'
+                }
+            ]
+        }
+        self.client.patch(url, data, format='json')
+        response = self.client.get(url)
+        result = response.json()
+        self.assertEqual(result['certificates'][1]['cert'], cert_id)
+        self.assertEqual(result['certificates'][1]['valid_until'], '2022-01-01')
