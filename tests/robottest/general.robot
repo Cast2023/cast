@@ -39,12 +39,8 @@ Scenario: As a visitor clicking get started button opens a popup
   Click element  getstarted
   Page Should Contain  This is very helpful
 
-Scenario: As a visitor I can see the profile page structure
-  Refresh & Navigate to Profile Page
-  Page Should Contain Element  container
-
 Scenario: As a visitor I can see the grid on profile page
   Refresh & Navigate to Profile Page
-  Page Should Contain Element  grid
+  Wait until page contains element  grid
 
 

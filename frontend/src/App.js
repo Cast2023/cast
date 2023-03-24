@@ -16,7 +16,7 @@ const App = () => {
   const token = useSelector((state) => state.session.token)
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Router>
         <AppHeader />
         {activeSession ? <AppRoutes /> : <AuthRoutes />}
