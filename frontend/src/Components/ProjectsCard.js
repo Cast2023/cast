@@ -15,7 +15,7 @@ import Autocomplete from "@mui/material/Autocomplete"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import dayjs from "dayjs"
 import { addNewProject } from "../Reducers/projectCardReducer"
 
