@@ -62,7 +62,8 @@ const SkillsCard = ({ user, activeUserId }) => {
 
   const handlePrefrenceChange = (event) => {
     const value = event.target.checked
-    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0], skill_level: event.target.id, tech_preference: value }]))
+    console.log(event.target.id)
+    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0],  tech_preference: value }]))
   }
   const handleTechChange = (event) => {
     const value = event.target.value
@@ -212,28 +213,12 @@ const SkillsCard = ({ user, activeUserId }) => {
                         <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
                           </TextField>
                         </TableCell>
-
-
-                        {/* Preference */}
                         <TableCell>
-                        {/* <TextField      key = {skill.id}
-                          disabled={!editable}
-                          select
-                          id={skill.id.toString()}
-                          name={skill.id.toString()}
-                          defaultValue={skill.skillLevel}
-                          variant="standard"
-                          onChange={handleChange} // <- handleChange moved inside the Textfield element.
-                        >
-                        <MenuItem id= "Key1" key="key1" value="1">Perferred</MenuItem>
-                        <MenuItem id= "Key2" key="key2" value="2">NA</MenuItem>
-                        <MenuItem id= "Key3" key="key3" value="3">NO!</MenuItem>
-                        </TextField> */}
                         <Checkbox 
                           key = {skill.id}
                           onChange={handlePrefrenceChange}
                           name = {skill.id}
-                          id= {skill.skillLevel}
+                          id= {skill.id +"pref"}
                           disabled={!editable}
                           defaultChecked = {skill.preference}
                         >

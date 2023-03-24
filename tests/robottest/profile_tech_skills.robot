@@ -88,3 +88,14 @@ Scenario: As a visitor I can't edit other user's tech skills
   Click Link  Janet
   Wait Until Page Contains Element  projectscard
   Page Should Not Contain Button  editProjectsButton
+
+Scenario: As a visitor I can set my skill preference
+  Refresh & Navigate to Profile Page
+  Click Button  edit_skills_button
+  Page Should Contain  Python
+  Checkbox Should Be Selected  id=1pref
+  Click Element  id=1pref
+  Click Button  submit_skills_button
+  Refresh & Navigate to Profile Page
+  sleep  1s
+  Checkbox Should Not Be Selected  id=1pref
