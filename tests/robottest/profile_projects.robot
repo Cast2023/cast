@@ -17,7 +17,7 @@ Scenario: As a visitor I can't edit other user's projects
   Wait until page contains element  search
   Click element  search
   Wait Until Page Contains Element  searchresults
-  Sleep  1s
+  Sleep  2s
   Click Link  Janet
   Wait Until Page Contains Element  projectscard
   Page Should Not Contain Button  editProjectsButton
