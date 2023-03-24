@@ -41,6 +41,7 @@ const SkillsCard = ({ user, activeUserId }) => {
   const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
   const allSkills = useSelector((state) => state.skillCard.allSkills)
   const [trigger, setTrigger] = useState(false)
+  
   useEffect(() =>{
     const id = (activeUserId===user.id)? activeUserId : user.id
     dispatch(initializeSkillCard(id))// fetch consultant from database and initialize/update skills
@@ -61,7 +62,6 @@ const SkillsCard = ({ user, activeUserId }) => {
 
   const handlePrefrenceChange = (event) => {
     const value = event.target.checked
-    console.log(event.target)
     dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0], skill_level: event.target.id, tech_preference: value }]))
   }
   const handleTechChange = (event) => {
@@ -78,7 +78,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     let newObject = null
     let skillsList = null
     newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill 
-    skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.result.id}]}
+    skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.result.id, tech_preference: true}]}
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateNewSkillAddability(!newSkillAddable))
     dispatch(setAddableSkillDetail())// This empties the state after it is not needed anymore
@@ -234,6 +234,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                           onChange={handlePrefrenceChange}
                           name = {skill.id}
                           id= {skill.skillLevel}
+                          
                           defaultChecked = {skill.preference}
                         >
                         </Checkbox>
