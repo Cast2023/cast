@@ -81,6 +81,7 @@ Scenario: As a visitor I can Add a new skill
   Click Element  Key2
   Sleep  1s
   Click Button  submit_new_skill_button
+  Sleep  1s
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Sleep  1s
