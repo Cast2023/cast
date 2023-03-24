@@ -93,9 +93,10 @@ Scenario: As a visitor I can set my skill preference
   Refresh & Navigate to Profile Page
   Click Button  edit_skills_button
   Page Should Contain  Python
-  Checkbox Should Be Selected  id=1pref
+  ${checkboxInitialState} =   Run Keyword And Return Status      Checkbox Should Be Selected  id=1pref
   Click Element  id=1pref
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
   sleep  1s
-  Checkbox Should Not Be Selected  id=1pref
+  ${checkboxFinalState} =     Run Keyword And Return Status       Checkbox Should Not Be Selected  id=1pref
+  Should Be Equal    ${checkboxInitialState}       ${checkboxFinalState}  
