@@ -4,7 +4,7 @@ ${SERVER}               http://${HOSTNAME}:${PORT}/roboroute
 
 *** Settings ***
 
-Library         SeleniumLibrary  timeout=10  implicit_wait=0
+Library         SeleniumLibrary  timeout=10  implicit_wait=1
 
 *** Keywords ***
 

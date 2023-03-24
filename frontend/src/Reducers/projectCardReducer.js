@@ -6,6 +6,7 @@ const initialState = {
   editProjectsActivated: false,
   addProjectActivated: false,
   allProjects: [],
+  userProjects: [],
   newProjectToAdd: null,
 }
 
@@ -31,6 +32,12 @@ const projectCardSlice = createSlice({
         allProjects: action.payload,
       }
     },
+    setUserProjects(state, action) {
+      return {
+        ...state,
+        userProjects: action.payload,
+      }
+    },
   },
 })
 
@@ -38,6 +45,15 @@ export const initializeProjects = () => {
   return async (dispatch) => {
     const projects = await projectService.getAllProjects()
     dispatch(setAllProjects(projects))
+  }
+}
+
+export const initializeProjectCard = (id) => {
+  return async (dispatch) => {
+    const consultant = await consultantService.getSelectedConsultant(id)
+    const userProjects = consultant.projects
+    console.log("alustus", userProjects)
+    dispatch(setUserProjects(userProjects))
   }
 }
 
@@ -52,7 +68,7 @@ export const addNewProject = (newProject) => {
   }
 }
 
-export const { setAllProjects, updateEditState, updateAddState } =
+export const { setAllProjects, setUserProjects, updateEditState, updateAddState } =
   projectCardSlice.actions
 
 export default projectCardSlice.reducer
