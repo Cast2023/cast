@@ -28,6 +28,7 @@ Scenario: As a visitor I can edit my skills
   Element Should Contain  id=1  Wants to learn
   Click Button  submit_skills_button
   Click Button  edit_skills_button
+  Wait Until Page Contains  Python
   Click Element  id=1
   Wait until Page Contains Element  Key3
   Click Element  Key3
@@ -73,6 +74,7 @@ Scenario: As a visitor I can Add a new skill
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Click Button  add_skills_button
+  Sleep  1s
   Set Value  skill-name  ristipisto
   Click Element  skill-level
   Wait until Page Contains Element  Key2
