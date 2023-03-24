@@ -8,7 +8,7 @@ Suite Setup     ${SETUP}
 
 Scenario: As a visitor I can see the skills card on profile page
   Refresh & Navigate to Profile Page
-  Page Should Contain Element  skillscard
+  Wait Until Page Contains Element  skillscard
 
 Scenario: As a visitor I can click the edit button to activate the edit mode on skills
   Refresh & Navigate to Profile Page
@@ -43,22 +43,23 @@ Scenario: As a visitor I can edit many skills
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Click Button  edit_skills_button
-  Wait until Page Contains Element  id=1
+  Wait Until Page Contains Element  id=1
   Click Element  id=1
-  Wait until Page Contains Element  Key1
+  Wait Until Page Contains Element  Key1
   Click Element  Key1
   Click Element  id=3
-  Wait until Page Contains Element  Key2
+  Wait Until Page Contains Element  Key2
   Click Element  Key2
+  Wait Until Page Contains Element  id=1
   Element Should Contain  id=1  Wants to learn
   Element Should Contain  id=3  Can work with
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Click Button  edit_skills_button
-  Wait until Page Contains Element  id=1
+  Wait Until Page Contains Element  id=1
   Click Element  id=1
-  Wait until Page Contains Element  Key3
+  Wait Until Page Contains Element  Key3
   Click Element  Key3
   Click Element  id=3
   Wait until Page Contains Element  Key1
@@ -66,7 +67,7 @@ Scenario: As a visitor I can edit many skills
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
-  Wait until Page Contains Element  id=1
+  Wait Until Page Contains Element  id=1
   Element Should Contain  id=1  Proficient
   Element Should Contain  id=3  Wants to learn
 

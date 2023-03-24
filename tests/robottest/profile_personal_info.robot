@@ -8,7 +8,7 @@ Suite Setup     ${SETUP}
 
 Scenario: As a visitor I can see the personal info card on profile page
   Refresh & Navigate to Profile Page
-  Page Should Contain Element  personalinfocard
+  Wait Until Page Contains Element  personalinfocard
 
 Scenario: As a visitor I can see correct name in personal info on profile page
   Refresh & Navigate to Profile Page

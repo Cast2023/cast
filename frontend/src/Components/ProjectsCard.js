@@ -15,10 +15,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import dayjs from "dayjs"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import consultantService from "../Services/consultantService"
-import { addNewProject, updateAddState } from "../Reducers/projectCardReducer"
+import { addNewProject, updateAddState, initializeProjectCard } from "../Reducers/projectCardReducer"
 import {
   updateEditability,
   updateNewSkillAddability,
@@ -31,13 +31,21 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const [newAllocation, setNewAllocation] = useState(0)
   const [newStartDate, setNewStartDate] = useState(null)
   const [newEndDate, setNewEndDate] = useState(null)
+  const [projects, setProjects] = useState(
+    useSelector((state) => state.projectCard.allProjects)
+  )
+  const userProjects = useSelector((state) => state.projectCard.userProjects)
+  const [trigger, setTrigger] = useState(false)
+
+  useEffect(() =>{
+    const id = (activeUserId===user.id)? activeUserId : user.id
+    dispatch(initializeProjectCard(id))// fetch consultant from database and initialize/update projects
+  }, [trigger])
 
   const dispatch = useDispatch()
   const addProjectState = useSelector(
     (state) => state.projectCard.addProjectActivated
   )
-
-  const projects = useSelector((state) => state.projectCard.allProjects)
 
   const updateAddProjectState = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
@@ -59,6 +67,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
       ],
     }
     dispatch(addNewProject(newEmployeeProjectParticipation))
+    setTrigger(!trigger)
     console.log(newEmployeeProjectParticipation)
   }
 
@@ -88,7 +97,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
 
   const projectlist = () => {
     let p = []
-    user.projects?.map(
+    userProjects?.map(
       (project) =>
         (p = p.concat([
           {
@@ -159,7 +168,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       text="Employee participation start date"
                       name="employee_start_date"
                       id="employee_start_date"
-                      inputFormat="yyyy-MM-dd"
+                      inputFormat="YYYY-MM-DD"
                       onChange={(newValue) => {
                         setNewStartDate(newValue)
                       }}
@@ -172,7 +181,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       text="Employee participation end date"
                       name="employee_end_date"
                       id="employee_end_date"
-                      inputFormat="yyyy-MM-dd"
+                      inputFormat="YYYY-MM-DD"
                       onChange={(newValue) => {
                         setNewEndDate(newValue)
                       }}

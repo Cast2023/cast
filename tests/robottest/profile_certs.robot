@@ -8,7 +8,7 @@ Suite Setup     ${SETUP}
 
 Scenario: As a visitor I can see the certs card on profile page
   Refresh & Navigate to Profile Page
-  Page Should Contain Element  certscard
+  Wait Until Page Contains Element  certscard
   
 Scenario: As a visitor I can't edit other user's certificates
   Go To  ${SERVER}
