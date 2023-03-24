@@ -37,9 +37,9 @@ const SkillsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
   const editable = useSelector((state) => state.skillCard.editable)
   const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills
+  const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills and existing preferences
   const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
-  const allSkills = useSelector((state) => state.skillCard.allSkills)
+  const allSkills = useSelector((state) => state.skillCard.allSkills)// used when allSkill?.map() is used
   const [trigger, setTrigger] = useState(false)
   
   useEffect(() =>{
@@ -207,10 +207,10 @@ const SkillsCard = ({ user, activeUserId }) => {
                           defaultValue={skill.skillLevel}
                           variant="standard"
                           onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
-                        >
-                        <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
-                        <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
-                        <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
+                          >
+                            <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
+                            <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
+                            <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
                           </TextField>
                         </TableCell>
                         <TableCell>
