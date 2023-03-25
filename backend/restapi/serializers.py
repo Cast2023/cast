@@ -88,19 +88,16 @@ class ConsultantSerializer(serializers.ModelSerializer):
         if 'skills' in validated_data:
             updated_skill_list = validated_data.pop('skills')
             consultant_skills = list((instance.skills).all())
-
             for updated_skill in updated_skill_list:
                 updated = False
                 for skill in consultant_skills:
                     if updated_skill['tech'] == skill.tech:
-                        skill.skill_level = updated_skill['skill_level']
-                        if 'tech_preference' in updated_skill:
-                            skill.tech_preference = updated_skill['tech_preference']
+                        skill.skill_level = (updated_skill.get('skill_level', skill.skill_level))
+                        skill.tech_preference = (updated_skill.get('tech_preference', skill.tech_preference))
                         skill.save()
                         updated = True
                 if not updated:
-                    Employee_tech_skills.objects.create(
-                        employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
+                    Employee_tech_skills.objects.create(**updated_skill, employee=instance)
 
         if 'certificates' in validated_data:
             updated_cert_list = validated_data.pop('certificates')
