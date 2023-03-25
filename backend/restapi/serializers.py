@@ -88,7 +88,6 @@ class ConsultantSerializer(serializers.ModelSerializer):
         if 'skills' in validated_data:
             updated_skill_list = validated_data.pop('skills')
             consultant_skills = list((instance.skills).all())
-
             for updated_skill in updated_skill_list:
                 updated = False
                 for skill in consultant_skills:

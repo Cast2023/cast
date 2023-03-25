@@ -97,3 +97,15 @@ Scenario: As a visitor I can't edit other user's tech skills
   Click Link  Janet
   Wait Until Page Contains Element  skillscard
   Page Should Not Contain Button  edit_skills_button
+
+Scenario: As a visitor I can set my skill preference
+  Refresh & Navigate to Profile Page
+  Click Button  edit_skills_button
+  Page Should Contain  Python
+  ${checkboxInitialState} =   Run Keyword And Return Status      Checkbox Should Be Selected  id=1pref
+  Click Element  id=1pref
+  Click Button  submit_skills_button
+  Refresh & Navigate to Profile Page
+  sleep  1s
+  ${checkboxFinalState} =     Run Keyword And Return Status       Checkbox Should Not Be Selected  id=1pref
+  Should Be Equal    ${checkboxInitialState}       ${checkboxFinalState}  

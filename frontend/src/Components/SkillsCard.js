@@ -7,6 +7,14 @@ import {
   Button,
   TextField,
   MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead,
+  Paper,
+  Checkbox
 } from "@mui/material"
 
 import EditIcon from "@mui/icons-material/Edit"
@@ -29,10 +37,11 @@ const SkillsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
   const editable = useSelector((state) => state.skillCard.editable)
   const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills
+  const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills and existing preferences
   const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
-  const allSkills = useSelector((state) => state.skillCard.allSkills)
+  const allSkills = useSelector((state) => state.skillCard.allSkills)// used when allSkill?.map() is used
   const [trigger, setTrigger] = useState(false)
+  
   useEffect(() =>{
     const id = (activeUserId===user.id)? activeUserId : user.id
     dispatch(initializeSkillCard(id))// fetch consultant from database and initialize/update skills
@@ -46,10 +55,15 @@ const SkillsCard = ({ user, activeUserId }) => {
     dispatch(updateNewSkillAddability(!edit))
   }
 
-  const handleChange = (event) => {
+  const handleSkillChange = (event) => {
     const value = event.target.value
-    dispatch(setSkillChanges([...skillChanges, { skill_level: value, tech: [event.target.name][0] }]))
-    console.log("event:", event.target)
+    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0], skill_level: value}]))
+  }
+
+  const handlePrefrenceChange = (event) => {
+    const value = event.target.checked
+    console.log(event.target.id)
+    dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0],  tech_preference: value }]))
   }
   const handleTechChange = (event) => {
     const value = event.target.value
@@ -65,7 +79,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     let newObject = null
     let skillsList = null
     newObject = await techService.createTech(newSkillName)// new object contains the skill_name and id of the created skill 
-    skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.result.id}]}
+    skillsList = {skills:[{skill_level: newSkillLevel, tech: newObject.result.id, tech_preference: true}]}
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateNewSkillAddability(!newSkillAddable))
     dispatch(setAddableSkillDetail())// This empties the state after it is not needed anymore
@@ -92,6 +106,7 @@ const SkillsCard = ({ user, activeUserId }) => {
             id: skill.tech,
             tech: skill.tech_name,
             skillLevel: skill.skill_level,
+            preference: skill.tech_preference,
           },
         ]))
     )
@@ -126,23 +141,25 @@ const SkillsCard = ({ user, activeUserId }) => {
         <CardContent>
           <Box
             
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-            }}
+            // sx={{
+            //   "& .MuiTextField-root": { m: 1, width: "25ch" },
+            // }}
           >
             {newSkillAddable && (
                 <form onSubmit={handleNewSkill}>
                   <div><TextField
+                      sx= {{ m: 1, width: "25ch" }}
                       required
                       id="skill-name"
                       label="Add skill"
                       variant="standard"
                       name="new_skill_name"
-                      onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
+                      onChange={handleTechChange} // <- handleSkillChange moved inside the Textfield element.
                     />
                     </div>
                     <div>
                       <TextField
+                        sx= {{ m: 1, width: "25ch" }}
                         required
                         id="skill-level"
                         label="Add skill level"
@@ -163,25 +180,58 @@ const SkillsCard = ({ user, activeUserId }) => {
                 </form>
               )}
             <form onSubmit={handleSubmit}>
-              {skills().map((skill) => (
-                <TextField
-                  key = {skill.id}
-                  disabled={!editable}
-                  select
-                  id={skill.id.toString()}
-                  label={skill.tech}
-                  name={skill.id.toString()}
-                  defaultValue={skill.skillLevel}
-                  variant="standard"
-                  onChange={handleChange} // <- handleChange moved inside the Textfield element.
-                >
-                <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
-                <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
-                <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
+
+                <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Tech</TableCell>
+                      <TableCell>Skill level</TableCell>
+                      <TableCell>Perference</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  {skills().map((skill) => (
+                  <TableBody key={skill.id}>
+                      <TableRow key={skill.id}>
+                        {/* Tech */}
+                        <TableCell>{skill.tech}</TableCell>
+
+                        {/* Skill level */}
+                        <TableCell>            
+                          <TextField      
+                          key = {skill.id}
+                          disabled={!editable}
+                          select
+                          id={skill.id.toString()}
+                          name={skill.id.toString()}
+                          defaultValue={skill.skillLevel}
+                          variant="standard"
+                          onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
+                          >
+                            <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
+                            <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
+                            <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
+                          </TextField>
+                        </TableCell>
+                        <TableCell>
+                        <Checkbox 
+                          key = {skill.id}
+                          onChange={handlePrefrenceChange}
+                          name = {skill.id}
+                          id= {skill.id +"pref"}
+                          disabled={!editable}
+                          defaultChecked = {skill.preference}
+                        >
+                        </Checkbox>
+                        </TableCell>
+                      </TableRow>
+                  </TableBody>
+                  ))}
+                </Table>
+                </TableContainer>
 
 
-                </TextField>
-              ))}
+              
               
               {editable && (
                 <Button type="submit" id="submit_skills_button">
