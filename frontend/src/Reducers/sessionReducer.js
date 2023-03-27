@@ -27,7 +27,6 @@ const sessionSlice = createSlice({
       let token = null
       token = action.payload
       state.token = token//`Bearer ${action.payload}`
-      console.log("token is:", token)
       // state.token = jwt.sign(state.activeUserId, process.env.SECRET)
       // console.log("token is: ",state.token)
     },

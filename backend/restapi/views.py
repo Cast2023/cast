@@ -4,18 +4,40 @@ import pandas as pd
 from rest_framework.response import Response
 import datetime
 
-from restapi.models import Employees, Techs, Certificates, Employee_certificates
-from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer
+from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project
+from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer
 
+class TechsFilter(rest_filters.FilterSet):
+    tech_name = rest_filters.CharFilter(field_name='tech_name')
+
+    class Meta:
+        fields = ("tech_name",)
+        model = Techs
 
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
     queryset = Techs.objects.all()
-
+    filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = TechsFilter
+    search_fields = [
+        'tech_name'
+        ]
+    def get_or_create(self, request, *args):
+        print("techapi", request.data)
+        instance, created = Techs.objects.get_or_create(tech_name=request.data['tech_name'])
+        print(instance.id, created)
+        result = {"id": instance.id, "tech_name": instance.tech_name}
+        print (result)
+        return Response({"status": "success", "result": result}, status.HTTP_201_CREATED)
 
 class CertAPIView(viewsets.ModelViewSet):
     serializer_class = CertSerializer
-    queryset = Certificates.objects.all()
+    queryset = Certificate.objects.all()
+    
+    
+class ProjectAPIView(viewsets.ModelViewSet):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
 
 
 class EmployeeFilter(rest_filters.FilterSet):
@@ -23,10 +45,75 @@ class EmployeeFilter(rest_filters.FilterSet):
         field_name='first_name', lookup_expr='icontains')
     last_name = rest_filters.CharFilter(
         field_name='last_name', lookup_expr='icontains')
+    tech = rest_filters.CharFilter(method='filter_by_tech_name')
+    tech_and_pref = rest_filters.CharFilter(method='filter_by_tech_and_pref')
+    tech_and_level = rest_filters.CharFilter(method='filter_by_tech_and_level')
+    project = rest_filters.CharFilter(method='filter_by_project')
+    cert_vendor = rest_filters.CharFilter(method='filter_by_vendor')
+    certificate = rest_filters.CharFilter(method='filter_by_certificate')
+    cert_valid_until__gte = rest_filters.DateFilter(
+        field_name='certificates__valid_until', lookup_expr='gte')
+    cert_valid_until__lte = rest_filters.DateFilter(field_name='certificates__valid_until', lookup_expr='lte')
+
+    field = (
+        ('first_name', 'first_name'),
+        ('last_name', 'last_name'),
+        ('tech_name', 'tech'),
+    )
 
     class Meta:
-        fields = ("first_name",)
+        fields = (
+            'first_name', 
+            'last_name', 
+            'tech', 
+            'project', 
+            'cert_vendor', 
+            'certificate', 
+            'cert_valid_until__gte', 
+            'cert_valid_until__lte', 
+            'tech_and_pref',
+            'tech_and_level'
+            )
         model = Employees
+    
+    def filter_by_tech_name(self, queryset, tech, value):
+        if ',' in value:
+            tech_list = value.split(",")
+            for tech in tech_list:
+                queryset = queryset.filter(skills__tech__tech_name__icontains=tech).distinct()
+            return queryset
+        return queryset.filter(skills__tech__tech_name__icontains=value).distinct()
+    
+    def filter_by_project(self, queryset, project, value):
+        return queryset.filter(projects__project__project_name__icontains=value).distinct()
+    
+    def filter_by_vendor(self, queryset, vendor, value):
+        return queryset.filter(certificates__cert__vendor__icontains=value).distinct()
+    
+    def filter_by_certificate(self, queryset, certificate, value):
+        return queryset.filter(certificates__cert__certificate_name__icontains=value).distinct()
+
+    def filter_by_tech_and_pref(self, queryset, tech_and_pref, value):
+        if ',' in value:
+            tech, pref = value.split(",")
+        else:
+            tech = value
+            pref = None
+        if not pref:
+            pref = 'true'
+        pref = bool(pref.lower() == "true")
+        return queryset.filter(skills__tech__tech_name__icontains=tech, skills__tech_preference=pref).distinct()
+
+    def filter_by_tech_and_level(self, queryset, tech_and_level, value):
+        if ',' in value:
+            tech, level = value.split(",")
+        else:
+            tech = value
+            level = "1"
+        if not level.isdigit():
+            level = "1"
+        level = max(0, min(int(level), 3))
+        return queryset.filter(skills__tech__tech_name__icontains=tech, skills__skill_level__gte=level).distinct()
 
 
 class ConsultantAPIView(viewsets.ModelViewSet):
@@ -34,18 +121,6 @@ class ConsultantAPIView(viewsets.ModelViewSet):
     serializer_class = ConsultantSerializer
     filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
     filterset_class = EmployeeFilter
-    search_fields = [
-        'first_name',
-        'last_name',
-        'location_city',
-        'location_country',
-        'email',
-        'phone_number',
-        'worktime_allocation',
-        'wants_to_do',
-        'wants_not_to_do',
-        'techs__tech_name'
-    ]
 
 
 class ImportCertificatesView(generics.CreateAPIView):
@@ -67,8 +142,8 @@ class ImportCertificatesView(generics.CreateAPIView):
             certificate = [col for col in content.columns[1:]
                            if str(row[col]).lower() == 'x']
             if len(certificate):
-                if not Certificates.objects.filter(certificate_name__exact=certificate[0]).exists():
-                    Certificates.objects.create(
+                if not Certificate.objects.filter(certificate_name__exact=certificate[0]).exists():
+                    Certificate.objects.create(
                         certificate_name=certificate[0])
                 certificate.append(row["Expiration Date (DD/MM/YYYY)"])
                 if not name in data_as_dict:
@@ -92,7 +167,7 @@ class ImportCertificatesView(generics.CreateAPIView):
                         result['rejected'].append([employee, "rejected due to unknown error"])
                         continue
                     certificate_str, valid_until = list_item
-                    certificate_obj = Certificates.objects.get(certificate_name=certificate_str)
+                    certificate_obj = Certificate.objects.get(certificate_name=certificate_str)
                     date_is_valid, formatted_valid_until = self.validate_valid_until_date(valid_until)
                     if date_is_valid:
                         Employee_certificates.objects.create(

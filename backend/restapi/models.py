@@ -26,20 +26,19 @@ class Techs(models.Model):
     def __str__(self):
         return self.tech_name
 
-class Certificates(models.Model):
+class Certificate(models.Model):
     employee = models.ManyToManyField(Employees, through='Employee_certificates')
+    vendor = models.TextField(null=True)
     certificate_name = models.TextField(unique=True)
-
-    def __str__(self):
-        return self.certificate_name
 
 class Employee_certificates(models.Model):
     class Meta:
-        ordering = ['certificate']
+        ordering = ['cert_id']
     
-    employee = models.ForeignKey(Employees, related_name='certs', on_delete=models.CASCADE)
-    certificate = models.ForeignKey(Certificates, related_name="certificate", on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employees, related_name='certificates', on_delete=models.CASCADE)
+    cert = models.ForeignKey(Certificate, related_name='cert_id', on_delete=models.CASCADE)
     valid_until = models.DateField(null=True)
+
 
 class Employee_tech_skills(models.Model):
     class Skill(models.IntegerChoices):
@@ -53,6 +52,22 @@ class Employee_tech_skills(models.Model):
     employee = models.ForeignKey(Employees, related_name='skills', on_delete=models.CASCADE)
     tech = models.ForeignKey(Techs, related_name='tech', on_delete=models.CASCADE)
     skill_level = models.IntegerField(choices=Skill.choices)
+    tech_preference = models.BooleanField(null=True)      
 
-    def __str__(self):
-        return f"{self.tech}: {self.skill_level}"        
+class Project(models.Model):
+    employee = models.ManyToManyField(Employees, through='Employee_projects')
+    project_name = models.TextField(unique=True)
+    project_start_date = models.DateField(null=True)
+    project_end_date = models.DateField(null=True)
+    confidential = models.BooleanField(null=True)
+
+class Employee_projects(models.Model):
+    class Meta:
+        ordering = ['project']
+    
+    employee = models.ForeignKey(Employees, related_name='projects', on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, related_name='employee_project', on_delete=models.CASCADE)
+    employee_participation_start_date = models.DateField(null=True)
+    employee_participation_end_date = models.DateField(null=True)
+    allocation_busy = models.IntegerField(null=True)
+

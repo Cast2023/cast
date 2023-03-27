@@ -141,7 +141,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
                 <TextField
                   disabled={!editable}
                   id="preferences"
-                  label="Preferences with projects & techs"
+                  label="Prefer to work with (e.g. projects)"
                   name="wants_to_do"
                   multiline
                   rows={4}
@@ -152,7 +152,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
                 <TextField
                   disabled={!editable}
                   id="dislikes"
-                  label="Prefer not to work with"
+                  label="Prefer not to work with (e.g. projects)"
                   name="wants_not_to_do"
                   multiline
                   rows={4}

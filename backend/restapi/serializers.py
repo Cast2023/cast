@@ -1,20 +1,20 @@
 from rest_framework import serializers
 
 from .models import Employees
-from .models import Employee_tech_skills, Employee_certificates
-from .models import Techs, Certificates
+from .models import Employee_tech_skills, Employee_certificates, Employee_projects
+from .models import Techs, Certificate, Project
 
 
 class TechSerializer(serializers.ModelSerializer):
     class Meta:
         model = Techs
         fields = ('id', 'tech_name')
-
+    
 
 class CertSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Certificates
-        fields = ('id', 'certificate_name')
+        model = Certificate
+        fields = ('__all__')
 
 
 class TechSkillSerializer(serializers.ModelSerializer):
@@ -22,32 +22,46 @@ class TechSkillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Employee_tech_skills
-        fields = ('skill_level', 'tech', 'tech_name')
+        fields = ('skill_level', 'tech', 'tech_name', 'tech_preference')
+
+class ProjectSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Project
+        fields = ('id', 'project_name', 'project_start_date', 'project_end_date', 'confidential')
 
 
-class EmployeeCertSerializer(serializers.ModelSerializer):
-    cert_name = serializers.StringRelatedField(
-        source='certificate.certificate_name')
+class EmployeeProjectSerializer(serializers.ModelSerializer):
+    project_name = serializers.StringRelatedField(source='project.project_name')
+    project_start_date = serializers.StringRelatedField(source='project.project_start_date')
+    project_end_date = serializers.StringRelatedField(source='project.project_end_date')
+    confidential = serializers.StringRelatedField(source="project.confidential")
 
     class Meta:
-        model = Employee_certificates
-        fields = ('certificate_name, valid_until')
+        model = Employee_projects
+        fields = ('project', 'project_name', 'project_start_date', 'employee_participation_start_date', 'employee_participation_end_date', 'project_end_date', 'allocation_busy', 'confidential')
 
+class EmployeeCertSerializer(serializers.ModelSerializer):
+    vendor = serializers.StringRelatedField(source='cert.vendor')
+    certificate = serializers.StringRelatedField(source='cert.certificate_name')
+    class Meta:
+        model = Employee_certificates
+        fields = ('cert', 'vendor', 'certificate', 'valid_until')
 
 class ConsultantSerializer(serializers.ModelSerializer):
     skills = TechSkillSerializer(many=True)
-    certs = EmployeeCertSerializer(many=True)
+    certificates = EmployeeCertSerializer(many=True)
+    projects = EmployeeProjectSerializer(many=True)
 
     class Meta:
         model = Employees
-        # fields = ('first_name', 'last_name,', 'email', 'skills')
         fields = ('__all__')
         depth = 2
 
     def update(self, instance, validated_data):
         '''
-            TBD: change changes to all employee-fields. 
-            Con
+            Update and return an existing `Consultant` instance, given the validated data.
+            This action should be refactored if time permits. 
         '''
 
         instance.first_name = validated_data.get(
@@ -74,17 +88,50 @@ class ConsultantSerializer(serializers.ModelSerializer):
         if 'skills' in validated_data:
             updated_skill_list = validated_data.pop('skills')
             consultant_skills = list((instance.skills).all())
-
             for updated_skill in updated_skill_list:
                 updated = False
                 for skill in consultant_skills:
                     if updated_skill['tech'] == skill.tech:
-                        skill.skill_level = updated_skill['skill_level']
+                        skill.skill_level = (updated_skill.get('skill_level', skill.skill_level))
+                        skill.tech_preference = (updated_skill.get('tech_preference', skill.tech_preference))
                         skill.save()
                         updated = True
                 if not updated:
-                    Employee_tech_skills.objects.create(
-                        employee=instance, tech=updated_skill['tech'], skill_level=updated_skill['skill_level'])
+                    Employee_tech_skills.objects.create(**updated_skill, employee=instance)
+
+        if 'certificates' in validated_data:
+            updated_cert_list = validated_data.pop('certificates')
+            consultant_certs = list((instance.certificates).all())
+
+            for updated_cert in updated_cert_list:
+                updated = False
+                for certificate in consultant_certs:
+                    if updated_cert['cert'] == certificate.cert:
+                        certificate.valid_until = updated_cert['valid_until']
+                        updated = True
+                        certificate.save()
+                    if not updated:
+                        Employee_certificates.objects.create(
+                            employee=instance, cert=updated_cert['cert'], valid_until=updated_cert['valid_until'])
+                        updated = True
+                                
+        if 'projects' in validated_data:
+            updated_project_list = validated_data.pop('projects')
+            consultant_projects = list((instance.projects).all())
+
+            for updated_project in updated_project_list:
+                updated = False
+                for project in consultant_projects:
+                    if updated_project['project'] == project.project:
+                        project.employee_participation_start_date = (updated_project.get('employee_participation_start_date', project.employee_participation_start_date))
+                        project.employee_participation_end_date = (updated_project.get('employee_participation_end_date', project.employee_participation_end_date))
+                        project.allocation_busy = (updated_project.get('allocation_busy', project.allocation_busy))
+                        project.save()
+                        updated = True
+                if not updated:
+                    Employee_projects.objects.create(**updated_project, employee=instance)
+                    updated = True
+
         return instance
 
 

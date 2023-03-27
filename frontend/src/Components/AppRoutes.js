@@ -16,6 +16,7 @@ const AppRoutes = () => {
         (consultant) => consultant.id === Number(match.params.id)
       )
     : null
+  //activeConsultant's dispatch can be found from sessionReducer's initializeUser function
   const activeUser = useSelector((state) => state.consultants.activeConsultant)
   return (
     <div>

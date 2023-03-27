@@ -8,69 +8,104 @@ Suite Setup     ${SETUP}
 
 Scenario: As a visitor I can see the skills card on profile page
   Refresh & Navigate to Profile Page
-  Page Should Contain Element  skillscard
+  Wait Until Page Contains Element  skillscard
 
 Scenario: As a visitor I can click the edit button to activate the edit mode on skills
   Refresh & Navigate to Profile Page
+  Wait Until Page Contains Element  skillscard
   Page Should Contain Button  edit_skills_button
   Click Button  edit_skills_button
   Page Should Contain Button  submit_skills_button
 
 Scenario: As a visitor I can edit my skills
   Refresh & Navigate to Profile Page
+  Wait Until Page Contains Element  skillscard
   Click Button  edit_skills_button
-  Page Should Contain  Python
-  Set Skill  1  1
-  Textfield Value Should Be  id=1  1
-  Set Skill  1  3
-  Textfield Value Should Be  id=1  3
+  Wait Until Page Contains  Python
+  Click Element  id=1
+  Wait until Page Contains Element  Key1
+  Click Element  Key1
+  Element Should Contain  id=1  Wants to learn
+  Click Button  submit_skills_button
+  Click Button  edit_skills_button
+  Wait Until Page Contains  Python
+  Click Element  id=1
+  Wait until Page Contains Element  Key3
+  Click Element  Key3
+  Element Should Contain  id=1  Proficient
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
-  Textfield Value Should Be  id=1  3
-
-Scenario: As a visitor I can't give illegal value to a skill
-  Refresh & Navigate to Profile Page
-  Click Button  edit_skills_button
-  Set Skill  1  2
-  Click Button  submit_skills_button
-  Refresh & Navigate to Profile Page
-  Click Button  edit_skills_button
-  Set Skill  1  9001
-  Click Button  submit_skills_button
-  Click Button  edit_skills_button
-  Set Skill  1  -1
-  Click Button  submit_skills_button
-  Click Button  edit_skills_button
-  Set Skill  1  apina
-  Click Button  submit_skills_button
-  Click Button  edit_skills_button
-  Set Skill  1  0
-  Click Button  submit_skills_button
-  Refresh & Navigate to Profile Page
-  Textfield Value Should Be  id=1  2
+  Wait Until Page Contains Element  skillscard
+  Wait Until Page Contains  Python
+  Element Should Contain  id=1  Proficient
 
 Scenario: As a visitor I can edit many skills
   Refresh & Navigate to Profile Page
+  Wait Until Page Contains Element  skillscard
   Click Button  edit_skills_button
-  Set Skill  1  1
-  Set Skill  3  1
-  Textfield Value Should Be  id=1  1
-  Textfield Value Should Be  id=3  1
+  Wait Until Page Contains Element  id=1
+  Click Element  id=1
+  Wait Until Page Contains Element  Key1
+  Click Element  Key1
+  Click Element  id=3
+  Wait Until Page Contains Element  Key2
+  Click Element  Key2
+  Wait Until Page Contains Element  id=1
+  Element Should Contain  id=1  Wants to learn
+  Element Should Contain  id=3  Can work with
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
+  Wait Until Page Contains Element  skillscard
   Click Button  edit_skills_button
-  Set Skill  1  3
-  Set Skill  3  2
+  Wait Until Page Contains Element  id=1
+  Click Element  id=1
+  Wait Until Page Contains Element  Key3
+  Click Element  Key3
+  Click Element  id=3
+  Wait until Page Contains Element  Key1
+  Click Element  Key1
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
-  Textfield Value Should Be  id=1  3
-  Textfield Value Should Be  id=3  2
-  
+  Wait Until Page Contains Element  skillscard
+  Wait Until Page Contains Element  id=1
+  Element Should Contain  id=1  Proficient
+  Element Should Contain  id=3  Wants to learn
+
+Scenario: As a visitor I can Add a new skill
+  Refresh & Navigate to Profile Page
+  Wait Until Page Contains Element  skillscard
+  Click Button  add_skills_button
+  Sleep  1s
+  Set Value  skill-name  ristipisto
+  Click Element  skill-level
+  Wait until Page Contains Element  Key2
+  Click Element  Key2
+  Sleep  1s
+  Click Button  submit_new_skill_button
+  Sleep  1s
+  Refresh & Navigate to Profile Page
+  Wait Until Page Contains Element  skillscard
+  Sleep  1s
+  Page Should Contain  ristipisto
+
 Scenario: As a visitor I can't edit other user's tech skills
   Go To  ${SERVER}
   Wait until page contains element  search
   Click element  search
   Wait Until Page Contains Element  searchresults
+  Sleep  2s
   Click Link  Janet
-  Wait Until Page Contains Element  projectscard
-  Page Should Not Contain Button  editProjectsButton
+  Wait Until Page Contains Element  skillscard
+  Page Should Not Contain Button  edit_skills_button
+
+Scenario: As a visitor I can set my skill preference
+  Refresh & Navigate to Profile Page
+  Click Button  edit_skills_button
+  Page Should Contain  Python
+  ${checkboxInitialState} =   Run Keyword And Return Status      Checkbox Should Be Selected  id=1pref
+  Click Element  id=1pref
+  Click Button  submit_skills_button
+  Refresh & Navigate to Profile Page
+  sleep  1s
+  ${checkboxFinalState} =     Run Keyword And Return Status       Checkbox Should Not Be Selected  id=1pref
+  Should Be Equal    ${checkboxInitialState}       ${checkboxFinalState}  

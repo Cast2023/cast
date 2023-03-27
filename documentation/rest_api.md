@@ -33,6 +33,24 @@ The data is serialized in standard JSON-format:
         "tech_name": "PosgreSQL"
       }
     ],
+    "certificates": [
+      {
+        "vendor": "AWS",
+        "certificate": "AWS Certified Cloud Practitioner",
+        "valid_until": "2021-12-31"
+      }
+    ]
+    "projects": [
+      {
+        "project_name": "Cast 2023",
+        "project_start_date": "2023-01-01",
+        "employee_participation_start_date": "2023-03-01",
+        "employee_participation_end_date": "2023-05-15",
+        "project_end_date": "2023-05-15",
+        "allocation_busy": 80,
+        "confidential": "False"
+      }
+    ]
     "first_name": "Alex",
     "last_name": "Consultant",
     "email": "alex@gmail.com",
@@ -47,36 +65,63 @@ The data is serialized in standard JSON-format:
 ]
 ```
 
-### Search for matches
+## Filter based on given parameters:
 
-The API provides an option to search consultants:
-
-```
-<application address>/api/consultant/?search=<string>
-```
-
-The search returns matches in which one of the following fields contains the search string:
-
-```
-['first_name', 'last_name', 'location_city', 'location_country', 'email', 'phone_number', 'worktime_allocation', 'wants_to_do', 'wants_not_to_do']
-```
-
-### Filter based on given parameters:
-
-The API provides an option to filter results. Filtering is done by giving parameters
+The API provides options to filter results. Filtering is done by giving parameters
 
 ```
 <application address>/api/consultant/?<field>=<string>
 ```
 
-For instance to filter based on fields `first_name` and `last_name` would happen with
+Results can be filtered with the following parameters. All string searches are case-insensitive and filter based on partial matches (field contains the given string)
 
 ```
-<application address>/api/consultant/?first_name=<string>&last_name=<string>
+first_name=<str>                            # First name contains
+last_name=<str>                             # Last name contains
+tech=<str>,<str>,...                        # one or multiple tech skill names (notes below)
+tech_and_pref=<str>,<str>                   # tech skill and preference (true, false)*
+tech_and_level=<str>,<str>                  # tech skill and level (1,2,3)
+project=<str>                               # Project name contains
+cert_vendor=<str>                           # Certificate vendor contains
+certificate=<str>                           # Certificate name contains
+cert_valid_until__gte=<YYYY-MM-DD>          # Certificate validity greater than or equal
+cert_valid_until__lte=<YYYY-MM-DD>          # Certificate validity less than or equal
 ```
 
-Results can be filtered based on the following parameters:
+The parameters can be chained together. For instance
 
 ```
-['id','first_name', 'last_name', 'location_city', 'location_country', 'email', 'phone_number', 'worktime_allocation', 'wants_to_do', 'wants_not_to_do']
+api/consultant?tech=python&cert_vendor=aws&cert_valid_until_gte=2024-12-31
+```
+
+Additionally the same parameter can be used multiple times
+
+```
+api/consultant?tech=python&tech=javascript
+```
+
+**Parameters with multiple arguments**
+Arguments must be separated with a comma (",").
+
+`tech`: user can filter queries with tech skills. User can give one or multiple skills to be filtered with. If multiple skills are given, employees with a skills that contain given strings are reviewed. There is now upper limit for the $n$ of skills. Examples:
+
+```
+api/consultant/?tech=python                         # returns employees with string python in one of their skills
+api/consultant/?tech=python,cobol                   # returns employees with string python in one and string cobol in one of their skills
+```
+
+`tech_and_pref`: converts other values than lowercase "true" to `False` for the second argument given. If second parameter is missing, second parameter is considered to be `True`. Examples:
+
+```
+api/consultants/?tech_and_pref=cobol,true           # returns employees with Cobol as skill and preference True
+api/consultants/?tech_and_pref=python,false         # returns employees with Python as skill and preference False
+api/consultants/?tech_and_pref=JavaScript           # returns workers with JavaScript as skill and preference True
+```
+
+`tech_and_level`: the second argument is converted into an integer in range 1-3. If the given value is not an integer, the value is transformed into 1. Integers will be handled with the rule $\texttt{value}\ge\max\{0, \min\{\texttt{value}, 3\}\}$. Examples:
+
+```
+api/consultants/?tech_and_pref=cobol,2                     # returns employees with Cobol as skill and level gte 2
+api/consultants/?tech_and_pref=python                      # returns employees with Python as skill and level gte 1
+api/consultants/?tech_and_pref=JavaScript,500              # returns employees with JavaScript as skill and level gte 3
 ```
