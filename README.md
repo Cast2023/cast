@@ -1,6 +1,7 @@
 # Competency, Allocation and Skill tracker
 
 [![CI](https://github.com/Cast2023/cast/actions/workflows/CI.yml/badge.svg?branch=development)](https://github.com/Cast2023/cast/blob/development/.github/workflows/CI.yml)
+[![CD](https://github.com/Cast2023/cast/actions/workflows/CD.yml/badge.svg?branch=master)](https://github.com/Cast2023/cast/blob/master/.github/workflows/CD.yml)
 
 Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.
 
@@ -9,7 +10,9 @@ Project for University of Helsinki course Software Engineering Project (Ohjelmis
 [MIT License](https://github.com/Cast2023/cast/blob/readme-update/LICENSE)
 
 ## Stack information
-The initial design is to use the following stack for the project. Information will be more detailed in the near future. 
+
+The initial design is to use the following stack for the project. Information will be more detailed in the near future.
+
 - Backend
   - Python and Django web-framework for the backend
   - Postgres SQL database
@@ -22,10 +25,12 @@ The initial design is to use the following stack for the project. Information wi
 ## Project links
 
 ### Application
+
 - [Production](https://cast23.lol)
 - [Staging](https://staging.cast23.lol)
 
 ### Documentation
+
 - [Documentation](https://github.com/Cast2023/cast/tree/development/documentation)
 - [Definition of Done](https://docs.google.com/document/d/1p4CsCFcm2ePFmxsqkQ7I0mt9tyTYYlAqzxWl63oserw/edit)
 
