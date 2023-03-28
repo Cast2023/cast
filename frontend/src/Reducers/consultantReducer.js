@@ -79,7 +79,7 @@ const consultantSlice = createSlice({
           } else {
             return state.filteredCertificates.every((certName) => {
               return user.certificates.some(
-                (cert) => cert.certificate === certName
+                (cert) => cert.certificate === certName.label
               )
             })
           }
