@@ -18,7 +18,7 @@ jobs:
       - name: Pull base image
         run: docker pull ${{ secrets.IMAGE }}
   
-      - name: Run robot robot
+      - name: Run robottests
         env:
           BASE: ${{ secrets.TESTS_ENV_FILE }}
         run: |
