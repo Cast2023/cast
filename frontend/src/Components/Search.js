@@ -25,7 +25,6 @@ const Search = () => {
     (state) => state.consultants.filteredConsultants
   )
   const nameFilter = useSelector((state) => state.filteredName)
-  console.log(useSelector((state) => state.consultants.filteredSkills))
 
   useEffect(() => {
     dispatch(updateFilteredConsultants())
@@ -53,7 +52,7 @@ const Search = () => {
               id="search_bar"
             />
           </Grid>
-          <Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
             <Autocomplete
               multiple
               label="Select tech skills"
