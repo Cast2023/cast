@@ -132,7 +132,7 @@ api/consultants/?tech_and_pref=JavaScript,500              # returns employees w
 
 Available allocation is calculated with the following formula: 
 
-$\texttt{available allocation} = W - \sum_{i=1}^n p_i$, 
+$\texttt{available allocation} = W - \sum_{i=1}^{n} p_i$, 
 
 in which $W=$ worktime allocation and $p_i=$ allocation reserved for project $i$, $i=1, \ldots, n$ on the queried date.  
 
