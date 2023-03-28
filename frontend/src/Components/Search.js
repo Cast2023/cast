@@ -7,30 +7,33 @@ import {
   CardMedia,
   CardHeader,
 } from "@mui/material"
+import Autocomplete from "@mui/material/Autocomplete"
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setNameFilter } from "../Reducers/searchReducer"
-import { updateFilteredConsultantsByName } from "../Reducers/consultantReducer"
+import {
+  updateFilteredConsultants,
+  setFilteredName,
+  setFilteredSkills,
+} from "../Reducers/consultantReducer"
 import { Link } from "react-router-dom"
 
 const Search = () => {
+  const dispatch = useDispatch()
   const consultants = useSelector((state) => state.consultants.allConsultants)
+  const skills = useSelector((state) => state.consultants.allTechSkills)
   const filteredUsers = useSelector(
     (state) => state.consultants.filteredConsultants
   )
-  const nameFilter = useSelector((state) => state.search.nameFilter)
+  const nameFilter = useSelector((state) => state.filteredName)
+  console.log(useSelector((state) => state.consultants.filteredSkills))
 
   useEffect(() => {
-    if (consultants) {
-      dispatch(updateFilteredConsultantsByName(nameFilter))
-    } else {
-      dispatch(updateFilteredConsultantsByName(null))
-    }
-  }, [nameFilter])
+    dispatch(updateFilteredConsultants())
+  }, [])
 
-  const dispatch = useDispatch()
   const changeSearchTerm = (e) => {
-    dispatch(setNameFilter(e.target.value))
+    dispatch(setFilteredName(e.target.value))
+    dispatch(updateFilteredConsultants())
   }
 
   return (
@@ -48,6 +51,29 @@ const Search = () => {
               type="text"
               value={nameFilter}
               id="search_bar"
+            />
+          </Grid>
+          <Grid>
+            <Autocomplete
+              multiple
+              label="Select tech skills"
+              text="Select tech skills"
+              name="skills"
+              disablePortal
+              id="skills-combo-box"
+              options={skills.map((skill) => ({
+                id: skill.id,
+                label: skill.tech_name,
+              }))}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Select skills" />
+              )}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(event, value) => {
+                dispatch(setFilteredSkills(value))
+                dispatch(updateFilteredConsultants())
+              }}
             />
           </Grid>
           {/* <Grid item xs={4}>
