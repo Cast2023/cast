@@ -86,6 +86,7 @@ cert_vendor=<str>                           # Certificate vendor contains
 certificate=<str>                           # Certificate name contains
 cert_valid_until__gte=<YYYY-MM-DD>          # Certificate validity greater than or equal
 cert_valid_until__lte=<YYYY-MM-DD>          # Certificate validity less than or equal
+available_allocation=<str>,<YYYY-MM-DD>     # available allocation on given data is greater than or equal
 ```
 
 The parameters can be chained together. For instance
@@ -124,4 +125,20 @@ api/consultants/?tech_and_pref=JavaScript           # returns workers with JavaS
 api/consultants/?tech_and_pref=cobol,2                     # returns employees with Cobol as skill and level gte 2
 api/consultants/?tech_and_pref=python                      # returns employees with Python as skill and level gte 1
 api/consultants/?tech_and_pref=JavaScript,500              # returns employees with JavaScript as skill and level gte 3
+```
+
+
+`available_allocation`: user can filter consultants based on available allocation. Takes one or two arguments. First argument indicates required available allocation. Consultants with available allocation greater than or equal to the given value are returned. The value must be of integer form. Second argument is optional. With it user can specify a date for which the available allocation information is requested.  
+
+Available allocation is calculated with the following formula: 
+
+$$\texttt{available allocation} = W - \left( \sum_{i=1}^n p_i \right)$$ 
+
+in which $W=$ worktime allocation and $p_i=$ allocation reserved for project $i$, $i=1, \ldots, n$ on the queried date.  
+
+Examples:
+
+```
+api/consultants/?available_allocation=50                  # Returns employees that have 50 percent of available allocation on date of the query
+api/consultants/?available_allocation=50,YYYY-MM-DD       # Returns employees that have 50 percent of available allocation on the given date
 ```
