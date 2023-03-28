@@ -128,11 +128,11 @@ api/consultants/?tech_and_pref=JavaScript,500              # returns employees w
 ```
 
 
-`available_allocation`: user can filter consultants based on available allocation. Takes one or two arguments. First argument indicates allocation and the value must be of integer form. Second argument is optional. With it user can specify a date for which the allocation information is requested.  
+`available_allocation`: user can filter consultants based on available allocation. Takes one or two arguments. First argument indicates allocation and the value must be of integer form. Second argument is optional. With it user can specify a date for which the available allocation information is requested.  
 
-Allocation is calculated with the following formula: 
+Available allocation is calculated with the following formula: 
 
-$\texttt{available\_allocation}\,=W - \sum_{i=1}^n p_i$, 
+$\texttt{available allocation}\,=W - \sum_{i=1}^n p_i$, 
 
 in which $W=$ worktime allocation and $p_i=$ allocation reserved for project $i$, $i=1, \ldots, n$ on the queried date.  
 
