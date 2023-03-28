@@ -2,7 +2,9 @@ FROM python:slim-bullseye
 
 WORKDIR /app
 
-COPY ./robottest ./robottest/
+COPY ./tests ./tests/ 
+COPY ./resources ./resources/
+COPY ./variables ./variables/
 COPY ./requirements.txt .
 
 RUN apt-get update && apt-get install -y wget unzip
