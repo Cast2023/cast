@@ -24,11 +24,8 @@ class TechAPIView(viewsets.ModelViewSet):
         'tech_name'
         ]
     def get_or_create(self, request, *args):
-        print("techapi", request.data)
         instance, created = Techs.objects.get_or_create(tech_name=request.data['tech_name'])
-        print(instance.id, created)
         result = {"id": instance.id, "tech_name": instance.tech_name}
-        print (result)
         return Response({"status": "success", "result": result}, status.HTTP_201_CREATED)
 
 class CertAPIView(viewsets.ModelViewSet):
@@ -85,18 +82,20 @@ class EmployeeFilter(rest_filters.FilterSet):
             available_allocation, selected_date = value.split(",")
         else:
             available_allocation = value
-            selected_date = datetime.date.today().strftime('%Y-%m-%d')      
+            selected_date = datetime.date.today().strftime('%Y-%m-%d') 
+        # print("selected date:", selected_date)
         with connection.cursor() as cursor:
             cursor.execute(
                 '''
-                    SELECT employee_id
-                    FROM restapi_employees LEFT JOIN 
+                    SELECT id, (worktime_allocation - COALESCE(reserved_allocation, 0)) as available_allocation
+                    FROM restapi_employees FULL OUTER JOIN 
                         (SELECT employee_id, SUM(allocation_busy) as reserved_allocation  
                         FROM restapi_employee_projects 
                         WHERE %s BETWEEN employee_participation_start_date AND employee_participation_end_date 
-                    GROUP BY employee_id) AS allocation_table
+                        GROUP BY employee_id) AS allocation_table
                     ON restapi_employees.id = allocation_table.employee_id
-                    WHERE worktime_allocation - reserved_allocation > %s
+                    WHERE (worktime_allocation - COALESCE(reserved_allocation, 0)) >= %s;
+
                 ''', [selected_date, available_allocation]
             )
             employee_ids = cursor.fetchall()
