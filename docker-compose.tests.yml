@@ -45,7 +45,7 @@ services:
 
   robo:
     build: 
-      context: tests/
+      context: robot/
       dockerfile: Dockerfile
       args:
         - IMAGE=${ROBOT_IMAGE}
