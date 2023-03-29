@@ -3,6 +3,7 @@ from django_filters import rest_framework as rest_filters
 import pandas as pd
 from rest_framework.response import Response
 import datetime
+from django.db import connection
 
 from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project
 from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer
@@ -46,21 +47,22 @@ class EmployeeFilter(rest_filters.FilterSet):
     last_name = rest_filters.CharFilter(
         field_name='last_name', lookup_expr='icontains')
     tech = rest_filters.CharFilter(method='filter_by_tech_name', label='Tech name contains (comma separated)')
-    tech_and_pref = rest_filters.CharFilter(field_name='tech_and_pref', method='filter_by_tech_and_pref')
-    tech_and_level = rest_filters.CharFilter(method='filter_by_tech_and_level')
-    project = rest_filters.CharFilter(method='filter_by_project')
-    cert_vendor = rest_filters.CharFilter(method='filter_by_vendor')
-    certificate = rest_filters.CharFilter(method='filter_by_certificate')
+    tech_and_pref = rest_filters.CharFilter(label='Tech and prefecence (<tech name>,<YYYY-MM-DD>)', method='filter_by_tech_and_pref')
+    tech_and_level = rest_filters.CharFilter(label='Tech and level (<tech name>,<YYYY-MM-DD>)' ,method='filter_by_tech_and_level')
+    project = rest_filters.CharFilter(label='Project (string search)', method='filter_by_project')
+    cert_vendor = rest_filters.CharFilter(label='Certificate vendor (string search)', method='filter_by_vendor')
+    certificate = rest_filters.CharFilter(label='Certificate name', method='filter_by_certificate')
     cert_valid_until__gte = rest_filters.DateFilter(
         field_name='certificates__valid_until', lookup_expr='gte')
     cert_valid_until__lte = rest_filters.DateFilter(field_name='certificates__valid_until', lookup_expr='lte')
+    available_allocation = rest_filters.CharFilter(method='filter_by_available_allocation', label='Available allocation (<allocation>,<YYYY-MM-DD>)')
 
     field = (
         ('first_name', 'first_name'),
         ('last_name', 'last_name'),
         ('tech_name', 'tech'),
     )
-    available_allocation = rest_filters.CharFilter(method='filter_by_available_allocation')
+    
 
     class Meta:
         fields = (
@@ -79,22 +81,29 @@ class EmployeeFilter(rest_filters.FilterSet):
         model = Employees
     
     def filter_by_available_allocation(self, queryset, available_allocation, value):
-        employees =  Employees.objects.raw(
-            '''
-                SELECT employee_id
-                FROM restapi_employees LEFT JOIN 
-                    (SELECT employee_id, SUM(allocation_busy) as reserved_allocation  
-                    FROM restapi_employee_projects 
-                    WHERE '2023-02-01' BETWEEN employee_participation_start_date AND employee_participation_end_date 
-                GROUP BY employee_id) AS allocation_table
-                ON restapi_employees.id = allocation_table.employee_id
-                WHERE worktime_allocation - reserved_allocation > 30
-            '''
-        )
-        print(employees)
-        return employees
-
-        pass
+        if ',' in value:
+            available_allocation, selected_date = value.split(",")
+        else:
+            available_allocation = value
+            selected_date = datetime.date.today().strftime('%Y-%m-%d')      
+        with connection.cursor() as cursor:
+            cursor.execute(
+                '''
+                    SELECT employee_id
+                    FROM restapi_employees LEFT JOIN 
+                        (SELECT employee_id, SUM(allocation_busy) as reserved_allocation  
+                        FROM restapi_employee_projects 
+                        WHERE %s BETWEEN employee_participation_start_date AND employee_participation_end_date 
+                    GROUP BY employee_id) AS allocation_table
+                    ON restapi_employees.id = allocation_table.employee_id
+                    WHERE worktime_allocation - reserved_allocation > %s
+                ''', [selected_date, available_allocation]
+            )
+            employee_ids = cursor.fetchall()
+            formatted_ids = []
+            for item in employee_ids:
+                formatted_ids.append(item[0])
+        return queryset.filter(id__in=formatted_ids)
     
     def filter_by_tech_name(self, queryset, tech, value):
         if ',' in value:
