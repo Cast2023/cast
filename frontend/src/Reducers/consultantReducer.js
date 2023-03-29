@@ -1,11 +1,16 @@
- import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
+import techService from "../Services/techService"
+import certificateService from "../Services/certificateService"
 
 const initialState = {
   allConsultants: [],
   filteredConsultants: [],
-  // selectedConsultant: [],
+  filteredSkills: [],
+  filteredCertificates: [],
   activeConsultant: [],
+  allCertificates: [],
+  allTechSkills: [],
 }
 
 const consultantSlice = createSlice({
@@ -18,6 +23,18 @@ const consultantSlice = createSlice({
         allConsultants: action.payload,
       }
     },
+    setAllCertificates(state, action) {
+      return {
+        ...state,
+        allCertificates: action.payload,
+      }
+    },
+    setAllTechSkills(state, action) {
+      return {
+        ...state,
+        allTechSkills: action.payload,
+      }
+    },
     setFilteredConsultants(state, action) {
       return {
         ...state,
@@ -26,25 +43,39 @@ const consultantSlice = createSlice({
     },
     updateFilteredConsultantsByName(state, action) {
       const searchTerm = action.payload
-      state.filteredConsultants = state.allConsultants.filter((consultant) => {
-        return (
-          consultant.first_name
+      state.filteredConsultants = state.allConsultants
+        .filter((consultant) => {
+          return consultant.first_name
             .concat(" ", consultant.last_name)
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
-        )
-      })
+        })
+        .filter((user) => {
+          if (state.filteredSkills.length === 0) {
+            return true
+          } else {
+            return state.filteredSkills.every((skillName) => {
+              return user.skills.some((skill) => skill.tech_name === skillName)
+            })
+          }
+        })
+        .filter((user) => {
+          if (state.filteredCertificates.length === 0) {
+            return true
+          } else {
+            return state.filteredCertificates.every((certName) => {
+              return user.certificates.some(
+                (cert) => cert.certificate === certName
+              )
+            })
+          }
+        })
     },
-    // setSelectedConsultant(state, action) {
-    //   state.selectedConsultant = action.payload
-    // },
     setActiveConsultant(state, action) {
-      //state.activeConsultant = action.payload
       return {
         ...state,
         activeConsultant: action.payload,
       }
-        
     },
   },
 })
@@ -53,6 +84,10 @@ export const initializeConsultants = () => {
   return async (dispatch) => {
     const consultants = await consultantService.getAllConsultants()
     dispatch(setAllConsultants(consultants))
+    const certificates = await certificateService.getAllCertificates()
+    dispatch(setAllCertificates(certificates))
+    const techSkills = await techService.getAllTechs()
+    dispatch(setAllTechSkills(techSkills))
     dispatch(setFilteredConsultants(consultants))
   }
 }
@@ -63,6 +98,8 @@ export const {
   updateFilteredConsultantsByName,
   setSelectedConsultant,
   setActiveConsultant,
+  setAllCertificates,
+  setAllTechSkills,
 } = consultantSlice.actions
 
 export default consultantSlice.reducer
