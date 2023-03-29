@@ -45,8 +45,8 @@ class EmployeeFilter(rest_filters.FilterSet):
         field_name='first_name', lookup_expr='icontains')
     last_name = rest_filters.CharFilter(
         field_name='last_name', lookup_expr='icontains')
-    tech = rest_filters.CharFilter(method='filter_by_tech_name')
-    tech_and_pref = rest_filters.CharFilter(method='filter_by_tech_and_pref')
+    tech = rest_filters.CharFilter(method='filter_by_tech_name', label='Tech name contains (comma separated)')
+    tech_and_pref = rest_filters.CharFilter(field_name='tech_and_pref', method='filter_by_tech_and_pref')
     tech_and_level = rest_filters.CharFilter(method='filter_by_tech_and_level')
     project = rest_filters.CharFilter(method='filter_by_project')
     cert_vendor = rest_filters.CharFilter(method='filter_by_vendor')
@@ -60,6 +60,7 @@ class EmployeeFilter(rest_filters.FilterSet):
         ('last_name', 'last_name'),
         ('tech_name', 'tech'),
     )
+    available_allocation = rest_filters.CharFilter(method='filter_by_available_allocation')
 
     class Meta:
         fields = (
@@ -72,9 +73,28 @@ class EmployeeFilter(rest_filters.FilterSet):
             'cert_valid_until__gte', 
             'cert_valid_until__lte', 
             'tech_and_pref',
-            'tech_and_level'
+            'tech_and_level',
+            'available_allocation'
             )
         model = Employees
+    
+    def filter_by_available_allocation(self, queryset, available_allocation, value):
+        employees =  Employees.objects.raw(
+            '''
+                SELECT employee_id
+                FROM restapi_employees LEFT JOIN 
+                    (SELECT employee_id, SUM(allocation_busy) as reserved_allocation  
+                    FROM restapi_employee_projects 
+                    WHERE '2023-02-01' BETWEEN employee_participation_start_date AND employee_participation_end_date 
+                GROUP BY employee_id) AS allocation_table
+                ON restapi_employees.id = allocation_table.employee_id
+                WHERE worktime_allocation - reserved_allocation > 30
+            '''
+        )
+        print(employees)
+        return employees
+
+        pass
     
     def filter_by_tech_name(self, queryset, tech, value):
         if ',' in value:
