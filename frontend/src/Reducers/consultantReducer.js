@@ -6,7 +6,9 @@ import certificateService from "../Services/certificateService"
 const initialState = {
   allConsultants: [],
   filteredConsultants: [],
+  filteredName: "",
   filteredSkills: [],
+  filteredSkillsInputValue: "",
   filteredCertificates: [],
   activeConsultant: [],
   allCertificates: [],
@@ -41,21 +43,40 @@ const consultantSlice = createSlice({
         filteredConsultants: action.payload,
       }
     },
-    updateFilteredConsultantsByName(state, action) {
-      const searchTerm = action.payload
+    setFilteredSkills(state, action) {
+      return {
+        ...state,
+        filteredSkills: action.payload,
+      }
+    },
+    setFilteredSkillsInputValue(state, action) {
+      return {
+        ...state,
+        filteredSkillsInputValue: action.payload,
+      }
+    },
+    setFilteredName(state, action) {
+      return {
+        ...state,
+        filteredName: action.payload,
+      }
+    },
+    updateFilteredConsultants(state, action) {
       state.filteredConsultants = state.allConsultants
         .filter((consultant) => {
           return consultant.first_name
             .concat(" ", consultant.last_name)
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+            .includes(state.filteredName.toLowerCase())
         })
         .filter((user) => {
           if (state.filteredSkills.length === 0) {
             return true
           } else {
             return state.filteredSkills.every((skillName) => {
-              return user.skills.some((skill) => skill.tech_name === skillName)
+              return user.skills.some(
+                (skill) => skill.tech_name === skillName.label
+              )
             })
           }
         })
@@ -65,7 +86,7 @@ const consultantSlice = createSlice({
           } else {
             return state.filteredCertificates.every((certName) => {
               return user.certificates.some(
-                (cert) => cert.certificate === certName
+                (cert) => cert.certificate === certName.label
               )
             })
           }
@@ -95,11 +116,14 @@ export const initializeConsultants = () => {
 export const {
   setAllConsultants,
   setFilteredConsultants,
-  updateFilteredConsultantsByName,
+  updateFilteredConsultants,
   setSelectedConsultant,
   setActiveConsultant,
   setAllCertificates,
   setAllTechSkills,
+  setFilteredName,
+  setFilteredSkills,
+  setFilteredSkillsInputValue,
 } = consultantSlice.actions
 
 export default consultantSlice.reducer
