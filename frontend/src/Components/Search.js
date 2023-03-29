@@ -14,6 +14,7 @@ import {
   updateFilteredConsultants,
   setFilteredName,
   setFilteredSkills,
+  setFilteredSkillsInputValue,
 } from "../Reducers/consultantReducer"
 import { Link } from "react-router-dom"
 
@@ -24,7 +25,7 @@ const Search = () => {
   const filteredUsers = useSelector(
     (state) => state.consultants.filteredConsultants
   )
-  const nameFilter = useSelector((state) => state.filteredName)
+  const nameFilter = useSelector((state) => state.consultants.filteredName)
 
   useEffect(() => {
     dispatch(updateFilteredConsultants())
@@ -60,6 +61,13 @@ const Search = () => {
               name="skills"
               disablePortal
               id="skills-combo-box"
+              value={useSelector((state) => state.consultants.filteredSkills)}
+              inputValue={useSelector(
+                (state) => state.consultants.filteredSkillsInputValue
+              )}
+              onInputChange={(event, value) => {
+                dispatch(setFilteredSkillsInputValue(value))
+              }}
               options={skills.map((skill) => ({
                 id: skill.id,
                 label: skill.tech_name,
