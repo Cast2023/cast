@@ -59,19 +59,24 @@ Scenario: As a visitor I can filter consultants based on selected skill
   Refresh & Navigate to Selected View  search
   Wait Until Page Contains Element  skills-combo-box
   Click Element  skills-combo-box
-  Click Element  id=skills-combo-box-option-0
-  Sleep  2s
-  Page Should Not Contain Element  id=7
+  Sleep  1s
+  Click Element  id=skills-combo-box-option-9
+  Sleep  1s
+  Page Should Not Contain Element  id=1
 
 Scenario: As a visitor I can filter consultants based on multiple selected skills
   Refresh & Navigate to Selected View  search
   Wait Until Page Contains Element  skills-combo-box
   Click Element  skills-combo-box
+  Sleep  1s
   Click Element  id=skills-combo-box-option-0
+  Sleep  1s
   Click Element  skills-combo-box
+  Sleep  1s
   Click Element  id=skills-combo-box-option-1
-  Sleep  2s
+  Sleep  1s
   Page Should Contain Element  id=3
+  Sleep  1s
   Page Should Not Contain Element  id=4
 
 Scenario: As a visitor when I return to search view my selected skill filtering remains unchanged
@@ -83,6 +88,7 @@ Scenario: As a visitor when I return to search view my selected skill filtering 
   Click Element  id=skills-combo-box-option-1
   Click Element  home
   Click Element  profile
+  Sleep  1s
   Click Element  search
   Sleep  2s
   Page Should Contain Element  id=3
