@@ -1,12 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser
 
 
-class Employees(models.Model):
+class Employees(AbstractBaseUser):
     '''
         To be considered: Which fields can be null. 
     '''
     first_name = models.TextField()
     last_name = models.TextField()
+    password = models.TextField(null=True)
     email = models.TextField(unique=True)
     phone_number = models.TextField(null=True)
     location_country = models.TextField(null=True)
@@ -15,6 +17,10 @@ class Employees(models.Model):
     allocation_until = models.DateField(null=True)
     wants_to_do = models.TextField(null=True)
     wants_not_to_do = models.TextField(null=True)
+
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+
 
 class Techs(models.Model):
     '''

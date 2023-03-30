@@ -1,12 +1,14 @@
+import datetime
+
 from rest_framework import viewsets, filters, generics, status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as rest_filters
 import pandas as pd
-from rest_framework.response import Response
-import datetime
-from django.db import connection
 
 from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project
 from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer
+
 
 class TechsFilter(rest_filters.FilterSet):
     tech_name = rest_filters.CharFilter(field_name='tech_name')
@@ -145,6 +147,8 @@ class EmployeeFilter(rest_filters.FilterSet):
 
 
 class ConsultantAPIView(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+
     queryset = Employees.objects.all()
     serializer_class = ConsultantSerializer
     filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
@@ -212,4 +216,3 @@ class ImportCertificatesView(generics.CreateAPIView):
             return True, date
         except ValueError as error:
             return False, None
-
