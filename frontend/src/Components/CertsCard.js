@@ -121,7 +121,6 @@ const CertsCard = ({ user, activeUserId }) => {
           )}
         />
         <CardContent> 
-          {editable && (
             <form onSubmit={handleSubmit}>
             <TableContainer component={Paper}>
               <Table>
@@ -137,40 +136,18 @@ const CertsCard = ({ user, activeUserId }) => {
                   <TableRow key={certificate.id}>
                     <TableCell>{certificate.vendor}</TableCell>
                     <TableCell>{certificate.certificate}</TableCell>
+                    {editable && (
                     <TableCell>{certificate.validUntil}</TableCell>
+                    )}
+                    {!editable && (
+                    <TableCell>datepicker</TableCell>
+                    )}
                   </TableRow>
                 </TableBody>
                 ))}
               </Table>
             </TableContainer>
-          </form>
-          )}
-          {!editable && (
-            <form onSubmit={handleSubmit}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Vendor</TableCell>
-                    <TableCell>Certificate</TableCell>
-                    <TableCell>Valid until</TableCell>
-                  </TableRow>
-                </TableHead>
-                {certs().map((certificate) => (
-                <TableBody>
-                  <TableRow key={certificate.id}>
-                    <TableCell>{certificate.vendor}</TableCell>
-                    <TableCell>{certificate.certificate}</TableCell>
-                    <TableCell>{certificate.validUntil}</TableCell>
-                  </TableRow>
-                </TableBody>
-                ))}
-              </Table>
-            </TableContainer>
-          </form>
-          )}
-
-          
+          </form>      
         </CardContent>
       </Card>
     </div>
