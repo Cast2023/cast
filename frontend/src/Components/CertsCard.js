@@ -25,7 +25,7 @@ const CertsCard = ({ user, activeUserId }) => {
       <Card>
         <CardHeader
           title="Certificates"
-          action={(user.id === activeUserId) && (
+          action={(user.id === 1) && (    //activeUserId) && (
             <IconButton id="editCertsButton">
               <EditIcon />
             </IconButton>
