@@ -13,7 +13,11 @@ import {
   Paper,
 } from "@mui/material"
 import EditIcon from '@mui/icons-material/Edit'
-// import AddCircleIcon from '@mui/icons-material/AddCircle';
+// import AddCircleIcon from '@mui/icons-material/AddCircle'
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
+import { DatePicker } from "@mui/x-date-pickers/DatePicker"
+import dayjs from "dayjs"
 import consultantService from "../Services/consultantService"
 import certService from "../Services/certificateService"
 import { useSelector, useDispatch } from "react-redux"
@@ -33,6 +37,7 @@ const CertsCard = ({ user, activeUserId }) => {
   const addableCertDetail = useSelector((state) => state.certCard.addableCertDetail)
   const allCerts = useSelector((state) => state.certCard.allCerts)// used when allCert?.map() is used
   const [trigger, setTrigger] = useState(false)
+  const [editedUntilDate, setEditedUntilDate] = useState(null)
   
   useEffect(() =>{
     const id = (activeUserId===user.id)? activeUserId : user.id
@@ -47,9 +52,10 @@ const CertsCard = ({ user, activeUserId }) => {
     dispatch(updateNewCertAddability(!edit))
   }
 
-  const handleCertChange = (event) => {
-    const value = event.target.value
-    dispatch(setCertChanges([...certChanges, { certificate: [event.target.name][0], valid_until: value}]))
+  const handleCertChange = (event,cert) => {
+    console.log("handleCertChange:", cert)
+    //const value = event.target.value
+    dispatch(setCertChanges([...certChanges, { cert: cert, valid_until: event}]))
   }
 
   // const handlePrefrenceChange = (event) => {
@@ -132,15 +138,30 @@ const CertsCard = ({ user, activeUserId }) => {
                   </TableRow>
                 </TableHead>
                 {certs().map((certificate) => (
-                <TableBody>
+                <TableBody key={certificate.id}>
                   <TableRow key={certificate.id}>
                     <TableCell>{certificate.vendor}</TableCell>
                     <TableCell>{certificate.certificate}</TableCell>
-                    {editable && (
+                    {!editable && (
                     <TableCell>{certificate.validUntil}</TableCell>
                     )}
-                    {!editable && (
-                    <TableCell>datepicker</TableCell>
+                    {editable && (
+                    <TableCell>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          key={certificate.id}
+                          label={certificate.validUntil}
+                          text="Valid until"
+                          name="valid_until"
+                          id={certificate.id}
+                          inputFormat="YYYY-MM-DD"
+                          onChange={(event) => {
+                            handleCertChange(event,certificate.id)
+                          }}                      
+                          value={editedUntilDate}
+                        />
+                      </LocalizationProvider>
+                    </TableCell>
                     )}
                   </TableRow>
                 </TableBody>
