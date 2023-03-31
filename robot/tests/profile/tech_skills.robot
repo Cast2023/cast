@@ -80,17 +80,20 @@ Scenario: As a visitor I can Add a new skill
   Wait Until Page Contains Element  skillscard
   Click Button  add_skills_button
   Sleep  1s
-  Set Value  skill-name  ristipisto
+  Set Selenium Speed	1.5 seconds
+  Click Element  skill-name
+  Click Element  skill-name-option-13
   Click Element  skill-level
-  Wait until Page Contains Element  Key2
-  Click Element  Key2
+  Click Element  skill-level-option-1
   Sleep  1s
   Click Button  submit_new_skill_button
+  Set Selenium Speed	0 seconds
+
   Sleep  1s
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Sleep  1s
-  Page Should Contain  ristipisto
+  Page Should Contain  Docker
 
 Scenario: As a visitor I can't edit other user's tech skills
   Go To  ${SERVER}
