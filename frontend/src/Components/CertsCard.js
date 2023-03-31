@@ -141,12 +141,12 @@ const CertsCard = ({ user, activeUserId }) => {
                       <TableCell>{certificate.validUntil}</TableCell>
                       )}
                       {editable && (
-                      <TableCell>
+                      <TableCell id={certificate.id}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             label={certificate.validUntil}
                             // text="Valid until"
-                            // name="valid_until"
+                            name={certificate.certificate}
                             id={certificate.id}
                             // inputFormat="YYYY-MM-DD"
                             onChange={(event) => {
@@ -163,7 +163,7 @@ const CertsCard = ({ user, activeUserId }) => {
               </Table>
             </TableContainer>
             {editable && (
-              <Button type="submit" id="submit_certs_button">
+              <Button type="submit" id="submitCertsButton">
                 Submit
               </Button>
             )}
