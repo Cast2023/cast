@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   TextField,
-  MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -21,7 +20,6 @@ import {
 import EditIcon from "@mui/icons-material/Edit"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import consultantService from "../Services/consultantService"
-import techService from "../Services/techService";
 import { useSelector, useDispatch } from "react-redux"
 import { updateEditability, 
         updateNewSkillAddability, 
@@ -55,19 +53,30 @@ const SkillsCard = ({ user, activeUserId }) => {
   const handleAdd = (edit) => {
     dispatch(updateNewSkillAddability(!edit))
   }
+  
+  const handleSkillLevelChange = (event, value) => {
+    dispatch(setSkillChanges([...skillChanges, { tech: event.target.id[0],  skill_level: value.id }]))    
+  }
 
   const handlePrefrenceChange = (event) => {
     const value = event.target.checked
-    console.log(event.target.id)
     dispatch(setSkillChanges([...skillChanges, { tech: [event.target.name][0],  tech_preference: value }]))
   }
+
+  const handleNewSkillChange = (value) => {    
+    dispatch(setAddableSkillDetail({...addableSkillDetail, new_skill_id: value.id}))
+  }
+
+  const handleNewSkillLevelChange = (value) => {
+    dispatch(setAddableSkillDetail({...addableSkillDetail, new_skill_level: value.id}))
+  }
+
   
   const handleNewSkill = async (event) => {
     event.preventDefault()
     const newSkillId = addableSkillDetail.new_skill_id
-    const newSkillLevel = addableSkillDetail.new_skill_level
-    let skillsList = null
-    skillsList = {skills:[{skill_level: newSkillLevel, tech: newSkillId, tech_preference: true}]}
+    const newSkillLevel = addableSkillDetail.new_skill_level    
+    const skillsList = {skills:[{skill_level: newSkillLevel, tech: newSkillId, tech_preference: true}]}
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateNewSkillAddability(!newSkillAddable))
     dispatch(setAddableSkillDetail())// This empties the state after it is not needed anymore
@@ -84,7 +93,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     dispatch(updateEditability(!editable))
     dispatch(setSkillChanges([])) // This empties the state after it is not needed anymore
   }
-
+  
   const skills = () => {
     let t = []
     userSkills?.map(
@@ -136,6 +145,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                     name="new_skill_name"
                     disablePortal
                     required
+                    
                     id="skill-name"
                     options={allSkills.map((skill) => ({
                       id: skill.id,
@@ -148,15 +158,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                     isOptionEqualToValue={(option, value) =>
                       option.id === value.id
                     }
-                    onChange={(event, value) => {
-                      console.log("autoevent", event)
-                      console.log("autovalue", value)
-                      //handleTechChange(event, value)
-                      dispatch(setAddableSkillDetail({...addableSkillDetail, new_skill_id: value.id}))
-  
-                      //setNewProject(newValue.label)
-                      //setNewProjectId(newValue.id)
-                    }}
+                    onChange={(event, value) => {handleNewSkillChange(value)}}
                   />
                     
                       <Autocomplete
@@ -174,15 +176,8 @@ const SkillsCard = ({ user, activeUserId }) => {
                     isOptionEqualToValue={(option, value) =>
                       option.id === value.id
                     }
-                    onChange={(event, value) => {
-                      console.log("autoevent", event)
-                      console.log("autovalue", value)
-                      dispatch(setAddableSkillDetail({...addableSkillDetail, new_skill_level: value.id}))
-
-                    }}
-                  />
-                     
-                    
+                    onChange={(event, value) => {handleNewSkillLevelChange(value)}}                    
+                  />                    
                     <div><Button type="submit" id="submit_new_skill_button">
                       Add
                     </Button></div>
@@ -214,6 +209,8 @@ const SkillsCard = ({ user, activeUserId }) => {
                             text="Define skill level"
                             name="new_skill_level"
                             disablePortal
+                            freeSolo
+                            forcePopupIcon={true}
                             id={skill.id.toString()}
                             defaultValue={skillLevels.find((level) => level.id === skill.skillLevel).level}
                             options={skillLevels.map((skill) => ({id: skill.id, label: skill.level}))}
@@ -224,10 +221,8 @@ const SkillsCard = ({ user, activeUserId }) => {
                             isOptionEqualToValue={(option, value) =>
                               option.id === value.id
                             }
-                            onChange={(event, value) => {
-                              dispatch(setSkillChanges([...skillChanges, { tech: event.target.id[0],  skill_level: value.id }]))
-                            }}
-                  />            
+                            onChange={(event, value) => {handleSkillLevelChange(event, value)}}
+                        />            
                           
                         </TableCell>
                         <TableCell>
@@ -246,9 +241,6 @@ const SkillsCard = ({ user, activeUserId }) => {
                   ))}
                 </Table>
                 </TableContainer>
-
-
-              
               
               {editable && (
                 <Button type="submit" id="submit_skills_button">
