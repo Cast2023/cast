@@ -121,7 +121,7 @@ describe('skillCardReducer', ()=>{
     expect(newState).toEqual({...state, addableSkillDetail: payload})
   })
 
-  test('returns new state with action skillCard/setAllSkills', () => { 
+  test('returns new state with action skillCard/setUserSkills', () => { 
     const state = initialState
     const payload = [
       {
@@ -181,13 +181,13 @@ describe('skillCardReducer', ()=>{
     ]
 
     const action = {
-      type: "skillCard/setAllSkills",
+      type: "skillCard/setUserSkills",
       payload: payload
     }
 
     deepFreeze(state)
     const newState = skillCardReducer(state,action)
-    expect(newState).toEqual({...state, allSkills: payload})
+    expect(newState).toEqual({...state, userSkills: payload})
   })
 
 })
