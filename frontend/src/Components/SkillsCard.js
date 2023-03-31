@@ -109,7 +109,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     )
     return t
   }
-  const skillLevels = [{ id: 1, level: "Beginner" }, { id: 2, level: "Intermediate" }, { id: 3, level: "Advanced" }]
+  const skillLevels = [{ id: 1, level: "Beginner" }, { id: 2, level: "Intermediate" }, { id: 3, level: "Proficient" }]
   
   return (
     <div>
@@ -207,7 +207,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                             disabled={!editable}
                             label="Skill level"
                             text="Define skill level"
-                            name="new_skill_level"
+                            name={skill.id+"new_skill_level"}
                             disablePortal
                             freeSolo
                             forcePopupIcon={true}

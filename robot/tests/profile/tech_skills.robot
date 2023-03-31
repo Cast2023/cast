@@ -23,53 +23,57 @@ Scenario: As a visitor I can edit my skills
   Click Button  edit_skills_button
   Wait Until Page Contains  Python
   Click Element  id=1
-  Wait until Page Contains Element  Key1
-  Click Element  Key1
-  Element Should Contain  id=1  Wants to learn
+  Sleep  1s
+  Set Selenium Speed	1.5 seconds
+  Click Element  id=1-option-0
+  Element Attribute Value Should Be  id=1  value  Beginner
   Click Button  submit_skills_button
   Click Button  edit_skills_button
   Wait Until Page Contains  Python
   Click Element  id=1
-  Wait until Page Contains Element  Key3
-  Click Element  Key3
-  Element Should Contain  id=1  Proficient
+  Sleep  1s
+  Click Element  id=1-option-2
+  Set Selenium Speed	0 seconds
+  Element Attribute Value Should Be  id=1  value  Proficient
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Wait Until Page Contains  Python
-  Element Should Contain  id=1  Proficient
+  Element Attribute Value Should Be  id=1  value  Proficient
+
 
 Scenario: As a visitor I can edit many skills
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Click Button  edit_skills_button
-  Wait Until Page Contains Element  id=1
+  Sleep  1s
+  Set Selenium Speed	1.5 seconds
   Click Element  id=1
-  Wait Until Page Contains Element  Key1
-  Click Element  Key1
+  Click Element  id=1-option-0
   Click Element  id=3
-  Wait Until Page Contains Element  Key2
-  Click Element  Key2
+  Click Element  id=3-option-1
   Wait Until Page Contains Element  id=1
-  Element Should Contain  id=1  Wants to learn
-  Element Should Contain  id=3  Can work with
+  Element Attribute Value Should Be  id=1  value  Beginner
+  Element Attribute Value Should Be  id=3  value  Intermediate
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Click Button  edit_skills_button
   Wait Until Page Contains Element  id=1
   Click Element  id=1
-  Wait Until Page Contains Element  Key3
-  Click Element  Key3
+  Click Element  id=1-option-2
+  
   Click Element  id=3
-  Wait until Page Contains Element  Key1
-  Click Element  Key1
+  Click Element  id=3-option-0
+  Set Selenium Speed	0 seconds
+
   Click Button  submit_skills_button
   Refresh & Navigate to Profile Page
   Wait Until Page Contains Element  skillscard
   Wait Until Page Contains Element  id=1
-  Element Should Contain  id=1  Proficient
-  Element Should Contain  id=3  Wants to learn
+  Element Attribute Value Should Be  id=1  value  Proficient
+  Element Attribute Value Should Be  id=3  value  Beginner
+
 
 Scenario: As a visitor I can Add a new skill
   Refresh & Navigate to Profile Page
