@@ -28,7 +28,7 @@ const AuthRoutes = () => {
     const APIToken = window.localStorage.getItem("APIToken")
 
     if (authToken) {
-      authenticationService.verifyToken({ authToken }).then((response) => {
+      authenticationService.verifyToken( authToken ).then((response) => {
         //console.log('response.data[0]: ', response.data[0])
         userInitialization(authToken, APIToken, response.data[0])
       })
