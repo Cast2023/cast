@@ -31,6 +31,8 @@ const Search = () => {
   )
   const nameFilter = useSelector((state) => state.consultants.filteredName)
 
+  console.log(certs)
+
   useEffect(() => {
     dispatch(updateFilteredConsultants())
   }, [])
@@ -103,8 +105,8 @@ const Search = () => {
                 dispatch(setFilteredCertificatesInputValue(value))
               }}
               options={certs.map((certificate) => ({
-                id: certificate.vendor,
-                label: certificate.certificate,
+                id: certificate.id,
+                label: certificate.certificate_name,
               }))}
               sx={{ width: 300 }}
               renderInput={(params) => (
