@@ -10,6 +10,7 @@ const initialState = {
   filteredSkills: [],
   filteredSkillsInputValue: "",
   filteredCertificates: [],
+  filteredCertificatesInputValue: "",
   activeConsultant: [],
   allCertificates: [],
   allTechSkills: [],
@@ -37,6 +38,12 @@ const consultantSlice = createSlice({
         allTechSkills: action.payload,
       }
     },
+    setAllCertificates(state, action) {
+      return {
+        ...state,
+        allCertificates: action.payload,
+      }
+    },
     setFilteredConsultants(state, action) {
       return {
         ...state,
@@ -53,6 +60,18 @@ const consultantSlice = createSlice({
       return {
         ...state,
         filteredSkillsInputValue: action.payload,
+      }
+    },
+    setFilteredCertificates(state, action) {
+      return {
+        ...state,
+        filteredCertificates: action.payload,
+      }
+    },
+    setFilteredCertificatesInputValue(state, action) {
+      return {
+        ...state,
+        filteredCertificatesInputValue: action.payload,
       }
     },
     setFilteredName(state, action) {
@@ -122,6 +141,8 @@ export const {
   setAllCertificates,
   setAllTechSkills,
   setFilteredName,
+  setFilteredCertificates,
+  setFilteredCertificatesInputValue,
   setFilteredSkills,
   setFilteredSkillsInputValue,
 } = consultantSlice.actions
