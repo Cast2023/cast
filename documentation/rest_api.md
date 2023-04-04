@@ -114,17 +114,17 @@ api/consultant/?tech=python,cobol                   # returns employees with str
 `tech_and_pref`: converts other values than lowercase "true" to `False` for the second argument given. If second parameter is missing, second parameter is considered to be `True`. Examples:
 
 ```
-api/consultants/?tech_and_pref=cobol,true           # returns employees with Cobol as skill and preference True
-api/consultants/?tech_and_pref=python,false         # returns employees with Python as skill and preference False
-api/consultants/?tech_and_pref=JavaScript           # returns workers with JavaScript as skill and preference True
+api/consultant/?tech_and_pref=cobol,true           # returns employees with Cobol as skill and preference True
+api/consultant/?tech_and_pref=python,false         # returns employees with Python as skill and preference False
+api/consultant/?tech_and_pref=JavaScript           # returns workers with JavaScript as skill and preference True
 ```
 
 `tech_and_level`: the second argument is converted into an integer in range 1-3. If the given value is not an integer, the value is transformed into 1. Integers will be handled with the rule $\texttt{value}\ge\max\{0, \min\{\texttt{value}, 3\}\}$. Examples:
 
 ```
-api/consultants/?tech_and_pref=cobol,2                     # returns employees with Cobol as skill and level gte 2
-api/consultants/?tech_and_pref=python                      # returns employees with Python as skill and level gte 1
-api/consultants/?tech_and_pref=JavaScript,500              # returns employees with JavaScript as skill and level gte 3
+api/consultant/?tech_and_pref=cobol,2                     # returns employees with Cobol as skill and level gte 2
+api/consultant/?tech_and_pref=python                      # returns employees with Python as skill and level gte 1
+api/consultant/?tech_and_pref=JavaScript,500              # returns employees with JavaScript as skill and level gte 3
 ```
 
 
@@ -139,6 +139,6 @@ in which $W=$ worktime allocation and $p_i=$ allocation reserved for project $i$
 Examples:
 
 ```
-api/consultants/?available_allocation=50                  # Returns employees that have 50 percent of available allocation on date of the query
-api/consultants/?available_allocation=50,YYYY-MM-DD       # Returns employees that have 50 percent of available allocation on the given date
+api/consultant/?available_allocation=50                  # Returns employees that have 50 percent of available allocation on date of the query
+api/consultant/?available_allocation=50,YYYY-MM-DD       # Returns employees that have 50 percent of available allocation on the given date
 ```
