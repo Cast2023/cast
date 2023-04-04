@@ -1,3 +1,5 @@
+import moment from "moment"
+import "moment/locale/en-gb"
 import {
   Card,
   CardHeader,
@@ -12,18 +14,22 @@ import AddCircleIcon from "@mui/icons-material/AddCircle"
 import EditIcon from "@mui/icons-material/Edit"
 import Autocomplete from "@mui/material/Autocomplete"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import dayjs from "dayjs"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import consultantService from "../Services/consultantService"
-import { addNewProject, updateAddState, initializeProjectCard } from "../Reducers/projectCardReducer"
+import {
+  addNewProject,
+  updateAddState,
+  initializeProjectCard,
+} from "../Reducers/projectCardReducer"
 import {
   updateEditability,
   updateNewSkillAddability,
 } from "../Reducers/skillCardReducer"
-
 
 const ProjectsCard = ({ user, activeUserId }) => {
   const [newProject, setNewProject] = useState(null)
@@ -37,9 +43,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const userProjects = useSelector((state) => state.projectCard.userProjects)
   const [trigger, setTrigger] = useState(false)
 
-  useEffect(() =>{
-    const id = (activeUserId===user.id)? activeUserId : user.id
-    dispatch(initializeProjectCard(id))// fetch consultant from database and initialize/update projects
+  useEffect(() => {
+    const id = activeUserId === user.id ? activeUserId : user.id
+    dispatch(initializeProjectCard(id)) // fetch consultant from database and initialize/update projects
   }, [trigger])
 
   const dispatch = useDispatch()
@@ -50,6 +56,8 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const updateAddProjectState = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
   }
+
+  moment.updateLocale("en-gb", { week: { dow: 1 } })
 
   const handleSubmitNewProject = (event) => {
     event.preventDefault()
@@ -70,7 +78,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
     setTrigger(!trigger)
     console.log(newEmployeeProjectParticipation)
   }
-
 
   const editable = false //useSelector((state) => state.skillCard.editable)
   // const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
@@ -162,7 +169,10 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   />
                 </Box>
                 <Box>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterMoment}
+                    adapterLocale={moment.locale("en-gb")}
+                  >
                     <DatePicker
                       label="Employee participation start date"
                       text="Employee participation start date"
@@ -175,7 +185,10 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       value={newStartDate}
                     />
                   </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterMoment}
+                    adapterLocale={moment.locale("en-gb")}
+                  >
                     <DatePicker
                       label="Employee participation end date"
                       text="Employee participation end date"
