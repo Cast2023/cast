@@ -34,16 +34,16 @@ const SkillsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
   const editable = useSelector((state) => state.skillCard.editable)
   const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const skillChanges = useSelector((state) => state.skillCard.skillChanges) // This handles the changes in existing skills and existing preferences
+  const skillChanges = useSelector((state) => state.skillCard.skillChanges) 
   const addableSkillDetail = useSelector((state) => state.skillCard.addableSkillDetail)
-  const userSkills = useSelector((state) => state.skillCard.userSkills)// used when userSkill?.map() is used
+  const userSkills = useSelector((state) => state.skillCard.userSkills)
   const allSkills = useSelector((state) => state.consultants.allTechSkills)
 
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() =>{
     const id = (activeUserId===user.id)? activeUserId : user.id
-    dispatch(initializeSkillCard(id))// fetch consultant from database and initialize/update skills
+    dispatch(initializeSkillCard(id))
   }, [trigger])
 
   const handleClick = (edit) => {
@@ -70,7 +70,6 @@ const SkillsCard = ({ user, activeUserId }) => {
   const handleNewSkillLevelChange = (value) => {
     dispatch(setAddableSkillDetail({...addableSkillDetail, new_skill_level: value.id}))
   }
-
   
   const handleNewSkill = async (event) => {
     event.preventDefault()
@@ -79,8 +78,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     const skillsList = {skills:[{skill_level: newSkillLevel, tech: newSkillId, tech_preference: true}]}
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateNewSkillAddability(!newSkillAddable))
-    dispatch(setAddableSkillDetail())// This empties the state after it is not needed anymore
-    //update skillChanges
+    dispatch(setAddableSkillDetail())
     const newSkillChanges = [...skillChanges, { skill_level: newSkillLevel, tech: newSkillId }]
     dispatch(setSkillChanges(newSkillChanges))
     setTrigger(!trigger)
@@ -91,7 +89,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     const skillsList = { skills: skillChanges }
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
-    dispatch(setSkillChanges([])) // This empties the state after it is not needed anymore
+    dispatch(setSkillChanges([]))
   }
   
   const skills = () => {
@@ -135,17 +133,15 @@ const SkillsCard = ({ user, activeUserId }) => {
 
         />
         <CardContent>
-          <Box>
+          <Box sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}>
             {newSkillAddable && (
                 <form onSubmit={handleNewSkill}>
                     
-                      <Autocomplete
+                  <Autocomplete
                     label="Add skill"
                     text="Add new skill"
                     name="new_skill_name"
                     disablePortal
-                    required
-                    
                     id="skill-name"
                     options={allSkills.map((skill) => ({
                       id: skill.id,
@@ -161,12 +157,11 @@ const SkillsCard = ({ user, activeUserId }) => {
                     onChange={(event, value) => {handleNewSkillChange(value)}}
                   />
                     
-                      <Autocomplete
+                  <Autocomplete
                     label="Skill level"
                     text="Define skill level"
                     name="new_skill_level"
                     disablePortal
-                    required={true}
                     id="skill-level"
                     options={skillLevels.map((skill) => ({id: skill.id, label: skill.level}))}
                     sx={{ width: 300 }}
@@ -191,7 +186,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                     <TableRow>
                       <TableCell>Tech</TableCell>
                       <TableCell>Skill level</TableCell>
-                      <TableCell>Perference</TableCell>
+                      <TableCell>Preference</TableCell>
                     </TableRow>
                   </TableHead>
                   {skills().map((skill) => (
