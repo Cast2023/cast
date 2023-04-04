@@ -53,6 +53,7 @@ export const initializeCertCard = (id) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const certs = consultant.certificates
     dispatch(setAllCerts(certs))
+    dispatch(updateEditability(false))
   }
 }
 

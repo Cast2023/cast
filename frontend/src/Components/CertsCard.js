@@ -50,7 +50,9 @@ const CertsCard = ({ user, activeUserId }) => {
 
   const handleCertChange = (event, cert) => {
     const date = dayjs(event).format("YYYY-MM-DD")
+    date != "Invalid Date" && (
     dispatch(setCertChanges([...certChanges, { cert: cert, valid_until: date }]))
+    )
   }
 
   const handleSubmit = (event) => {
@@ -112,7 +114,7 @@ const CertsCard = ({ user, activeUserId }) => {
       <Card>
         <CardHeader
           title="Certificates"
-          action={(user.id === activeUserId) && (
+          action={(user.id === 1) && (
             <IconButton 
               id="editCertsButton"
               onClick={() => handleClick(editable)}
@@ -144,15 +146,16 @@ const CertsCard = ({ user, activeUserId }) => {
                       <TableCell id={certificate.id}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
-                            label={certificate.validUntil}
-                            // text="Valid until"
-                            name={certificate.certificate}
-                            id={certificate.id}
-                            // inputFormat="YYYY-MM-DD"
                             onChange={(event) => {
                               handleCertChange(event,certificate.id)
                             }}
-                            format="YYYY-MM-DD"         
+                            format="YYYY-MM-DD"
+                            slotProps={{
+                              textField: {
+                                id: "cert"+certificate.id,
+                                placeholder: certificate.validUntil
+                              },
+                            }}
                           />
                         </LocalizationProvider>
                       </TableCell>

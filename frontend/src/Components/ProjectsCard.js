@@ -165,27 +165,31 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="Employee participation start date"
-                      text="Employee participation start date"
-                      name="employee_start_date"
-                      id="employee_start_date"
-                      inputFormat="YYYY-MM-DD"
+                      format="YYYY-MM-DD"
                       onChange={(newValue) => {
                         setNewStartDate(newValue)
                       }}
                       value={newStartDate}
+                      slotProps={{
+                        textField: {
+                          id: "employeeStartDate",
+                        },
+                      }}
                     />
                   </LocalizationProvider>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="Employee participation end date"
-                      text="Employee participation end date"
-                      name="employee_end_date"
-                      id="employee_end_date"
-                      inputFormat="YYYY-MM-DD"
+                      format="YYYY-MM-DD"
                       onChange={(newValue) => {
                         setNewEndDate(newValue)
                       }}
                       value={newEndDate}
+                      slotProps={{
+                        textField: {
+                          id: "employeeEndDate",
+                        },
+                      }}
                     />
                   </LocalizationProvider>
                 </Box>
@@ -209,38 +213,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
           >
-            {/* {newSkillAddable && (
-                <form onSubmit={handleNewSkill}>
-                  <div><TextField
-                      required
-                      id="skill-name"
-                      label="Add skill"
-                      variant="standard"
-                      name="new_skill_name"
-                      onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
-                    />
-                    </div>
-                    <div>
-                      <TextField
-                        required
-                        id="skill-level"
-                        label="Add skill level"
-                        variant="standard"
-                        name="new_skill_level"
-                        select
-                        onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
-                      >
-                        <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
-                        <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
-                        <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
-                      </TextField></div>
-                    
-                    <div><Button type="submit" id="submit_new_skill_button">
-                      Add
-                    </Button></div>
-                </form>
-              )} */}
-
             <form onSubmit={handleSubmit}>
               {projectlist().map((project) => (
                 <div key={project.name}>
