@@ -7,30 +7,39 @@ import {
   CardMedia,
   CardHeader,
 } from "@mui/material"
+import Autocomplete from "@mui/material/Autocomplete"
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setNameFilter } from "../Reducers/searchReducer"
-import { updateFilteredConsultantsByName } from "../Reducers/consultantReducer"
+import {
+  updateFilteredConsultants,
+  setFilteredName,
+  setFilteredCertificates,
+  setFilteredCertificatesInputValue,
+  setFilteredSkills,
+  setFilteredSkillsInputValue,
+} from "../Reducers/consultantReducer"
 import { Link } from "react-router-dom"
+import certificateService from "../Services/certificateService"
 
 const Search = () => {
+  const dispatch = useDispatch()
   const consultants = useSelector((state) => state.consultants.allConsultants)
+  const skills = useSelector((state) => state.consultants.allTechSkills)
+  const certs = useSelector((state) => state.consultants.allCertificates)
   const filteredUsers = useSelector(
     (state) => state.consultants.filteredConsultants
   )
-  const nameFilter = useSelector((state) => state.search.nameFilter)
+  const nameFilter = useSelector((state) => state.consultants.filteredName)
+
+  console.log(certs)
 
   useEffect(() => {
-    if (consultants) {
-      dispatch(updateFilteredConsultantsByName(nameFilter))
-    } else {
-      dispatch(updateFilteredConsultantsByName(null))
-    }
-  }, [nameFilter])
+    dispatch(updateFilteredConsultants())
+  }, [])
 
-  const dispatch = useDispatch()
   const changeSearchTerm = (e) => {
-    dispatch(setNameFilter(e.target.value))
+    dispatch(setFilteredName(e.target.value))
+    dispatch(updateFilteredConsultants())
   }
 
   return (
@@ -50,6 +59,66 @@ const Search = () => {
               id="search_bar"
             />
           </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Autocomplete
+              multiple
+              label="Select tech skills"
+              text="Select tech skills"
+              name="skills"
+              disablePortal
+              id="skills-combo-box"
+              value={useSelector((state) => state.consultants.filteredSkills)}
+              inputValue={useSelector(
+                (state) => state.consultants.filteredSkillsInputValue
+              )}
+              onInputChange={(event, value) => {
+                dispatch(setFilteredSkillsInputValue(value))
+              }}
+              options={skills.map((skill) => ({
+                id: skill.id,
+                label: skill.tech_name,
+              }))}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Select skills" />
+              )}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(event, value) => {
+                dispatch(setFilteredSkills(value))
+                dispatch(updateFilteredConsultants())
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Autocomplete
+              multiple
+              label="Select certs"
+              text="Select certs"
+              name="certs"
+              disablePortal
+              id="certs-combo-box"
+              value={useSelector((state) => state.consultants.filteredCertificates)}
+              inputValue={useSelector(
+                (state) => state.consultants.filteredCertificatesInputValue
+              )}
+              onInputChange={(event, value) => {
+                dispatch(setFilteredCertificatesInputValue(value))
+              }}
+              options={certs.map((certificate) => ({
+                id: certificate.id,
+                label: certificate.certificate_name,
+              }))}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Select certs" />
+              )}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(event, value) => {
+                dispatch(setFilteredCertificates(value))
+                dispatch(updateFilteredConsultants())
+              }}
+            />
+          </Grid>
           {/* <Grid item xs={4}>
               <Button
                 variant="contained"
@@ -60,6 +129,7 @@ const Search = () => {
                 Search
               </Button>
             </Grid> */}
+            
         </Grid>
       </div>
       <br />

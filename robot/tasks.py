@@ -1,9 +1,10 @@
 from invoke import task
 
 
-@task
-def test(ctx):
-    ctx.run("robot --argumentfile variables/local-dev.args tests")
+@task(optional=['file'])
+def test(ctx, file=""):
+    ctx.run(f"robot --argumentfile variables/local-dev.args tests/{file}")
+
 
 @task
 def container_test(ctx):
