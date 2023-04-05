@@ -185,11 +185,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       }}
                       value={newStartDate}
                     />
-                  </LocalizationProvider>
-                  <LocalizationProvider
-                    dateAdapter={AdapterMoment}
-                    adapterLocale={moment.locale("en-gb")}
-                  >
                     <DatePicker
                       label="Employee participation end date"
                       text="Employee participation end date"
