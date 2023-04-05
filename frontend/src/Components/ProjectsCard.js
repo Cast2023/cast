@@ -1,3 +1,5 @@
+import moment from "moment"
+import "moment/locale/en-gb"
 import {
   Card,
   CardHeader,
@@ -11,19 +13,22 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import EditIcon from "@mui/icons-material/Edit"
 import Autocomplete from "@mui/material/Autocomplete"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import dayjs from "dayjs"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import consultantService from "../Services/consultantService"
-import { addNewProject, updateAddState, initializeProjectCard } from "../Reducers/projectCardReducer"
+import {
+  addNewProject,
+  updateAddState,
+  initializeProjectCard,
+} from "../Reducers/projectCardReducer"
 import {
   updateEditability,
   updateNewSkillAddability,
 } from "../Reducers/skillCardReducer"
-
 
 const ProjectsCard = ({ user, activeUserId }) => {
   const [newProject, setNewProject] = useState(null)
@@ -37,9 +42,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const userProjects = useSelector((state) => state.projectCard.userProjects)
   const [trigger, setTrigger] = useState(false)
 
-  useEffect(() =>{
-    const id = (activeUserId===user.id)? activeUserId : user.id
-    dispatch(initializeProjectCard(id))// fetch consultant from database and initialize/update projects
+  useEffect(() => {
+    const id = activeUserId === user.id ? activeUserId : user.id
+    dispatch(initializeProjectCard(id))
   }, [trigger])
 
   const dispatch = useDispatch()
@@ -68,31 +73,17 @@ const ProjectsCard = ({ user, activeUserId }) => {
     }
     dispatch(addNewProject(newEmployeeProjectParticipation))
     setTrigger(!trigger)
-    console.log(newEmployeeProjectParticipation)
   }
 
-
-  const editable = false //useSelector((state) => state.skillCard.editable)
-  // const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
-  // const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these
-
-  // const handleChange = (event) => {
-  //   const value = event.target.value
-  //   setFormValues([...formValues, { skill_level: value, tech: [event.target.name][0] }])
-  //   console.log("event:", event.target)
-  // }
+  const editable = false
+  const [formValues, setFormValues] = useState([])
 
   const handleSubmit = (event) => {
     event.preventDefault()
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
-    setFormValues([]) // This empties the state after it is not needed anymore
-  }
-
-  const activateAddProject = () => {
-    console.log("activateAddProject")
+    setFormValues([])
   }
 
   const projectlist = () => {
@@ -101,7 +92,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
       (project) =>
         (p = p.concat([
           {
-            // id: project.tech,
             name: project.project_name,
             emplStartDate: project.employee_participation_start_date,
             emplEndDate: project.employee_participation_end_date,
@@ -162,7 +152,10 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   />
                 </Box>
                 <Box>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterMoment}
+                    adapterLocale={moment.locale("en-gb")}
+                  >
                     <DatePicker
                       label="Employee participation start date"
                       format="YYYY-MM-DD"
@@ -176,8 +169,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                         },
                       }}
                     />
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="Employee participation end date"
                       format="YYYY-MM-DD"
@@ -221,19 +212,14 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   <TextField
                     disabled={!editable}
                     label="Participation starts"
-                    // select
-                    // id={skill.id.toString()}
-                    // name={skill.id.toString()}
                     defaultValue={project.emplStartDate}
                     variant="standard"
-                    // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   />
                   <TextField
                     disabled={!editable}
                     label="Participation ends"
                     defaultValue={project.emplEndDate}
                     variant="standard"
-                    // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   />
                   <TextField
                     disabled={!editable}
@@ -241,7 +227,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     select
                     defaultValue={project.allocation}
                     variant="standard"
-                    // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   >
                     <MenuItem id="Key10" key="key10" value="10">
                       10%
@@ -276,12 +261,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   </TextField>
                 </div>
               ))}
-
-              {/* {editable && (
-                <Button type="submit" id="submit_skills_button">
-                  Submit
-                </Button>
-              )} */}
             </form>
           </Box>
         </CardContent>
