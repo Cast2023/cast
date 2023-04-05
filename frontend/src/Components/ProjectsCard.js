@@ -31,7 +31,6 @@ import {
 } from "../Reducers/skillCardReducer"
 
 const ProjectsCard = ({ user, activeUserId }) => {
-  const [newProject, setNewProject] = useState(null)
   const [newProjectId, setNewProjectId] = useState(null)
   const [newAllocation, setNewAllocation] = useState(0)
   const [newStartDate, setNewStartDate] = useState(null)
@@ -73,8 +72,13 @@ const ProjectsCard = ({ user, activeUserId }) => {
     }
     dispatch(addNewProject(newEmployeeProjectParticipation))
     setTrigger(!trigger)
+    setNewProjectId(null)
+    setNewAllocation(0)
+    setNewStartDate(null)
+    setNewEndDate(null)
   }
 
+  // copied from old skill card 
   const editable = false
   const [formValues, setFormValues] = useState([])
 
@@ -85,6 +89,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
     dispatch(updateEditability(!editable))
     setFormValues([])
   }
+  // 
 
   const projectlist = () => {
     let p = []
@@ -146,7 +151,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       option.id === value.id
                     }
                     onChange={(event, newValue) => {
-                      setNewProject(newValue.label)
                       setNewProjectId(newValue.id)
                     }}
                   />
