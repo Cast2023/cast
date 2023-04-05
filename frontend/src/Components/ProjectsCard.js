@@ -57,7 +57,8 @@ const ProjectsCard = ({ user, activeUserId }) => {
     dispatch(updateAddState(!addProjectState))
   }
 
-  moment.updateLocale("en-gb", { week: { dow: 1 } })
+  // This is ultimately not needed.
+  // moment.updateLocale("en-gb", { week: { dow: 1 } })
 
   const handleSubmitNewProject = (event) => {
     event.preventDefault()
