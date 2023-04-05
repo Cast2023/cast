@@ -1,10 +1,11 @@
+import moment from "moment"
+import "moment/locale/en-gb"
 import { 
   Button,
   Card,
   CardHeader, 
   CardContent, 
   IconButton,
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -15,7 +16,7 @@ import {
 } from "@mui/material"
 import EditIcon from '@mui/icons-material/Edit'
 // import AddCircleIcon from '@mui/icons-material/AddCircle'
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import dayjs from "dayjs"
@@ -144,7 +145,10 @@ const CertsCard = ({ user, activeUserId }) => {
                       )}
                       {editable && (
                       <TableCell id={certificate.id}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <LocalizationProvider 
+                          dateAdapter={AdapterMoment}
+                          adapterLocale={moment.locale("en-gb")}
+                        >
                           <DatePicker
                             onChange={(event) => {
                               handleCertChange(event,certificate.id)
