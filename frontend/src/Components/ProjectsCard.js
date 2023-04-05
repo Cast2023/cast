@@ -13,7 +13,6 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import EditIcon from "@mui/icons-material/Edit"
 import Autocomplete from "@mui/material/Autocomplete"
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
@@ -45,7 +44,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
 
   useEffect(() => {
     const id = activeUserId === user.id ? activeUserId : user.id
-    dispatch(initializeProjectCard(id)) // fetch consultant from database and initialize/update projects
+    dispatch(initializeProjectCard(id))
   }, [trigger])
 
   const dispatch = useDispatch()
@@ -56,9 +55,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const updateAddProjectState = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
   }
-
-  // This is ultimately not needed.
-  // moment.updateLocale("en-gb", { week: { dow: 1 } })
 
   const handleSubmitNewProject = (event) => {
     event.preventDefault()
@@ -77,30 +73,17 @@ const ProjectsCard = ({ user, activeUserId }) => {
     }
     dispatch(addNewProject(newEmployeeProjectParticipation))
     setTrigger(!trigger)
-    console.log(newEmployeeProjectParticipation)
   }
 
-  const editable = false //useSelector((state) => state.skillCard.editable)
-  // const newSkillAddable = useSelector((state) => state.skillCard.newSkillAddable)
-  const [formValues, setFormValues] = useState([]) // This handles the changes in existing skills
-  // const [techFormValues, setTechFormValues] = useState() // this handels the new skill. Feel free to rename these
-
-  // const handleChange = (event) => {
-  //   const value = event.target.value
-  //   setFormValues([...formValues, { skill_level: value, tech: [event.target.name][0] }])
-  //   console.log("event:", event.target)
-  // }
+  const editable = false
+  const [formValues, setFormValues] = useState([])
 
   const handleSubmit = (event) => {
     event.preventDefault()
     const skillsList = { skills: formValues }
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
-    setFormValues([]) // This empties the state after it is not needed anymore
-  }
-
-  const activateAddProject = () => {
-    console.log("activateAddProject")
+    setFormValues([])
   }
 
   const projectlist = () => {
@@ -109,7 +92,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
       (project) =>
         (p = p.concat([
           {
-            // id: project.tech,
             name: project.project_name,
             emplStartDate: project.employee_participation_start_date,
             emplEndDate: project.employee_participation_end_date,
@@ -218,38 +200,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
           >
-            {/* {newSkillAddable && (
-                <form onSubmit={handleNewSkill}>
-                  <div><TextField
-                      required
-                      id="skill-name"
-                      label="Add skill"
-                      variant="standard"
-                      name="new_skill_name"
-                      onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
-                    />
-                    </div>
-                    <div>
-                      <TextField
-                        required
-                        id="skill-level"
-                        label="Add skill level"
-                        variant="standard"
-                        name="new_skill_level"
-                        select
-                        onChange={handleTechChange} // <- handleChange moved inside the Textfield element.
-                      >
-                        <MenuItem id= "Key1" key="key1" value="1">Wants to learn</MenuItem>
-                        <MenuItem id= "Key2" key="key2" value="2">Can work with</MenuItem>
-                        <MenuItem id= "Key3" key="key3" value="3">Proficient</MenuItem>
-                      </TextField></div>
-                    
-                    <div><Button type="submit" id="submit_new_skill_button">
-                      Add
-                    </Button></div>
-                </form>
-              )} */}
-
             <form onSubmit={handleSubmit}>
               {projectlist().map((project) => (
                 <div key={project.name}>
@@ -258,19 +208,14 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   <TextField
                     disabled={!editable}
                     label="Participation starts"
-                    // select
-                    // id={skill.id.toString()}
-                    // name={skill.id.toString()}
                     defaultValue={project.emplStartDate}
                     variant="standard"
-                    // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   />
                   <TextField
                     disabled={!editable}
                     label="Participation ends"
                     defaultValue={project.emplEndDate}
                     variant="standard"
-                    // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   />
                   <TextField
                     disabled={!editable}
@@ -278,7 +223,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     select
                     defaultValue={project.allocation}
                     variant="standard"
-                    // onChange={handleChange} // <- handleChange moved inside the Textfield element.
                   >
                     <MenuItem id="Key10" key="key10" value="10">
                       10%
@@ -313,12 +257,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   </TextField>
                 </div>
               ))}
-
-              {/* {editable && (
-                <Button type="submit" id="submit_skills_button">
-                  Submit
-                </Button>
-              )} */}
             </form>
           </Box>
         </CardContent>
