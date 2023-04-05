@@ -2,7 +2,6 @@ import datetime
 
 from rest_framework import viewsets, filters, generics, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as rest_filters
 import pandas as pd
 
@@ -147,8 +146,6 @@ class EmployeeFilter(rest_filters.FilterSet):
 
 
 class ConsultantAPIView(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-
     queryset = Employees.objects.all()
     serializer_class = ConsultantSerializer
     filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]

@@ -4,7 +4,7 @@ const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/consultant/"
 const authHeader = (token) => ({
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Token " + token,
+    Authorization: "Token token=" + token,
   },
 })
 

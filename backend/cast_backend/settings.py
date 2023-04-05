@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'core.middleware.AuthAPI'
 ]
 
 ROOT_URLCONF = 'cast_backend.urls'
@@ -80,9 +81,6 @@ WSGI_APPLICATION = 'cast_backend.wsgi.application'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
 }
 
 # Database
@@ -146,3 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = json.loads(ENV['CORS_ORIGIN'])
 
 AUTH_USER_MODEL = 'restapi.Employees'
+
+AUTHENTICATION_BACKENDS = [
+    'core.backends.TokenBackend',
+]

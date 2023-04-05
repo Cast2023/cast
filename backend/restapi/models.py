@@ -1,5 +1,8 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+from django.utils import timezone
 
 
 class Employees(AbstractBaseUser):
@@ -8,7 +11,7 @@ class Employees(AbstractBaseUser):
     '''
     first_name = models.TextField()
     last_name = models.TextField()
-    password = models.TextField(null=True)
+    password = None
     email = models.TextField(unique=True)
     phone_number = models.TextField(null=True)
     location_country = models.TextField(null=True)
@@ -17,10 +20,8 @@ class Employees(AbstractBaseUser):
     allocation_until = models.DateField(null=True)
     wants_to_do = models.TextField(null=True)
     wants_not_to_do = models.TextField(null=True)
-
+    
     USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
-
 
 class Techs(models.Model):
     '''
@@ -77,3 +78,25 @@ class Employee_projects(models.Model):
     employee_participation_end_date = models.DateField(null=True)
     allocation_busy = models.IntegerField(null=True)
 
+class Token(models.Model):
+    """Authentication token for user model"""
+
+    # Secret string
+    token = models.CharField(max_length=64, unique=True)
+    # Time to live - number of seconds until token expiration
+    ttl = models.IntegerField(default=3600)
+    user = models.ForeignKey(
+        Employees,
+        related_name='tokens',
+        on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(default=timezone.now)
+
+    # Fields to be given to clients
+    dict_fields = ['string', 'ttl']
+
+    @property
+    def is_expired(self):
+        elapsed = datetime.datetime.now() - self.created_at
+        if elapsed > datetime.timedelta(seconds=self.ttl):
+            return True
