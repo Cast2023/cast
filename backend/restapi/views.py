@@ -4,6 +4,7 @@ from rest_framework import viewsets, filters, generics, status
 from rest_framework.response import Response
 from django_filters import rest_framework as rest_filters
 import pandas as pd
+from django.db import connection
 
 from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project
 from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer
