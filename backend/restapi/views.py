@@ -152,6 +152,10 @@ class ConsultantAPIView(viewsets.ModelViewSet):
     filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
     filterset_class = EmployeeFilter
 
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
+
 
 class ImportCertificatesView(generics.CreateAPIView):
     serializer_class = FileUploadSerializer
