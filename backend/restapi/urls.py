@@ -42,7 +42,7 @@ project_list = ProjectAPIView.as_view({
 
 urlpatterns = format_suffix_patterns([
     path('consultant/', token_required(consultant_list), name='consultant-list'),
-    path('consultant/<int:pk>/', consultant_detail, name='consultant-detail'),
+    path('consultant/<int:pk>/', token_required(consultant_detail), name='consultant-detail'),
     path('tech/', tech_list, name='tech-list'),
     path('tech/<int:pk>', tech_detail, name='tech-detail'),
     path('certificates/', cert_list, name='cert-list'),
