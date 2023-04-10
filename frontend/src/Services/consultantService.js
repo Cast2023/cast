@@ -15,12 +15,14 @@ const getAllConsultants = (APIToken) => {
   return request.then((response) => response.data)
 }
 
-const getSelectedConsultant = (id, APIToken) => {
+const getSelectedConsultant = (id) => {
+  const APIToken = localStorage.getItem("APIToken")
   const request = axios.get(`${baseUrl}${id}/`, authHeader(APIToken))
   return request.then((response) => response.data)
 }
 
-const editConsultant = (id, payload, APIToken) => {
+const editConsultant = (id, payload) => {
+  const APIToken = localStorage.getItem("APIToken")
   console.log("editcons payload:", payload)
   const request = axios.patch(`${baseUrl}${id}/`, payload, authHeader(APIToken))
   console.log(request)

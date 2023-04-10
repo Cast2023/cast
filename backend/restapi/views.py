@@ -17,6 +17,7 @@ class TechsFilter(rest_filters.FilterSet):
         fields = ("tech_name",)
         model = Techs
 
+
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
     queryset = Techs.objects.all()
@@ -30,15 +31,25 @@ class TechAPIView(viewsets.ModelViewSet):
         result = {"id": instance.id, "tech_name": instance.tech_name}
         return Response({"status": "success", "result": result}, status.HTTP_201_CREATED)
 
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
+
+
 class CertAPIView(viewsets.ModelViewSet):
     serializer_class = CertSerializer
     queryset = Certificate.objects.all()
-    
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
+
     
 class ProjectAPIView(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
-
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
 
 class EmployeeFilter(rest_filters.FilterSet):
     first_name = rest_filters.CharFilter(
@@ -159,7 +170,7 @@ class ConsultantAPIView(viewsets.ModelViewSet):
 
 class ImportCertificatesView(generics.CreateAPIView):
     serializer_class = FileUploadSerializer
-
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

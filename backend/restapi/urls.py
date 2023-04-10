@@ -42,11 +42,11 @@ project_list = ProjectAPIView.as_view({
 })
 
 urlpatterns = format_suffix_patterns([
-    path('consultant/', token_required(consultant_list), name='consultant-list'),
+    path('consultant/', csrf_exempt(token_required(consultant_list)), name='consultant-list'),
     path('consultant/<int:pk>/', csrf_exempt(token_required(consultant_detail)), name='consultant-detail'),
-    path('tech/', tech_list, name='tech-list'),
-    path('tech/<int:pk>', tech_detail, name='tech-detail'),
-    path('certificates/', cert_list, name='cert-list'),
-    path('import-certificates/', ImportCertificatesView.as_view(), name='upload-file'),
-    path('projects/', project_list, name='project-list'),
+    path('tech/', csrf_exempt(token_required(tech_list)), name='tech-list'),
+    path('tech/<int:pk>', csrf_exempt(token_required(tech_detail)), name='tech-detail'),
+    path('certificates/', csrf_exempt(token_required(cert_list)), name='cert-list'),
+    path('import-certificates/', csrf_exempt(token_required(ImportCertificatesView.as_view())), name='upload-file'),
+    path('projects/', csrf_exempt(token_required(project_list)), name='project-list'),
 ])
