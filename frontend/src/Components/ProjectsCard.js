@@ -209,7 +209,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
           >
             <form onSubmit={handleSubmit}>
                   <TableContainer component={Paper}>               
-                    <Table>
+                    <Table id="projectTable">
                       <TableHead>
                         <TableRow>
                           <TableCell>Project</TableCell>
