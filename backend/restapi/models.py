@@ -97,6 +97,7 @@ class Token(models.Model):
 
     @property
     def is_expired(self):
-        elapsed = datetime.datetime.now() - self.created_at
+        elapsed = datetime.datetime.now(timezone.utc) - self.created_at
         if elapsed > datetime.timedelta(seconds=self.ttl):
             return True
+        return False
