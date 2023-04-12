@@ -8,3 +8,4 @@ report.html
 output.xml
 .coverage
 backend/partial_update.log
+backend/restapi/migrations/
