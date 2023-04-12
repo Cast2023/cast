@@ -9,6 +9,13 @@ import {
   MenuItem,
   TextField,
   Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead,
+  Paper,
 } from "@mui/material"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import EditIcon from "@mui/icons-material/Edit"
@@ -201,62 +208,50 @@ const ProjectsCard = ({ user, activeUserId }) => {
             }}
           >
             <form onSubmit={handleSubmit}>
-              {projectlist().map((project) => (
-                <div key={project.name}>
-                  {project.name}
-                  <p />
-                  <TextField
-                    disabled={!editable}
-                    label="Participation starts"
-                    defaultValue={project.emplStartDate}
-                    variant="standard"
-                  />
-                  <TextField
-                    disabled={!editable}
-                    label="Participation ends"
-                    defaultValue={project.emplEndDate}
-                    variant="standard"
-                  />
-                  <TextField
-                    disabled={!editable}
-                    label="Allocation"
-                    select
-                    defaultValue={project.allocation}
-                    variant="standard"
-                  >
-                    <MenuItem id="Key10" key="key10" value="10">
-                      10%
-                    </MenuItem>
-                    <MenuItem id="Key20" key="key20" value="20">
-                      20%
-                    </MenuItem>
-                    <MenuItem id="Key30" key="key30" value="30">
-                      30%
-                    </MenuItem>
-                    <MenuItem id="Key40" key="key40" value="40">
-                      40%
-                    </MenuItem>
-                    <MenuItem id="Key50" key="key50" value="50">
-                      50%
-                    </MenuItem>
-                    <MenuItem id="Key60" key="key60" value="60">
-                      60%
-                    </MenuItem>
-                    <MenuItem id="Key70" key="key70" value="70">
-                      70%
-                    </MenuItem>
-                    <MenuItem id="Key80" key="key80" value="80">
-                      80%
-                    </MenuItem>
-                    <MenuItem id="Key90" key="key90" value="90">
-                      90%
-                    </MenuItem>
-                    <MenuItem id="Key100" key="key100" value="100">
-                      100%
-                    </MenuItem>
-                  </TextField>
-                </div>
-              ))}
+                  <TableContainer component={Paper}>               
+                    <Table id="projectTable">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Project</TableCell>
+                          <TableCell>Allocation-%</TableCell>
+                          <TableCell>Participation from | until</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      {projectlist().map((project) => (
+                        //<div key={project.name}>
+                        <TableBody key={project.name}>
+                          <TableRow key={project.name}>
+                            <TableCell>{project.name}</TableCell>
+                            <TableCell>            
+                              <TextField      
+                                key = {project.name}
+                                disabled={!editable}
+                                select
+                                //id={project.id.toString()}
+                                //name={project.id.toString()}
+                                defaultValue={project.allocation}
+                                variant="standard"
+                                //onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
+                              >
+                                <MenuItem id= "Key10" key="key10" value="10">10%</MenuItem>
+                                <MenuItem id= "Key20" key="key20" value="20">20%</MenuItem>
+                                <MenuItem id= "Key30" key="key30" value="30">30%</MenuItem>
+                                <MenuItem id= "Key40" key="key40" value="40">40%</MenuItem>
+                                <MenuItem id= "Key50" key="key50" value="50">50%</MenuItem>
+                                <MenuItem id= "Key60" key="key60" value="60">60%</MenuItem>
+                                <MenuItem id= "Key70" key="key70" value="70">70%</MenuItem>
+                                <MenuItem id= "Key80" key="key80" value="80">80%</MenuItem>
+                                <MenuItem id= "Key90" key="key90" value="90">90%</MenuItem>
+                                <MenuItem id= "Key100"key="key100" value="100">100%</MenuItem>
+                              </TextField>
+                            </TableCell>
+                            <TableCell>{project.emplStartDate} | {project.emplEndDate}</TableCell>
+                          </TableRow>
+                        </TableBody>
+                       // </div>
+                      ))}
+                    </Table>
+                  </TableContainer>
             </form>
           </Box>
         </CardContent>
