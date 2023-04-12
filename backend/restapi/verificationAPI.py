@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from django.utils import timezone
 
 from django.conf import settings
 from .models import Employees, Token
@@ -28,7 +29,9 @@ class VerifyOAuthTokenApi(APIView):
                     "last_name":userinfo['family_name'],
                 }
             )
-            api_token, _ = Token.objects.get_or_create(user=user, token=generate_token())
+            # api_token, _ = Token.objects.get_or_create(user=user, token=generate_token())
+            api_token, _ = Token.objects.update_or_create(user=user, defaults={"token":generate_token(), "created_at":timezone.now()})
+            print(api_token.created_at)
 
         except (ValueError, KeyError) as error: # error for debugging purposes, should be removed later
             return Response(f"Invalid token, you shall not pass! {error}", status=401) # Auth token invalid
