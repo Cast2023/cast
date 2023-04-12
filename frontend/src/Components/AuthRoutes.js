@@ -26,11 +26,17 @@ const AuthRoutes = () => {
     //example in part5 uses JSON, here we test with token strin first
     const authToken = window.localStorage.getItem("authToken")
     const APIToken = window.localStorage.getItem("APIToken")
-
+    
     if (authToken) {
       authenticationService.verifyToken( authToken ).then((response) => {
         //console.log('response.data[0]: ', response.data[0])
-        userInitialization(authToken, APIToken, response.data[0])
+        const userId=response.data[0]
+        const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
+        const APIToken = response.data[2]
+        userInitialization(authToken, APIToken, userId)
+        window.localStorage.setItem("authToken", authToken)
+        window.localStorage.setItem("APIToken", APIToken)
+        console.log("hereeeeee")
       })
     }
   }, [])
@@ -52,10 +58,11 @@ const AuthRoutes = () => {
             .then((response) => {
               //need to apply response when backend side is handeled
               console.log("login response", response)
+              const userId = response.data[0]
               const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
               const APIToken = response.data[2]
 
-              userInitialization(authToken, APIToken, response.data[0])
+              userInitialization(authToken, APIToken, userId)
 
               //saving the tokens to the browser's local storage
               window.localStorage.setItem("authToken", authToken)
