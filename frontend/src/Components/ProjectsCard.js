@@ -260,8 +260,8 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     adapterLocale={moment.locale("en-gb")}
                   >
                     <DatePicker
-                      label="Start date"
-                      text="Start date"
+                      label={project.emplStartDate}
+                      text={project.emplStartDate}
                       name="employee_start_date"
                       id="employee_start_date"
                       inputFormat="YYYY-MM-DD"
@@ -276,6 +276,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       name="employee_end_date"
                       id="employee_end_date"
                       inputFormat="YYYY-MM-DD"
+                      defaultValue={project.emplEndDate}
                       onChange={(newValue) => {
                         setNewEndDate(newValue)
                       }}
