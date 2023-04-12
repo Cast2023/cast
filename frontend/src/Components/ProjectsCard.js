@@ -16,6 +16,7 @@ import {
   TableContainer,
   TableHead,
   Paper,
+  Select,
 } from "@mui/material"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import EditIcon from "@mui/icons-material/Edit"
@@ -46,8 +47,10 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const [projects, setProjects] = useState(
     useSelector((state) => state.projectCard.allProjects)
   )
+  const [formValues, setFormValues] = useState([])
   const userProjects = useSelector((state) => state.projectCard.userProjects)
   const [trigger, setTrigger] = useState(false)
+  const [editable, setEditable] = useState(false)
 
   useEffect(() => {
     const id = activeUserId === user.id ? activeUserId : user.id
@@ -82,8 +85,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
     setTrigger(!trigger)
   }
 
-  const editable = false
-  const [formValues, setFormValues] = useState([])
+  //const editable = false
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -91,6 +93,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
     consultantService.editConsultant(user.id, skillsList)
     dispatch(updateEditability(!editable))
     setFormValues([])
+  }
+  const handleClick = (editable) => {
+    setEditable(!editable)
   }
 
   const projectlist = () => {
@@ -123,7 +128,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
                 >
                   <AddCircleIcon />
                 </IconButton>
-                <IconButton id="editProjectsButton">
+                <IconButton 
+                  id="editProjectsButton"
+                  onClick={() => handleClick(editable)}>
                   <EditIcon />
                 </IconButton>
               </Box>
@@ -223,7 +230,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                           <TableRow key={project.name}>
                             <TableCell>{project.name}</TableCell>
                             <TableCell>            
-                              <TextField      
+                              <Select      
                                 key = {project.name}
                                 disabled={!editable}
                                 select
@@ -231,6 +238,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                                 //name={project.id.toString()}
                                 defaultValue={project.allocation}
                                 variant="standard"
+                                autowidth
                                 //onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
                               >
                                 <MenuItem id= "Key10" key="key10" value="10">10%</MenuItem>
@@ -243,15 +251,48 @@ const ProjectsCard = ({ user, activeUserId }) => {
                                 <MenuItem id= "Key80" key="key80" value="80">80%</MenuItem>
                                 <MenuItem id= "Key90" key="key90" value="90">90%</MenuItem>
                                 <MenuItem id= "Key100"key="key100" value="100">100%</MenuItem>
-                              </TextField>
+                              </Select>
                             </TableCell>
-                            <TableCell>{project.emplStartDate} | {project.emplEndDate}</TableCell>
+                            
+                            {!editable &&(<TableCell>{project.emplStartDate} | {project.emplEndDate}</TableCell>)}
+                            {editable && (<TableCell><LocalizationProvider
+                    dateAdapter={AdapterMoment}
+                    adapterLocale={moment.locale("en-gb")}
+                  >
+                    <DatePicker
+                      label="Start date"
+                      text="Start date"
+                      name="employee_start_date"
+                      id="employee_start_date"
+                      inputFormat="YYYY-MM-DD"
+                      onChange={(newValue) => {
+                        setNewStartDate(newValue)
+                      }}
+                      value={newStartDate}
+                    />
+                    <DatePicker
+                      label="End date"
+                      text="End date"
+                      name="employee_end_date"
+                      id="employee_end_date"
+                      inputFormat="YYYY-MM-DD"
+                      onChange={(newValue) => {
+                        setNewEndDate(newValue)
+                      }}
+                      value={newEndDate}
+                    />
+                  </LocalizationProvider></TableCell>)}
                           </TableRow>
                         </TableBody>
                        // </div>
                       ))}
                     </Table>
                   </TableContainer>
+                  {editable && (
+                <Button type="submit" id="submit_skills_button">
+                  Submit
+                </Button>
+              )}
             </form>
           </Box>
         </CardContent>
