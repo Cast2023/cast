@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from restapi.models import Token
 
 
 def get_token(request):
@@ -40,8 +41,10 @@ class AuthAPI(object):
 
         if token:
             user = authenticate(token=token)
+            print("TOOOOOKEEEEEEEN", token)
+            fetched_token = Token.objects.get(token=token)
 
-            if user and user.is_active:
+            if user and user.is_active and not fetched_token.is_expired:
                 request.user = user
 
         return self.get_response(request)
