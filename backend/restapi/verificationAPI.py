@@ -29,10 +29,16 @@ class VerifyOAuthTokenApi(APIView):
                     "last_name":userinfo['family_name'],
                 }
             )
-            # api_token, _ = Token.objects.get_or_create(user=user, token=generate_token())
-            api_token, _ = Token.objects.update_or_create(user=user, defaults={"token":generate_token(), "created_at":timezone.now()})
-            print(api_token.created_at)
+            try:
+                api_token = Token.objects.get(user=user)
+                if api_token.is_expired:
+                    api_token.token = generate_token()
+                    api_token.created_at = timezone.now()
+                    api_token.save()
+            except Token.DoesNotExist:
+                api_token = Token.objects.create(user=user, token=generate_token(), created_at=timezone.now())
 
+    
         except (ValueError, KeyError) as error: # error for debugging purposes, should be removed later
             return Response(f"Invalid token, you shall not pass! {error}", status=401) # Auth token invalid
  
