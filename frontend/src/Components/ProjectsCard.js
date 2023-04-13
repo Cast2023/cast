@@ -38,7 +38,6 @@ import {
 } from "../Reducers/skillCardReducer"
 
 const ProjectsCard = ({ user, activeUserId }) => {
-  const [newProject, setNewProject] = useState(null)
   const [newProjectId, setNewProjectId] = useState(null)
   const [newAllocation, setNewAllocation] = useState(0)
   const [newStartDate, setNewStartDate] = useState(null)
@@ -80,8 +79,13 @@ const ProjectsCard = ({ user, activeUserId }) => {
     }
     dispatch(addNewProject(newEmployeeProjectParticipation))
     setTrigger(!trigger)
+    setNewProjectId(null)
+    setNewAllocation(0)
+    setNewStartDate(null)
+    setNewEndDate(null)
   }
 
+  // copied from old skill card 
   const editable = false
   const [formValues, setFormValues] = useState([])
 
@@ -92,6 +96,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
     dispatch(updateEditability(!editable))
     setFormValues([])
   }
+  // 
 
   const projectlist = () => {
     let p = []
@@ -153,7 +158,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       option.id === value.id
                     }
                     onChange={(event, newValue) => {
-                      setNewProject(newValue.label)
                       setNewProjectId(newValue.id)
                     }}
                   />
@@ -165,25 +169,29 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   >
                     <DatePicker
                       label="Employee participation start date"
-                      text="Employee participation start date"
-                      name="employee_start_date"
-                      id="employee_start_date"
-                      inputFormat="YYYY-MM-DD"
+                      format="YYYY-MM-DD"
                       onChange={(newValue) => {
                         setNewStartDate(newValue)
                       }}
                       value={newStartDate}
+                      slotProps={{
+                        textField: {
+                          id: "employeeStartDate",
+                        },
+                      }}
                     />
                     <DatePicker
                       label="Employee participation end date"
-                      text="Employee participation end date"
-                      name="employee_end_date"
-                      id="employee_end_date"
-                      inputFormat="YYYY-MM-DD"
+                      format="YYYY-MM-DD"
                       onChange={(newValue) => {
                         setNewEndDate(newValue)
                       }}
                       value={newEndDate}
+                      slotProps={{
+                        textField: {
+                          id: "employeeEndDate",
+                        },
+                      }}
                     />
                   </LocalizationProvider>
                 </Box>
