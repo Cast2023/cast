@@ -1,8 +1,8 @@
 from django.test import Client
 from django.test.client import encode_multipart
 from django.urls import reverse
-from rest_framework.test import APITestCase
-from restapi.models import Techs
+from rest_framework.test import APIRequestFactory, APITestCase, APIClient
+from restapi.models import Techs, Employees, Token
 
 class TechFilterTests(APITestCase):
     url = reverse('tech-list')
@@ -10,6 +10,16 @@ class TechFilterTests(APITestCase):
     def setUp(self):
 
         self.client = Client()
+
+        user1 = Employees.objects.create(
+            first_name='John',
+            last_name='Doe',
+            email='tester@gmail.com'
+        )
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
 
         Techs.objects.create(
             tech_name='Python'
@@ -30,6 +40,15 @@ class TechGetTests(APITestCase):
     def setUp(self):
 
         self.client = Client()
+        user1 = Employees.objects.create(
+            first_name='John',
+            last_name='Doe',
+            email='tester@gmail.com'
+        )
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
 
         Techs.objects.create(
             tech_name='Python'
@@ -59,6 +78,15 @@ class TechPostTests(APITestCase):
     def setUp(self):
 
         self.client = Client()
+        user1 = Employees.objects.create(
+            first_name='John',
+            last_name='Doe',
+            email='tester@gmail.com'
+        )
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
 
         Techs.objects.create(
             tech_name='Python'
