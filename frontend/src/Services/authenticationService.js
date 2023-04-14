@@ -21,7 +21,6 @@ const verifyToken = async (token) => {
       Authorization: JSON.stringify(token),
     },
   })
-  console.log("resultttttttt",result)
   return result
 }
 
