@@ -110,10 +110,10 @@ class ConsultantSerializer(serializers.ModelSerializer):
                         certificate.valid_until = updated_cert['valid_until']
                         updated = True
                         certificate.save()
-                    if not updated:
-                        Employee_certificates.objects.create(
-                            employee=instance, cert=updated_cert['cert'], valid_until=updated_cert['valid_until'])
-                        updated = True
+                if not updated:
+                    Employee_certificates.objects.create(
+                        employee=instance, cert=updated_cert['cert'], valid_until=updated_cert['valid_until'])
+                    updated = True
                                 
         if 'projects' in validated_data:
             updated_project_list = validated_data.pop('projects')
