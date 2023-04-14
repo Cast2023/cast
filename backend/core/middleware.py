@@ -41,7 +41,6 @@ class AuthAPI(object):
 
         if token:
             user = authenticate(token=token)
-            print("TOOOOOKEEEEEEEN", token)
             fetched_token = Token.objects.get(token=token)
 
             if user and user.is_active and not fetched_token.is_expired:
