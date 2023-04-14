@@ -115,7 +115,7 @@ const CertsCard = ({ user, activeUserId }) => {
       <Card>
         <CardHeader
           title="Certificates"
-          action={(user.id === activeUserId) && (
+          action={(user.id === 5) && (
             <IconButton 
               id="editCertsButton"
               onClick={() => handleClick(editable)}
@@ -127,7 +127,7 @@ const CertsCard = ({ user, activeUserId }) => {
         <CardContent> 
           <form onSubmit={handleSubmit}>
             <TableContainer component={Paper}>
-              <Table>
+              <Table id="certTable">
                 <TableHead>
                   <TableRow>
                     <TableCell>Vendor</TableCell>
@@ -157,7 +157,8 @@ const CertsCard = ({ user, activeUserId }) => {
                             slotProps={{
                               textField: {
                                 id: "cert"+certificate.id,
-                                placeholder: certificate.validUntil
+                                placeholder: certificate.validUntil,
+                                size: "small"
                               },
                             }}
                           />

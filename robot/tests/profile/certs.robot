@@ -30,8 +30,16 @@ Scenario: As a visitor I can click the edit button to activate the edit mode on 
 # Scenario: As a visitor I can edit one 'valid until'-date on my cert card
 #     Refresh & Navigate to Profile Page
 #     Wait Until Page Contains Element  certscard
+#     Page Should Contain  2021-12-31
 #     Page Should Contain Button  editCertsButton
 #     Click Button  editCertsButton
-#     Page Should Contain  2021-12-31
-#     Wait Until Page Contains Element  id=11
-#     Click Element  id=11
+#     Wait Until Page Contains Element  cert11
+#     #Clear Element Text  cert11
+#     Click Element  cert11
+#     Sleep  3s
+#     #Set Value  cert11  2022-12-31
+#     Input Text  locator=cert11  text="2022-12-31"
+#     Sleep  3s
+#     Click Button  submitCertsButton
+#     Page Should Contain  2022-12-31
+
