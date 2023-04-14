@@ -2,12 +2,12 @@ from django.test import Client
 from django.test.client import encode_multipart
 from django.urls import reverse
 from rest_framework.test import APIRequestFactory, APITestCase, APIClient
-from restapi.models import Employees, Techs, Employee_tech_skills, Certificate, Project, Employee_certificates, Employee_projects
+from restapi.models import Employees, Token, Techs, Employee_tech_skills, Certificate, Project, Employee_certificates, Employee_projects
 import datetime
 class EmployeeFilterTests(APITestCase):
     def setUp(self):
 
-        self.client = Client()
+        # self.client = Client()
         
         tech_python = Techs.objects.create(
             tech_name='Python'
@@ -108,6 +108,11 @@ class EmployeeFilterTests(APITestCase):
             wants_to_do='GitHub',
             wants_not_to_do='GitLab',
         )
+
+        self.token_for_user1 = Token.objects.create(user=self.consultant_1, token='1234567890')
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
 
 
         Employee_tech_skills.objects.create(employee=self.consultant_1, tech=tech_python, skill_level=1, tech_preference=True)

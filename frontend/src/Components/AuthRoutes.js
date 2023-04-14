@@ -15,21 +15,26 @@ import { initializeProjects } from "../Reducers/projectCardReducer"
 
 const AuthRoutes = () => {
   const dispatch = useDispatch()
-  const userInitialization = (token, userId) => {
+  const userInitialization = (authToken, APIToken, userId) => {
     dispatch(setActiveSession(true))
-    dispatch(initializeUser(userId))
-    dispatch(initializeConsultants())
+    dispatch(initializeUser(userId, APIToken))
+    dispatch(initializeConsultants(APIToken))
     dispatch(initializeProjects())
-    dispatch(setToken(`${token}`))
+    dispatch(setToken(`${authToken}`))
   }
   useEffect(() => {
     //example in part5 uses JSON, here we test with token strin first
-    const token = window.localStorage.getItem("token") //its setItem can be found from Component/AppRoutes.js
-    console.log("useEffect token: ", token)
-    if (token) {
-      authenticationService.verifyToken({ token }).then((response) => {
+    const authToken = window.localStorage.getItem("authToken")
+    
+    if (authToken) {
+      authenticationService.verifyToken( authToken ).then((response) => {
         //console.log('response.data[0]: ', response.data[0])
-        userInitialization(token, response.data[0])
+        const userId=response.data[0]
+        const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
+        const APIToken = response.data[2]
+        userInitialization(authToken, APIToken, userId)
+        window.localStorage.setItem("authToken", authToken)
+        window.localStorage.setItem("APIToken", APIToken)
       })
     }
   }, [])
@@ -42,7 +47,7 @@ const AuthRoutes = () => {
       </Routes>
       <GoogleLogin
         onSuccess={(credentialResponse) => {
-          console.log("CredentialResponse", credentialResponse)
+          //console.log("CredentialResponse", credentialResponse)
           authenticationService
             .successCallback({
               //now inside SuccessCallback only have axios.get().. we may also need to implement axios.post
@@ -50,11 +55,16 @@ const AuthRoutes = () => {
             })
             .then((response) => {
               //need to apply response when backend side is handeled
-              console.log("login response", response)
-              const newToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
-              userInitialization(newToken, response.data[0])
-              //saving the token to the browser's local storage
-              window.localStorage.setItem("token", newToken)
+              //console.log("login response", response)
+              const userId = response.data[0]
+              const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
+              const APIToken = response.data[2]
+
+              userInitialization(authToken, APIToken, userId)
+
+              //saving the tokens to the browser's local storage
+              window.localStorage.setItem("authToken", authToken)
+              window.localStorage.setItem("APIToken", APIToken)
             })
         }}
         onError={() => {

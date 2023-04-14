@@ -120,9 +120,9 @@ const consultantSlice = createSlice({
   },
 })
 
-export const initializeConsultants = () => {
+export const initializeConsultants = (APIToken) => {
   return async (dispatch) => {
-    const consultants = await consultantService.getAllConsultants()
+    const consultants = await consultantService.getAllConsultants(APIToken)
     dispatch(setAllConsultants(consultants))
     const certificates = await certificateService.getAllCertificates()
     dispatch(setAllCertificates(certificates))
