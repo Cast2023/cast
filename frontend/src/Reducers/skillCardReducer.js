@@ -53,6 +53,8 @@ export const initializeSkillCard = (id) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const skills = consultant.skills
     dispatch(setUserSkills(skills))
+    dispatch(updateEditability(false))
+    dispatch(updateNewSkillAddability(false))
   }
 }
 
