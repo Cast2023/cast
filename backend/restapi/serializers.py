@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Employees
 from .models import Employee_tech_skills, Employee_certificates, Employee_projects
-from .models import Techs, Certificate, Project
+from .models import Techs, Certificate, Project, Token
 
 
 class TechSerializer(serializers.ModelSerializer):
@@ -29,6 +29,11 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'project_name', 'project_start_date', 'project_end_date', 'confidential')
+
+class IntegrationTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Token
+        fields = ('__all__')
 
 
 class EmployeeProjectSerializer(serializers.ModelSerializer):
