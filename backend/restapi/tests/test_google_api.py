@@ -5,14 +5,15 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.response import Response
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from restapi.models import Employees
+from restapi.models import Employees, Token
 from restapi.verificationAPI import VerifyOAuthTokenApi
 
 class TestVerifyOAuthTokenApi(TestCase):
     def setUp(self):
         self.api = VerifyOAuthTokenApi()
         self.factory = APIRequestFactory()
-        Employees.objects.create(first_name='Aku',last_name='Ankka',email='aku.ankka@gmail.com')
+        self.user = Employees.objects.create(first_name='Aku',last_name='Ankka',email='aku.ankka@gmail.com')
+        self.token = Token.objects.create(user=self.user, token='1234')
 
     def test_api_returns_response_object(self):
         request = self.factory.get("api/verify-google-token")
@@ -22,7 +23,7 @@ class TestVerifyOAuthTokenApi(TestCase):
         self.assertEqual(return_value.status_code, 401)
         self.assertTrue("Not authorized" in return_value.data)
 
-    @patch.object(id_token, 'verify_oauth2_token', MagicMock(return_value={'email':'aku.ankka@gmail.com'}))
+    @patch.object(id_token, 'verify_oauth2_token', MagicMock(return_value={'email':'aku.ankka@gmail.com', 'given_name': 'Aku', 'family_name': 'Ankka'}))
     @patch.object(requests, 'Request', MagicMock(return_value="Pepparkakor"))
     def test_api_returns_status_200_when_correct_token(self):
         header = {'HTTP_AUTHORIZATION': '"Bysanttilaista dädää!"'}
@@ -31,7 +32,7 @@ class TestVerifyOAuthTokenApi(TestCase):
         requests.Request.assert_called()
         self.assertEqual(return_value.status_code, 200)
     
-    @patch.object(id_token, 'verify_oauth2_token', MagicMock(return_value={'email':'aku.ankka@gmail.com'}))
+    @patch.object(id_token, 'verify_oauth2_token', MagicMock(return_value={'email':'aku.ankka@gmail.com', 'given_name': 'Aku', 'family_name': 'Ankka'}))
     @patch.object(requests, 'Request', MagicMock(return_value="Pepparkakor"))
     def test_existing_user_is_found_from_database(self):
         header = {'HTTP_AUTHORIZATION': '"Bysanttilaista dädää!"'}

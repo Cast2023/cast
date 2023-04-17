@@ -4,6 +4,7 @@ import sessionReducer from "./sessionReducer"
 import searchReducer from "./searchReducer"
 import skillCardReducer from "./skillCardReducer"
 import projectCardReducer from "./projectCardReducer"
+import certCardReducer from "./certCardReducer"
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     search: searchReducer,
     skillCard: skillCardReducer,
     projectCard: projectCardReducer,
+    certCard: certCardReducer,
   },
 })
 
