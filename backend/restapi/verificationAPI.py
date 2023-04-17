@@ -40,5 +40,4 @@ class VerifyOAuthTokenApi(APIView):
         except (ValueError, KeyError) as error: # error for debugging purposes, should be removed later
             return Response(f"Invalid token, you shall not pass! {error}", status=401) # Auth token invalid
         
-        print("API TOKEN:", api_token.token)
         return Response([user.id, auth_token, api_token.token], status=200)
