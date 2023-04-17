@@ -91,6 +91,8 @@ class Token(models.Model):
         on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(default=timezone.now)
+    token_name = models.TextField(null=True)
+    is_integration_token = models.BooleanField(null=True)
 
     # Fields to be given to clients
     dict_fields = ['string', 'ttl']
