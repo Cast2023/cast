@@ -101,3 +101,33 @@ Scenario: As a visitor when I return to search view my selected skill filtering 
   Sleep  2s
   Page Should Contain Element  id=3
   Page Should Not Contain Element  id=7
+
+Scenario: As a visitor I can filter consultants based on selected certificate
+  Refresh & Navigate to Selected View  search
+  Wait Until Page Contains Element  certs-combo-box
+  Click Element  certs-combo-box
+  Sleep  1s
+  Set Selenium Speed	2.5 seconds
+  Click Element  id=certs-combo-box-option-2
+  Set Selenium Speed	0 seconds
+  Click Element  profile
+  Sleep  1s
+  Click Element  search
+  Wait Until Page Contains Element  id=1
+  Sleep  2s
+  Page Should Not Contain Element  id=2
+
+Scenario: As a visitor I can filter consultants based on multiple selected certificates
+  Refresh & Navigate to Selected View  search
+  Wait Until Page Contains Element  certs-combo-box
+  Click Element  certs-combo-box
+  Sleep  1s
+  Click Element  id=certs-combo-box-option-2
+  Sleep  1s
+  Click Element  certs-combo-box
+  Sleep  1s
+  Click Element  id=certs-combo-box-option-1
+  Sleep  1s
+  Page Should Contain Element  id=1
+  Sleep  1s
+  Page Should Not Contain Element  id=7
