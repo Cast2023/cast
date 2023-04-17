@@ -92,8 +92,8 @@ const Search = () => {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Autocomplete
               multiple
-              label="Select certs"
-              text="Select certs"
+              label="Select certs by cert name"
+              text="Select certs by cert name"
               name="certs"
               disablePortal
               id="certs-combo-box"
@@ -110,7 +110,7 @@ const Search = () => {
               }))}
               sx={{ width: 300 }}
               renderInput={(params) => (
-                <TextField {...params} label="Select certs" />
+                <TextField {...params} label="Select certs by cert name" />
               )}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={(event, value) => {
