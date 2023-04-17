@@ -5,7 +5,7 @@ from rest_framework.test import APIRequestFactory, APITestCase, APIClient
 from restapi.models import Project, Employees, Token
 
 
-class TechGetTests(APITestCase):
+class ProjectGetTests(APITestCase):
     url = reverse('project-list')
     
     def setUp(self):
@@ -49,7 +49,7 @@ class TechGetTests(APITestCase):
         self.assertEqual(result[0]['project_name'] + result[1]['project_name'], 'CastCorpCastbook')
 
 
-class TechPostTests(APITestCase):
+class ProjectPostTests(APITestCase):
     url = reverse('project-list')
     
     def setUp(self):
