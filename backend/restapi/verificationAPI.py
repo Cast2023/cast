@@ -30,7 +30,7 @@ class VerifyOAuthTokenApi(APIView):
                 }
             )
             try:
-                api_token = Token.objects.get(user=user)
+                api_token = Token.objects.get(user=user, is_integration_token=False)
                 if api_token.is_expired:
                     api_token.token = generate_token()
                     api_token.created_at = timezone.now()
