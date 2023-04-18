@@ -88,8 +88,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
     setNewEndDate(null)
   }
 
-  //const editable = false
-
   const handleSubmit = (event) => {
     event.preventDefault()
     const skillsList = { skills: formValues }
@@ -209,7 +207,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     inputProps={{ min: 0, max: 100, step: "10" }}
                     onChange={(event) => setNewAllocation(event.target.value)}
                     defaultValue={newAllocation}
-                  ></TextField>
+                  />
                 </Box>
                 <Button type="submit">Submit</Button>
               </form>
@@ -221,81 +219,98 @@ const ProjectsCard = ({ user, activeUserId }) => {
             }}
           >
             <form onSubmit={handleSubmit}>
-                  <TableContainer component={Paper}>               
-                    <Table id="projectTable">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Project</TableCell>
-                          <TableCell>Allocation-%</TableCell>
-                          <TableCell>Participation from | until</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      {projectlist().map((project) => (
-                        //<div key={project.name}>
-                        <TableBody key={project.name}>
-                          <TableRow key={project.name}>
-                            <TableCell>{project.name}</TableCell>
-                            <TableCell>            
-                              <Select      
-                                key = {project.name}
-                                disabled={!editable}
-                                select
-                                //id={project.id.toString()}
-                                //name={project.id.toString()}
-                                defaultValue={project.allocation}
-                                variant="standard"
-                                autowidth
-                                //onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
-                              >
-                                <MenuItem id= "Key10" key="key10" value="10">10%</MenuItem>
-                                <MenuItem id= "Key20" key="key20" value="20">20%</MenuItem>
-                                <MenuItem id= "Key30" key="key30" value="30">30%</MenuItem>
-                                <MenuItem id= "Key40" key="key40" value="40">40%</MenuItem>
-                                <MenuItem id= "Key50" key="key50" value="50">50%</MenuItem>
-                                <MenuItem id= "Key60" key="key60" value="60">60%</MenuItem>
-                                <MenuItem id= "Key70" key="key70" value="70">70%</MenuItem>
-                                <MenuItem id= "Key80" key="key80" value="80">80%</MenuItem>
-                                <MenuItem id= "Key90" key="key90" value="90">90%</MenuItem>
-                                <MenuItem id= "Key100"key="key100" value="100">100%</MenuItem>
-                              </Select>
-                            </TableCell>
-                            
-                            {!editable &&(<TableCell>{project.emplStartDate} | {project.emplEndDate}</TableCell>)}
-                            {editable && (<TableCell><LocalizationProvider
-                    dateAdapter={AdapterMoment}
-                    adapterLocale={moment.locale("en-gb")}
-                  >
-                    <DatePicker
-                      label={project.emplStartDate}
-                      text={project.emplStartDate}
-                      name="employee_start_date"
-                      id="employee_start_date"
-                      inputFormat="YYYY-MM-DD"
-                      onChange={(newValue) => {
-                        setNewStartDate(newValue)
-                      }}
-                      value={newStartDate}
-                    />
-                    <DatePicker
-                      label="End date"
-                      text="End date"
-                      name="employee_end_date"
-                      id="employee_end_date"
-                      inputFormat="YYYY-MM-DD"
-                      defaultValue={project.emplEndDate}
-                      onChange={(newValue) => {
-                        setNewEndDate(newValue)
-                      }}
-                      value={newEndDate}
-                    />
-                  </LocalizationProvider></TableCell>)}
-                          </TableRow>
-                        </TableBody>
-                       // </div>
-                      ))}
-                    </Table>
-                  </TableContainer>
-                  {editable && (
+              <TableContainer component={Paper}>               
+                <Table id="projectTable">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Project</TableCell>
+                      <TableCell>Allocation-%</TableCell>
+                      <TableCell>Participation from | until</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {projectlist().map((project) => (
+                      <TableRow key={project.name}>
+                        <TableCell>{project.name}</TableCell>
+                        <TableCell>            
+                          <Select      
+                            key = {project.name}
+                            disabled={!editable}
+                            select
+                            //id={project.id.toString()}
+                            //name={project.id.toString()}
+                            defaultValue={project.allocation}
+                            variant="standard"
+                            autowidth
+                            //onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
+                          >
+                            <MenuItem id= "Key10" key="key10" value="10">10%</MenuItem>
+                            <MenuItem id= "Key20" key="key20" value="20">20%</MenuItem>
+                            <MenuItem id= "Key30" key="key30" value="30">30%</MenuItem>
+                            <MenuItem id= "Key40" key="key40" value="40">40%</MenuItem>
+                            <MenuItem id= "Key50" key="key50" value="50">50%</MenuItem>
+                            <MenuItem id= "Key60" key="key60" value="60">60%</MenuItem>
+                            <MenuItem id= "Key70" key="key70" value="70">70%</MenuItem>
+                            <MenuItem id= "Key80" key="key80" value="80">80%</MenuItem>
+                            <MenuItem id= "Key90" key="key90" value="90">90%</MenuItem>
+                            <MenuItem id= "Key100"key="key100" value="100">100%</MenuItem>
+                          </Select>
+                        </TableCell>
+                        {!editable && (
+                          <TableCell>
+                            {project.emplStartDate} | {project.emplEndDate}
+                          </TableCell>
+                        )}
+                        {editable && (
+                          <TableCell>
+                            <LocalizationProvider
+                              dateAdapter={AdapterMoment}
+                              adapterLocale={moment.locale("en-gb")}
+                            >
+                              <DatePicker
+                                // label={project.emplStartDate}
+                                // text={project.emplStartDate}
+                                // name="employee_start_date"
+                                // id="employee_start_date"
+                                format="YYYY-MM-DD"
+                                onChange={(newValue) => {
+                                  setNewStartDate(newValue)
+                                }}
+                                // value={newStartDate}
+                                slotProps={{
+                                  textField: {
+                                    id: "project"+project.id,
+                                    placeholder: project.emplStartDate
+                                  },
+                                }}
+                              />
+                              <DatePicker
+                                // label="End date"
+                                // text="End date"
+                                // name="employee_end_date"
+                                // id="employee_end_date"
+                                format="YYYY-MM-DD"
+                                // defaultValue={project.emplEndDate}
+                                onChange={(newValue) => {
+                                  setNewEndDate(newValue)
+                                }}
+                                // value={newEndDate}
+                                slotProps={{
+                                  textField: {
+                                    id: "project"+project.id,
+                                    placeholder: project.emplEndDate
+                                  },
+                                }}
+                              />
+                            </LocalizationProvider>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {editable && (
                 <Button type="submit" id="submit_skills_button">
                   Submit
                 </Button>
