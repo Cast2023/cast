@@ -46,7 +46,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const editable = useSelector((state) => state.projectCard.editProjectsActivated)
   const projectChanges = useSelector((state) => state.projectCard.projectChanges)
   const userProjects = useSelector((state) => state.projectCard.userProjects)
-  const [projects, setProjects] = useState(
+  const [allProjects, setAllProjects] = useState(
     useSelector((state) => state.projectCard.allProjects)
   )
   const addProjectState = useSelector((state) => state.projectCard.addProjectActivated)
@@ -105,15 +105,14 @@ const ProjectsCard = ({ user, activeUserId }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const projectList = { projects: projectChanges }
-    consultantService.editConsultant(user.id, projectList)
-    dispatch(updateEditState(!editable))
-    dispatch(setProjectChanges([]))
+    const projectlist = { projects: projectChanges }
+    consultantService.editConsultant(user.id, projectlist)
     setTrigger(!trigger)
   }
 
-  const handleClick = (editable) => {
+  const handleClickEditButton = (editable) => {
     dispatch(updateEditState(!editable))
+    dispatch(setProjectChanges([]))
   }
 
   const projectlist = () => {
@@ -149,7 +148,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                 </IconButton>
                 <IconButton 
                   id="editProjectsButton"
-                  onClick={() => handleClick(editable)}>
+                  onClick={() => handleClickEditButton(editable)}>
                   <EditIcon />
                 </IconButton>
               </Box>
@@ -167,7 +166,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     name="project"
                     disablePortal
                     id="projects-combo-box"
-                    options={projects.map((project) => ({
+                    options={allProjects.map((project) => ({
                       id: project.id,
                       label: project.project_name,
                     }))}

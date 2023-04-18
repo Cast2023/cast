@@ -59,10 +59,10 @@ export const initializeProjectCard = (id) => {
   return async (dispatch) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const userProjects = consultant.projects
-    console.log("alustus", userProjects)
     dispatch(setUserProjects(userProjects))
     dispatch(updateEditState(false))
     dispatch(updateAddState(false))
+    dispatch(setProjectChanges([]))
   }
 }
 
