@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
-import techService from "../Services/techService"
+import certificateService from "../Services/certificateService"
 import consultantService from "../Services/consultantService"
 
 const initialState = {
   editable: false,
   newCertAddable: false,
   certChanges: [],
-  addableCertDetail: null,//{new_skill_level: "", new_skill_name: ""}
-  allCerts: null,//from consultant
-
+  addableCertDetail: null,
+  addCertState: false,
+  allCerts: null,
+  addCertActivated: false,
 }
 
 const certCardSlice = createSlice({
@@ -39,12 +40,24 @@ const certCardSlice = createSlice({
         addableCertDetail: action.payload
       }
     },
+    setAddCertState(state, action){
+      return{
+        ...state,
+        addCertState: action.payload
+      }
+    },
     setAllCerts(state,action){
       return{
         ...state,
         allCerts: action.payload
       }
-    }
+    },
+    updateAddCState(state, action) {
+      return {
+        ...state,
+        addCertActivated: action.payload,
+      }
+    },
   },
 })
 
@@ -57,12 +70,25 @@ export const initializeCertCard = (id) => {
   }
 }
 
+export const addNewCert = (newCert) => {
+  return async (dispatch) => {
+    const addedCert = await consultantService.editConsultant(
+      newCert.id,
+      newCert
+    )
+    dispatch(setAllCerts(addedCert))
+    dispatch(updateAddCState(false))
+  }
+}
+
 export const {
   updateEditability,
   updateNewCertAddability,
   setCertChanges,
   setAddableCertDetail,
-  setAllCerts
+  setAddCertState,
+  setAllCerts,
+  updateAddCState,
 } = certCardSlice.actions
 
 export default certCardSlice.reducer
