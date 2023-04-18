@@ -26,7 +26,7 @@ services:
     environment:
       - IS_TEST=true
     healthcheck:
-      test: [ "CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/consultant/ || exit 1" ]
+      test: [ "CMD-SHELL", "wget --header='Authorization: Token token=token' -qO- http://127.0.0.1:8000/api/consultant/ || exit 1" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -45,7 +45,7 @@ services:
 
   robo:
     build: 
-      context: tests/
+      context: robot/
       dockerfile: Dockerfile
       args:
         - IMAGE=${ROBOT_IMAGE}

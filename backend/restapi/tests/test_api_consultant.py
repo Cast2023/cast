@@ -2,8 +2,10 @@ from django.test import Client
 from django.test.client import encode_multipart
 from django.urls import reverse
 from rest_framework.test import APIRequestFactory, APITestCase, APIClient
+import datetime
 from restapi.models import (
     Employees,
+    Token,
     Techs,
     Employee_tech_skills,
     Certificate,
@@ -13,16 +15,23 @@ from restapi.models import (
 )
 
 class EmployeeGetTests(APITestCase):
-    url = reverse('consultant-list')
+    
     
     def setUp(self):
-        client = Client()
 
+        url = reverse('consultant-list')
+        
         user1 = Employees.objects.create(
             first_name='John',
             last_name='Doe',
             email='tester@gmail.com'
         )
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
+
+
         Employees.objects.create(
             first_name='Jane',
             last_name='Watson',
@@ -83,8 +92,10 @@ class EmployeeGetTests(APITestCase):
             employee_participation_end_date='2022-03-30',
             allocation_busy=60,
         )
-        self.response = client.get(self.url)
+        
+        self.response = self.client.get(url)
         self.result = self.response.json()
+
 
     def test_get_employees_returns_status_code_ok(self):
         self.assertEqual(self.response.status_code, 200)
@@ -150,9 +161,6 @@ class EmployeeUpdateTests(APITestCase):
         tests run properly.
     """
     def setUp(self):
-        self.client = APIClient()
-        self.factory = APIRequestFactory()
-
         user1 = Employees.objects.create(
             first_name='John',
             last_name='Doe',
@@ -177,6 +185,14 @@ class EmployeeUpdateTests(APITestCase):
             wants_to_do='Manufacturing sector',
             wants_not_to_do='Banking sector'
         )
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.token_for_user2 = Token.objects.create(user=user2, token='abcdefghij')
+        
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
+
+        
         tech1 = Techs.objects.create(
             tech_name='Python'
         )
@@ -253,12 +269,12 @@ class EmployeeUpdateTests(APITestCase):
         self.url_base = reverse('consultant-list')
     
     def get_base_url(self):
-        response_base = self.client.get(self.url_base).json()
-        employee = response_base[0]
+        response = self.client.get(self.url_base).json()
+        employee = response[0]
         url = reverse('consultant-detail', args=[employee['id']])
         return url
     
-    def test_get_employee_by_id_returns_status_code_ok(self):
+    def test_LOOK_HERE_LOOOOOK_get_employee_by_id_returns_status_code_ok(self):
         url = self.get_base_url()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)

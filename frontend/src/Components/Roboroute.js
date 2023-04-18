@@ -5,6 +5,7 @@ import { initializeConsultants } from "../Reducers/consultantReducer"
 
 const Roboroute = () => {
   const dispatch = useDispatch()
+  window.localStorage.setItem("APIToken", "token")
   dispatch(setActiveSession(true))
   dispatch(initializeConsultants())
   dispatch(initializeUser(5))

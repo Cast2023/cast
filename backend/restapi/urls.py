@@ -1,8 +1,11 @@
 from django.urls import path, include
-
-from .views import ConsultantAPIView, TechAPIView, ImportCertificatesView, CertAPIView, ProjectAPIView
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
+from django.views.decorators.csrf import csrf_exempt
+
+from .views import ConsultantAPIView, TechAPIView, ImportCertificatesView, CertAPIView, ProjectAPIView
+from core.decorators import token_required
+
 
 router = routers.DefaultRouter()
 router.register(r'consultant', ConsultantAPIView, basename='consultant')
@@ -39,11 +42,11 @@ project_list = ProjectAPIView.as_view({
 })
 
 urlpatterns = format_suffix_patterns([
-    path('consultant/', consultant_list, name='consultant-list'),
-    path('consultant/<int:pk>/', consultant_detail, name='consultant-detail'),
-    path('tech/', tech_list, name='tech-list'),
-    path('tech/<int:pk>', tech_detail, name='tech-detail'),
-    path('certificates/', cert_list, name='cert-list'),
-    path('import-certificates/', ImportCertificatesView.as_view(), name='upload-file'),
-    path('projects/', project_list, name='project-list')
+    path('consultant/', csrf_exempt(token_required(consultant_list)), name='consultant-list'),
+    path('consultant/<int:pk>/', csrf_exempt(token_required(consultant_detail)), name='consultant-detail'),
+    path('tech/', csrf_exempt(token_required(tech_list)), name='tech-list'),
+    path('tech/<int:pk>', csrf_exempt(token_required(tech_detail)), name='tech-detail'),
+    path('certificates/', csrf_exempt(token_required(cert_list)), name='cert-list'),
+    path('import-certificates/', csrf_exempt(token_required(ImportCertificatesView.as_view())), name='upload-file'),
+    path('projects/', csrf_exempt(token_required(project_list)), name='project-list'),
 ])

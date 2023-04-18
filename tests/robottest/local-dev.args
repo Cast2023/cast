@@ -1,5 +1,0 @@
---variable BROWSER:chrome
---variable HOSTNAME:127.0.0.1
---variable PORT:3000
---variable SETUP:resources.Open Local Browser
---variable RESOURCE:resources.robot

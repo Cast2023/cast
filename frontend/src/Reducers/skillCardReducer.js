@@ -7,7 +7,7 @@ const initialState = {
   newSkillAddable: false,
   skillChanges: [],
   addableSkillDetail: null,//{new_skill_level: "", new_skill_name: ""}
-  allSkills: null,//from consultant
+  userSkills: null,//from consultant
 
 }
 
@@ -39,10 +39,10 @@ const skillCardSlice = createSlice({
         addableSkillDetail: action.payload
       }
     },
-    setAllSkills(state,action){
+    setUserSkills(state,action){
       return{
         ...state,
-        allSkills: action.payload
+        userSkills: action.payload
       }
     }
   },
@@ -52,7 +52,9 @@ export const initializeSkillCard = (id) => {
   return async (dispatch) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const skills = consultant.skills
-    dispatch(setAllSkills(skills))
+    dispatch(setUserSkills(skills))
+    dispatch(updateEditability(false))
+    dispatch(updateNewSkillAddability(false))
   }
 }
 
@@ -61,7 +63,7 @@ export const {
   updateNewSkillAddability,
   setSkillChanges,
   setAddableSkillDetail,
-  setAllSkills
+  setUserSkills
 } = skillCardSlice.actions
 
 export default skillCardSlice.reducer

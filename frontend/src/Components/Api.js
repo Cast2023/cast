@@ -13,7 +13,7 @@ const Api = () => {
     const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/import-certificates/"
     const formData = new FormData()
     formData.append('file', file)
-    console.log(formData)
+    //console.log(formData)
     await axios.post(baseUrl, formData)//newFile
     .then(response=>{
       return response.data
