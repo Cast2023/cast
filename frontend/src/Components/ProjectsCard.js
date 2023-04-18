@@ -31,35 +31,31 @@ import consultantService from "../Services/consultantService"
 import {
   addNewProject,
   updateAddState,
+  updateEditState,
   initializeProjectCard,
+  setProjectChanges,
 } from "../Reducers/projectCardReducer"
-import {
-  updateEditability,
-  updateNewSkillAddability,
-} from "../Reducers/skillCardReducer"
+
 
 const ProjectsCard = ({ user, activeUserId }) => {
   const [newProjectId, setNewProjectId] = useState(null)
   const [newAllocation, setNewAllocation] = useState(0)
   const [newStartDate, setNewStartDate] = useState(null)
   const [newEndDate, setNewEndDate] = useState(null)
+  const [trigger, setTrigger] = useState(false)
+  const editable = useSelector((state) => state.projectCard.editProjectsActivated)
+  const projectChanges = useSelector((state) => state.projectCard.projectChanges)
+  const userProjects = useSelector((state) => state.projectCard.userProjects)
   const [projects, setProjects] = useState(
     useSelector((state) => state.projectCard.allProjects)
   )
-  const [formValues, setFormValues] = useState([])
-  const userProjects = useSelector((state) => state.projectCard.userProjects)
-  const [trigger, setTrigger] = useState(false)
-  const [editable, setEditable] = useState(false)
+  const addProjectState = useSelector((state) => state.projectCard.addProjectActivated)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const id = activeUserId === user.id ? activeUserId : user.id
     dispatch(initializeProjectCard(id))
   }, [trigger])
-
-  const dispatch = useDispatch()
-  const addProjectState = useSelector(
-    (state) => state.projectCard.addProjectActivated
-  )
 
   const updateAddProjectState = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
@@ -88,15 +84,36 @@ const ProjectsCard = ({ user, activeUserId }) => {
     setNewEndDate(null)
   }
 
+  const handleProjectAllocationChange = (event, project) => {
+    const allocation = event.target.value
+    dispatch(setProjectChanges([...projectChanges, { project: project, allocation_busy: allocation }]))
+  }
+
+  const handleProjectStartDateChange = (event, project) => {
+    const startDate = dayjs(event).format("YYYY-MM-DD")
+    startDate != "Invalid Date" && (
+      dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_start_date: startDate }]))
+    )
+  }
+
+  const handleProjectEndDateChange = (event, project) => {
+    const endDate = dayjs(event).format("YYYY-MM-DD")
+    endDate != "Invalid Date" && (
+      dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_end_date: endDate }]))
+    )
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    const skillsList = { skills: formValues }
-    consultantService.editConsultant(user.id, skillsList)
-    dispatch(updateEditability(!editable))
-    setFormValues([])
+    const projectList = { projects: projectChanges }
+    consultantService.editConsultant(user.id, projectList)
+    dispatch(updateEditState(!editable))
+    dispatch(setProjectChanges([]))
+    setTrigger(!trigger)
   }
+
   const handleClick = (editable) => {
-    setEditable(!editable)
+    dispatch(updateEditState(!editable))
   }
 
   const projectlist = () => {
@@ -105,6 +122,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
       (project) =>
         (p = p.concat([
           {
+            id: project.project,
             name: project.project_name,
             emplStartDate: project.employee_participation_start_date,
             emplEndDate: project.employee_participation_end_date,
@@ -234,26 +252,24 @@ const ProjectsCard = ({ user, activeUserId }) => {
                         <TableCell>{project.name}</TableCell>
                         <TableCell>            
                           <Select      
-                            key = {project.name}
                             disabled={!editable}
-                            select
-                            //id={project.id.toString()}
-                            //name={project.id.toString()}
-                            defaultValue={project.allocation}
+                            id={project.name+"Allocation"}
+                            defaultValue="none"
                             variant="standard"
-                            autowidth
-                            //onChange={handleSkillChange} // <- handleChange moved inside the Textfield element.
+                            autoWidth={true}
+                            onChange={(event) => {handleProjectAllocationChange(event,project.id)}}
                           >
-                            <MenuItem id= "Key10" key="key10" value="10">10%</MenuItem>
-                            <MenuItem id= "Key20" key="key20" value="20">20%</MenuItem>
-                            <MenuItem id= "Key30" key="key30" value="30">30%</MenuItem>
-                            <MenuItem id= "Key40" key="key40" value="40">40%</MenuItem>
-                            <MenuItem id= "Key50" key="key50" value="50">50%</MenuItem>
-                            <MenuItem id= "Key60" key="key60" value="60">60%</MenuItem>
-                            <MenuItem id= "Key70" key="key70" value="70">70%</MenuItem>
-                            <MenuItem id= "Key80" key="key80" value="80">80%</MenuItem>
-                            <MenuItem id= "Key90" key="key90" value="90">90%</MenuItem>
-                            <MenuItem id= "Key100"key="key100" value="100">100%</MenuItem>
+                            <MenuItem id="Key0" key="key0" disabled value="none">{project.allocation}%</MenuItem>
+                            <MenuItem id="Key10" key="key10" value="10">10%</MenuItem>
+                            <MenuItem id="Key20" key="key20" value="20">20%</MenuItem>
+                            <MenuItem id="Key30" key="key30" value="30">30%</MenuItem>
+                            <MenuItem id="Key40" key="key40" value="40">40%</MenuItem>
+                            <MenuItem id="Key50" key="key50" value="50">50%</MenuItem>
+                            <MenuItem id="Key60" key="key60" value="60">60%</MenuItem>
+                            <MenuItem id="Key70" key="key70" value="70">70%</MenuItem>
+                            <MenuItem id="Key80" key="key80" value="80">80%</MenuItem>
+                            <MenuItem id="Key90" key="key90" value="90">90%</MenuItem>
+                            <MenuItem id="Key100" key="key100" value="100">100%</MenuItem>
                           </Select>
                         </TableCell>
                         {!editable && (
@@ -268,36 +284,25 @@ const ProjectsCard = ({ user, activeUserId }) => {
                               adapterLocale={moment.locale("en-gb")}
                             >
                               <DatePicker
-                                // label={project.emplStartDate}
-                                // text={project.emplStartDate}
-                                // name="employee_start_date"
-                                // id="employee_start_date"
                                 format="YYYY-MM-DD"
-                                onChange={(newValue) => {
-                                  setNewStartDate(newValue)
+                                onChange={(event) => {
+                                  handleProjectStartDateChange(event,project.id)
                                 }}
-                                // value={newStartDate}
                                 slotProps={{
                                   textField: {
-                                    id: "project"+project.id,
+                                    id: project.name+"Start",
                                     placeholder: project.emplStartDate
                                   },
                                 }}
                               />
                               <DatePicker
-                                // label="End date"
-                                // text="End date"
-                                // name="employee_end_date"
-                                // id="employee_end_date"
                                 format="YYYY-MM-DD"
-                                // defaultValue={project.emplEndDate}
-                                onChange={(newValue) => {
-                                  setNewEndDate(newValue)
+                                onChange={(event) => {
+                                  handleProjectEndDateChange(event,project.id)
                                 }}
-                                // value={newEndDate}
                                 slotProps={{
                                   textField: {
-                                    id: "project"+project.id,
+                                    id: project.name+"End",
                                     placeholder: project.emplEndDate
                                   },
                                 }}

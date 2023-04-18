@@ -8,6 +8,7 @@ const initialState = {
   allProjects: [],
   userProjects: [],
   newProjectToAdd: null,
+  projectChanges: [],
 }
 
 const projectCardSlice = createSlice({
@@ -36,6 +37,12 @@ const projectCardSlice = createSlice({
       return {
         ...state,
         userProjects: action.payload,
+      }
+    },
+    setProjectChanges(state,action) {
+      return {
+        ...state,
+        projectChanges: action.payload
       }
     },
   },
@@ -70,7 +77,12 @@ export const addNewProject = (newProject) => {
   }
 }
 
-export const { setAllProjects, setUserProjects, updateEditState, updateAddState } =
-  projectCardSlice.actions
+export const {
+  setAllProjects,
+  setUserProjects,
+  updateEditState,
+  updateAddState,
+  setProjectChanges
+} = projectCardSlice.actions
 
 export default projectCardSlice.reducer
