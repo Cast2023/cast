@@ -54,6 +54,8 @@ export const initializeProjectCard = (id) => {
     const userProjects = consultant.projects
     console.log("alustus", userProjects)
     dispatch(setUserProjects(userProjects))
+    dispatch(updateEditState(false))
+    dispatch(updateAddState(false))
   }
 }
 

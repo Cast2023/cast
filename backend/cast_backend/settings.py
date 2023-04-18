@@ -27,7 +27,7 @@ ENV = dotenv_values(Path(BASE_DIR).joinpath(".env"))
 SECRET_KEY = ENV['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = ENV['DEBUG']
+DEBUG = True if ENV['DEBUG'] == 'True' else False
 
 ALLOWED_HOSTS = json.loads(ENV['ALLOWED_HOST'])
 
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'core.middleware.AuthAPI'
 ]
 
 ROOT_URLCONF = 'cast_backend.urls'
@@ -78,7 +79,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cast_backend.wsgi.application'
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 # Database
@@ -134,10 +135,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_WHITELIST = json.loads(ENV['CORS_ORIGIN'])
+
+AUTH_USER_MODEL = 'restapi.Employees'
+
+AUTHENTICATION_BACKENDS = [
+    'core.backends.TokenBackend',
+]
