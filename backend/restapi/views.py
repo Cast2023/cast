@@ -6,8 +6,8 @@ from django_filters import rest_framework as rest_filters
 import pandas as pd
 from django.db import connection
 
-from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project
-from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer
+from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project, Token
+from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer, IntegrationTokenSerializer
 
 
 class TechsFilter(rest_filters.FilterSet):
@@ -43,7 +43,14 @@ class CertAPIView(viewsets.ModelViewSet):
         setattr(request, 'csrf_processing_done', True) 
         return super().initialize_request(request, *args, **kwargs)
 
-    
+class IntegrationTokenView(viewsets.ModelViewSet):
+    queryset = Token.objects.all().filter(is_integration_token=True)
+    serializer_class = IntegrationTokenSerializer
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
+
+
 class ProjectAPIView(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
@@ -167,7 +174,7 @@ class ConsultantAPIView(viewsets.ModelViewSet):
         setattr(request, 'csrf_processing_done', True) 
         return super().initialize_request(request, *args, **kwargs)
 
-
+    
 class ImportCertificatesView(generics.CreateAPIView):
     serializer_class = FileUploadSerializer
     

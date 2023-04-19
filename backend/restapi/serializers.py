@@ -1,8 +1,9 @@
+from datetime import timedelta
 from rest_framework import serializers
 
 from .models import Employees
 from .models import Employee_tech_skills, Employee_certificates, Employee_projects
-from .models import Techs, Certificate, Project
+from .models import Techs, Certificate, Project, Token
 
 
 class TechSerializer(serializers.ModelSerializer):
@@ -29,6 +30,20 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'project_name', 'project_start_date', 'project_end_date', 'confidential')
+
+class IntegrationTokenSerializer(serializers.ModelSerializer):
+    
+    email = serializers.StringRelatedField(source='user.email')
+    valid_until = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Token
+        fields = ('__all__')
+
+    def get_valid_until(self, obj):
+        return (obj.created_at + timedelta(0, obj.ttl))
+
+
 
 
 class EmployeeProjectSerializer(serializers.ModelSerializer):
