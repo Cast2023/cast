@@ -3,7 +3,7 @@ import axios from "axios"
 
 
 const importCertificates = async ( event ) => {
-  console.log("event.target",event)
+  
   const file = event.target.files[0]
   const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/import-certificates/"
   const formData = new FormData()

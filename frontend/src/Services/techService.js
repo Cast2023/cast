@@ -19,7 +19,7 @@ const createTech = async (newObject) => {
   const APIToken = localStorage.getItem("APIToken")
   const request = await axios.post(baseUrl, newObject, authHeader(APIToken))
   
-  //console.log("req", request.data) 
+  //
   return request.data
 }
 

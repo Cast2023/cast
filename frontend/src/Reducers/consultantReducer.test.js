@@ -133,7 +133,7 @@ describe('consultantReducer', ()=>{
     //test fail but reducer is working, this is the last one which not be tested
     // test('returns new state with action consultants/updateFilteredConsultantsByName', () => { 
     //     const state = {...initialState, allConsultants: testConsultantValue}
-    //     console.log("sssssssssssssssssssssssssssssss",state)
+    //     
     //     const action = {
     //         type: "consultants/updateFilteredConsultantsByName",
     //         payload: "B"

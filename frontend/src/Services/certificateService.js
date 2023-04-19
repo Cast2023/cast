@@ -16,7 +16,7 @@ const getAllCertificates = () => {
 const createCert = async (newObject) => {
   const request = await axios.post(baseUrl, newObject)
   
-  //console.log("req", request.data) 
+  //
   return request.data
 }
 

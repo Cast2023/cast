@@ -11,8 +11,11 @@ const authHeader = (token) => ({
 })
 
 const getAllConsultants = () => {
+   
   const APIToken = localStorage.getItem("APIToken")
+  
   const request = axios.get(baseUrl, authHeader(APIToken))
+  
   return request.then((response) => response.data)
 }
 
@@ -24,9 +27,9 @@ const getSelectedConsultant = (id) => {
 
 const editConsultant = (id, payload) => {
   const APIToken = localStorage.getItem("APIToken")
-  console.log("editcons payload:", payload)
+  
   const request = axios.patch(`${baseUrl}${id}/`, payload, authHeader(APIToken))
-  console.log(request)
+  
   return request.then((response) => response.data)
 }
 

@@ -10,12 +10,13 @@ import {
   setActiveSession,
 } from "../Reducers/sessionReducer"
 import authenticationService from "../Services/authenticationService"
-import verifyToken from "../Services/authenticationService"
+//import verifyToken from "../Services/authenticationService"
 import { initializeProjects } from "../Reducers/projectCardReducer"
 
 const AuthRoutes = () => {
   const dispatch = useDispatch()
   const userInitialization = (authToken, APIToken, userId) => {
+    
     dispatch(setActiveSession(true))
     dispatch(initializeUser(userId, APIToken))
     dispatch(initializeConsultants(APIToken))
@@ -27,8 +28,9 @@ const AuthRoutes = () => {
     const authToken = window.localStorage.getItem("authToken")
     
     if (authToken) {
+      
       authenticationService.verifyToken( authToken ).then((response) => {
-        //console.log('response.data[0]: ', response.data[0])
+        //
         const userId=response.data[0]
         const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
         const APIToken = response.data[2]
@@ -36,7 +38,7 @@ const AuthRoutes = () => {
         window.localStorage.setItem("authToken", authToken)
         window.localStorage.setItem("APIToken", APIToken)
       })
-    }
+    } 
   }, [])
   return (
     <div>
@@ -47,7 +49,7 @@ const AuthRoutes = () => {
       </Routes>
       <GoogleLogin
         onSuccess={(credentialResponse) => {
-          //console.log("CredentialResponse", credentialResponse)
+          
           authenticationService
             .successCallback({
               //now inside SuccessCallback only have axios.get().. we may also need to implement axios.post
@@ -55,20 +57,21 @@ const AuthRoutes = () => {
             })
             .then((response) => {
               //need to apply response when backend side is handeled
-              //console.log("login response", response)
+              
               const userId = response.data[0]
               const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
               const APIToken = response.data[2]
-
-              userInitialization(authToken, APIToken, userId)
-
+              
               //saving the tokens to the browser's local storage
               window.localStorage.setItem("authToken", authToken)
               window.localStorage.setItem("APIToken", APIToken)
+              userInitialization(authToken, APIToken, userId)
+
+              
             })
         }}
         onError={() => {
-          console.log("Login Failed")
+          
         }}
       />
     </div>
