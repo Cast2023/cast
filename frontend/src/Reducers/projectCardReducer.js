@@ -3,6 +3,10 @@ import projectService from "../Services/projectService"
 import consultantService from "../Services/consultantService"
 
 const initialState = {
+  newProjectId: null,
+  newProjectAllocation: null,
+  newProjectStartDate: null,
+  newProjectEndDate: null,
   editProjectsActivated: false,
   addProjectActivated: false,
   allProjects: [],
@@ -15,6 +19,30 @@ const projectCardSlice = createSlice({
   name: "projectCard",
   initialState,
   reducers: {
+    setNewProjectId(state, action) {
+      return {
+        ...state,
+        newProjectId: action.payload,
+      }
+    },
+    setNewProjectAllocation(state, action) {
+      return {
+        ...state,
+        newProjectAllocation: action.payload,
+      }
+    },
+    setNewProjectStartDate(state, action) {
+      return {
+        ...state,
+        newProjectStartDate: action.payload,
+      }
+    },
+    setNewProjectEndDate(state, action) {
+      return {
+        ...state,
+        newProjectEndDate: action.payload,
+      }
+    },
     updateEditState(state, action) {
       return {
         ...state,
@@ -69,20 +97,23 @@ export const initializeProjectCard = (id) => {
 export const addNewProject = (newProject) => {
   return async (dispatch) => {
     const addedProject = await consultantService.editConsultant(
-      newProject.id,
+      newProject.userId,
       newProject
     )
-    dispatch(setAllProjects(addedProject))
-    dispatch(updateAddState(false))
+    //dispatch(setUserProjects(addedProject))
   }
 }
 
 export const {
   setAllProjects,
   setUserProjects,
-  updateEditState,
+  setNewProjectId,
+  setNewProjectAllocation,
+  setNewProjectStartDate,
+  setNewProjectEndDate,
+  setProjectChanges,
   updateAddState,
-  setProjectChanges
+  updateEditState,
 } = projectCardSlice.actions
 
 export default projectCardSlice.reducer

@@ -1,87 +1,116 @@
-import moment from "moment"
-import "moment/locale/en-gb"
+import { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  IconButton,
+  Autocomplete,
   Box,
-  MenuItem,
-  TextField,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
-  TableRow,
   TableContainer,
   TableHead,
-  Paper,
-  Select,
+  TableRow,
+  TextField,
 } from "@mui/material"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import EditIcon from "@mui/icons-material/Edit"
-import Autocomplete from "@mui/material/Autocomplete"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import dayjs from "dayjs"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import consultantService from "../Services/consultantService"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
+import moment from "moment"
+import "moment/locale/en-gb"
 import {
   addNewProject,
+  initializeProjectCard,
+  setNewProjectId,
+  setNewProjectAllocation,
+  setNewProjectStartDate,
+  setNewProjectEndDate,
+  setProjectChanges,
   updateAddState,
   updateEditState,
-  initializeProjectCard,
-  setProjectChanges,
 } from "../Reducers/projectCardReducer"
+import consultantService from "../Services/consultantService"
 
 
 const ProjectsCard = ({ user, activeUserId }) => {
-  const [newProjectId, setNewProjectId] = useState(null)
-  const [newAllocation, setNewAllocation] = useState(0)
-  const [newStartDate, setNewStartDate] = useState(null)
-  const [newEndDate, setNewEndDate] = useState(null)
-  const [trigger, setTrigger] = useState(false)
-  const editable = useSelector((state) => state.projectCard.editProjectsActivated)
-  const projectChanges = useSelector((state) => state.projectCard.projectChanges)
-  const userProjects = useSelector((state) => state.projectCard.userProjects)
-  const [allProjects, setAllProjects] = useState(
-    useSelector((state) => state.projectCard.allProjects)
-  )
   const addProjectState = useSelector((state) => state.projectCard.addProjectActivated)
+  const editable = useSelector((state) => state.projectCard.editProjectsActivated)
+  const allProjects = useSelector((state) => state.projectCard.allProjects)
+  const userProjects = useSelector((state) => state.projectCard.userProjects)
+  const newProjectId = useSelector((state) => state.projectCard.newProjectId)
+  const newProjectAllocation = useSelector((state) => state.projectCard.newProjectAllocation)
+  const newProjectStartDate = useSelector((state) => state.projectCard.newProjectStartDate)
+  const newProjectEndDate = useSelector((state) => state.projectCard.newProjectEndDate)
+  const projectChanges = useSelector((state) => state.projectCard.projectChanges)
+  const [trigger, setTrigger] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const id = activeUserId === user.id ? activeUserId : user.id
-    dispatch(initializeProjectCard(id))
+    dispatch(initializeProjectCard(user.id))
   }, [trigger])
 
   const updateAddProjectState = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
+    dispatch(setNewProjectId(null))
+    dispatch(setNewProjectAllocation(null))
+    dispatch(setNewProjectStartDate(null))
+    dispatch(setNewProjectEndDate(null))
+  }
+
+  const handleClickEditButton = (editable) => {
+    dispatch(updateEditState(!editable))
+    dispatch(setProjectChanges([]))
+  }
+
+  const handleNewProjectId = (newValue) => {
+    newValue && (
+      dispatch(setNewProjectId(newValue.id))
+    )
+  }
+
+  const handleNewProjectStart = (newValue) => {
+    const newStartDate = moment(newValue).format("YYYY-MM-DD")
+    newStartDate != "Invalid Date" && (
+    dispatch(setNewProjectStartDate(newStartDate)))
+  }
+
+  const handleNewProjectEnd = (newValue) => {
+    const newEndDate = moment(newValue).format("YYYY-MM-DD")
+    newEndDate != "Invalid Date" && (
+    dispatch(setNewProjectEndDate(newEndDate)))
+  }
+
+  const handleNewProjectAllocation = (newValue) => {
+    newValue && (
+      dispatch(setNewProjectAllocation(newValue.target.value))
+    )
   }
 
   const handleSubmitNewProject = (event) => {
     event.preventDefault()
-    const newEmployeeProjectParticipation = {
-      id: user.id,
+    const newEmployeeProject = {
+      userId: user.id,
       projects: [
         {
           project: newProjectId,
-          employee_participation_start_date:
-            dayjs(newStartDate).format("YYYY-MM-DD"),
-          employee_participation_end_date:
-            dayjs(newEndDate).format("YYYY-MM-DD"),
-          allocation_busy: newAllocation,
+          employee_participation_start_date: newProjectStartDate,
+          employee_participation_end_date: newProjectEndDate,
+          allocation_busy: newProjectAllocation,
         },
       ],
     }
-    dispatch(addNewProject(newEmployeeProjectParticipation))
+    dispatch(addNewProject(newEmployeeProject))
     setTrigger(!trigger)
-    setNewProjectId(null)
-    setNewAllocation(0)
-    setNewStartDate(null)
-    setNewEndDate(null)
   }
 
   const handleProjectAllocationChange = (event, project) => {
@@ -90,29 +119,24 @@ const ProjectsCard = ({ user, activeUserId }) => {
   }
 
   const handleProjectStartDateChange = (event, project) => {
-    const startDate = dayjs(event).format("YYYY-MM-DD")
+    const startDate = moment(event).format("YYYY-MM-DD")
     startDate != "Invalid Date" && (
       dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_start_date: startDate }]))
     )
   }
 
   const handleProjectEndDateChange = (event, project) => {
-    const endDate = dayjs(event).format("YYYY-MM-DD")
+    const endDate = moment(event).format("YYYY-MM-DD")
     endDate != "Invalid Date" && (
       dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_end_date: endDate }]))
     )
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmitProjectChanges = (event) => {
     event.preventDefault()
     const projectlist = { projects: projectChanges }
     consultantService.editConsultant(user.id, projectlist)
     setTrigger(!trigger)
-  }
-
-  const handleClickEditButton = (editable) => {
-    dispatch(updateEditState(!editable))
-    dispatch(setProjectChanges([]))
   }
 
   const projectlist = () => {
@@ -131,6 +155,8 @@ const ProjectsCard = ({ user, activeUserId }) => {
     )
     return p
   }
+
+  const allocations = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"]
 
   return (
     <div>
@@ -161,12 +187,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
               <form onSubmit={handleSubmitNewProject}>
                 <Box>
                   <Autocomplete
-                    label="Choose project"
-                    text="Choose project"
-                    name="project"
-                    disablePortal
+                    label="Select project"
                     id="projects-combo-box"
-                    options={allProjects.map((project) => ({
+                    options={allProjects?.map((project) => ({
                       id: project.id,
                       label: project.project_name,
                     }))}
@@ -177,9 +200,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     isOptionEqualToValue={(option, value) =>
                       option.id === value.id
                     }
-                    onChange={(event, newValue) => {
-                      setNewProjectId(newValue.id)
-                    }}
+                    onChange={(event, newValue) => handleNewProjectId(newValue)}
                   />
                 </Box>
                 <Box>
@@ -188,54 +209,50 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     adapterLocale={moment.locale("en-gb")}
                   >
                     <DatePicker
-                      label="Employee participation start date"
+                      label="Participation start"
                       format="YYYY-MM-DD"
-                      onChange={(newValue) => {
-                        setNewStartDate(newValue)
-                      }}
-                      value={newStartDate}
+                      onChange={(newValue) => handleNewProjectStart(newValue)}
                       slotProps={{
                         textField: {
-                          id: "employeeStartDate",
+                          id: "participationStart",
                         },
                       }}
                     />
                     <DatePicker
-                      label="Employee participation end date"
+                      label="Participation end"
                       format="YYYY-MM-DD"
-                      onChange={(newValue) => {
-                        setNewEndDate(newValue)
-                      }}
-                      value={newEndDate}
+                      onChange={(newEnd) => handleNewProjectEnd(newEnd)}
                       slotProps={{
                         textField: {
-                          id: "employeeEndDate",
+                          id: "participationEnd",
                         },
                       }}
                     />
                   </LocalizationProvider>
                 </Box>
                 <Box>
-                  <TextField
-                    label="Allocation busy"
-                    id="allocation_busy"
-                    name="allocation_busy"
-                    type="number"
-                    inputProps={{ min: 0, max: 100, step: "10" }}
-                    onChange={(event) => setNewAllocation(event.target.value)}
-                    defaultValue={newAllocation}
-                  />
+                  <FormControl sx={{ m: 1, minWidth: 170 }}>
+                    <InputLabel id="allocationBusy">Allocation busy</InputLabel>
+                    <Select
+                      id="allocationBusy"
+                      label="Allocation busy"
+                      defaultValue=""
+                      onChange={(event) => handleNewProjectAllocation(event)}
+                    >
+                      {allocations.map((allocation) => (
+                        <MenuItem key={allocation} id={"Key"+allocation} value={allocation}>
+                          {allocation}%
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Box>
                 <Button type="submit">Submit</Button>
               </form>
             )}
           </Box>
-          <Box
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-            }}
-          >
-            <form onSubmit={handleSubmit}>
+          <Box sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}>
+            <form onSubmit={handleSubmitProjectChanges}>
               <TableContainer component={Paper}>               
                 <Table id="projectTable">
                   <TableHead>
@@ -256,19 +273,16 @@ const ProjectsCard = ({ user, activeUserId }) => {
                             defaultValue="none"
                             variant="standard"
                             autoWidth={true}
-                            onChange={(event) => {handleProjectAllocationChange(event,project.id)}}
+                            onChange={(event) => handleProjectAllocationChange(event,project.id)}
                           >
-                            <MenuItem id="Key0" key="key0" disabled value="none">{project.allocation}%</MenuItem>
-                            <MenuItem id="Key10" key="key10" value="10">10%</MenuItem>
-                            <MenuItem id="Key20" key="key20" value="20">20%</MenuItem>
-                            <MenuItem id="Key30" key="key30" value="30">30%</MenuItem>
-                            <MenuItem id="Key40" key="key40" value="40">40%</MenuItem>
-                            <MenuItem id="Key50" key="key50" value="50">50%</MenuItem>
-                            <MenuItem id="Key60" key="key60" value="60">60%</MenuItem>
-                            <MenuItem id="Key70" key="key70" value="70">70%</MenuItem>
-                            <MenuItem id="Key80" key="key80" value="80">80%</MenuItem>
-                            <MenuItem id="Key90" key="key90" value="90">90%</MenuItem>
-                            <MenuItem id="Key100" key="key100" value="100">100%</MenuItem>
+                            <MenuItem disabled id="Key0" value="none">
+                              {project.allocation}%
+                            </MenuItem>
+                            {allocations.map((allocation) => (
+                              <MenuItem key={allocation} id={"Key"+allocation} value={allocation}>
+                                {allocation}%
+                              </MenuItem>
+                            ))}
                           </Select>
                         </TableCell>
                         {!editable && (
@@ -284,9 +298,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
                             >
                               <DatePicker
                                 format="YYYY-MM-DD"
-                                onChange={(event) => {
+                                onChange={(event) => 
                                   handleProjectStartDateChange(event,project.id)
-                                }}
+                                }
                                 slotProps={{
                                   textField: {
                                     id: project.name+"Start",
@@ -296,9 +310,9 @@ const ProjectsCard = ({ user, activeUserId }) => {
                               />
                               <DatePicker
                                 format="YYYY-MM-DD"
-                                onChange={(event) => {
+                                onChange={(event) =>
                                   handleProjectEndDateChange(event,project.id)
-                                }}
+                                }
                                 slotProps={{
                                   textField: {
                                     id: project.name+"End",
