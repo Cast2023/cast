@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import { Button, Autocomplete, TextField } from "@mui/material"
 import UploadIcon from "@mui/icons-material/Upload"
 import DownloadIcon from "@mui/icons-material/Download"
 import axios from "axios"
@@ -25,13 +25,34 @@ const Api = () => {
       })
   }
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event) => {<button 
+  onClick={() =>  navigator.clipboard.writeText('Copy this text to clipboard')}
+>
+  Copy
+</button>
+
     setFile(event.target.files[0])
   }
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/create-token/"
+  }
+  const changeTokenName = (event) => {
+    event.preventDefault()
+  }
+  const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
 
+  // FOR LATER USE A BUTTON TO COPY THE TOKEN TO CLIPBOARD
+  //<button 
+  //    onClick={() =>  navigator.clipboard.writeText('this is copied to clipboard')}
+  //  >
+  //   Copy
+  //  </button>
+  
   return (
     <div>
       <h2>Integration tokens</h2>
+    
 
       <div>
         Use the form below to create new integration tokens. Integration tokens
@@ -41,7 +62,34 @@ const Api = () => {
 
       <br />
 
-      <div>FORM HERE</div>
+      <div><form onSubmit={handleSubmit}><TextField
+              
+              onChange={changeTokenName}
+              placeholder="Token Name"
+              type="text"
+              value=""
+              id="New Token Name"
+            />
+            <Autocomplete
+                    label="Time To Live"
+                    text="Time To Live"
+                    name="Time To Live"
+                    disablePortal
+                    id="New Token Time To Live"
+                    options={timeToLive.map((ttl) => ({
+                      id: ttl.inSeconds,
+                      label: ttl.ttl,
+                    }))}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Time to live" />
+                    )}
+                    isOptionEqualToValue={(option, value) =>
+                      option.id === value.id
+                    }
+                    //onChange={(event, value) => {handleNewSkillChange(value)}}
+                  />
+            </form></div>
 
       <br />
 

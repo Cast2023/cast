@@ -108,7 +108,6 @@ class IntegrationTokenPostTests(APITestCase):
         content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
         response = self.client.post(self.url, content, content_type=content_type)
         result = response.json()
-        print(result)
         
         self.assertEqual(result['token'], 'cde345')
 

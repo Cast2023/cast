@@ -103,7 +103,6 @@ class EmployeeFilter(rest_filters.FilterSet):
         else:
             available_allocation = value
             selected_date = datetime.date.today().strftime('%Y-%m-%d') 
-        # print("selected date:", selected_date)
         with connection.cursor() as cursor:
             cursor.execute(
                 '''
