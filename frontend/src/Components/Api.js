@@ -7,7 +7,8 @@ import { Button,
   TableRow,
   TableContainer,
   TableHead,
-  Paper } from "@mui/material"
+  Paper,
+  Checkbox } from "@mui/material"
 import UploadIcon from "@mui/icons-material/Upload"
 import DownloadIcon from "@mui/icons-material/Download"
 import axios from "axios"
@@ -16,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 const Api = () => {
   const [file, setFile] = useState(null)
+  const [selectAll, setSelectAll] = useState(false)
 
   const importCertificates = async () => {
     const baseUrl =
@@ -52,7 +54,13 @@ const Api = () => {
   const changeTokenName = (event) => {
     event.preventDefault()
   }
-
+  const handleDelete = (event) => {
+    event.preventDefault()
+  }
+  const handleSelectAll = (event) => {
+    event.preventDefault()
+    setSelectAll(!selectAll)
+  }
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
 
   // FOR LATER USE A BUTTON TO COPY THE TOKEN TO CLIPBOARD
@@ -61,7 +69,24 @@ const Api = () => {
   //  >
   //   Copy
   //  </button>
-  
+  const tokenList = [{name: "testToken", creator: "testCreator", token:"hdsjkhfkjhfdkjahfjjoir2uu2e ", ttl: "1 year"},
+{name: "testToken2", creator: "testCreator2", token:"hdsjkhfkjhfdkjahfjjoir2uu2e ", ttl: "1 month"},
+{name: "testToken3", creator: "testCreator3", token:"hdsjkhfkjhfdkjahfjjoir2uu2e ", ttl: "1 week"}]
+  const tokens = () => {
+    let t = []
+    tokenList?.map(
+      (token) =>
+        (t = t.concat([
+          {
+            name: token.name,
+            creator: token.creator,
+            token: token.token,
+            ttl: token.ttl,
+          },
+        ]))
+    )
+    return t
+  }
   return (
     <div>
       <h2>Integration tokens</h2>
@@ -116,20 +141,49 @@ const Api = () => {
       <h3>Active integration tokens</h3>
       <div>Here you can review and manage the active integration tokens</div>
       <br />
-
+      <form onSubmit={handleDelete}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell><Checkbox 
+                          key = "selectAll"
+                          onChange={handleSelectAll}
+                          name = "selectAll"
+                          //id= {token.name}
+                          />
+                        </TableCell>
               <TableCell>Token name</TableCell>
               <TableCell>Created by</TableCell>
               <TableCell>Token</TableCell>
               <TableCell>Valid until</TableCell>
             </TableRow>
           </TableHead>
+          {tokens().map((token) => (
+                  <TableBody key={token.name}>
+                      <TableRow key={token.name}>
+                        <Checkbox 
+                          key = {token.name}
+                          //onChange={handlePrefrenceChange}
+                          name = {token.name}
+                          id= {token.name}
+                          defaultChecked={selectAll}
+                        >
+                        </Checkbox>
+                        <TableCell>{token.name}</TableCell>
+                        <TableCell>{token.creator} </TableCell>
+                        <TableCell>{token.token}</TableCell>
+                        <TableCell>{token.ttl}</TableCell>
+
+                      </TableRow>
+                  </TableBody>
+                  ))}
           </Table>
       </TableContainer>
-
+      <Button type="submit" id="delete">
+                  Delete Selected
+                </Button>
+      </form>
       <div>
         <h3>Import certificates</h3>
         <input type="file" accept="*.csv" onChange={handleFileChange} />
