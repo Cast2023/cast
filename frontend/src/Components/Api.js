@@ -13,6 +13,9 @@ import DownloadIcon from "@mui/icons-material/Download"
 import axios from "axios"
 import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { initializeIntegrationTokenTB,
+        updateintegrationTokenName,
+        updateintegrationTokenValue,} from "../Reducers/integrationReducer"
 
 const Api = () => {
   const [file, setFile] = useState(null)
@@ -44,6 +47,14 @@ const Api = () => {
 
   /////////////////////////////Integration tokens///////////////////////////////
   const dispatch = useDispatch()
+
+  const integrationTokenName = useSelector((state)=> state.integration.integrationTokenName)
+  const integrationTokenValue = useSelector((state)=> state.integration.integrationTokenValue)
+  const allIntegrationTokens = useSelector((state)=> state.integration.allIntegrationTokens)
+  const tll = useSelector((state)=> state.integration.ttl)
+  dispatch(initializeIntegrationTokenTB())
+
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/create-token/"
@@ -51,6 +62,9 @@ const Api = () => {
 
   const changeTokenName = (event) => {
     event.preventDefault()
+    const value = event.target.value
+    dispatch(updateintegrationTokenName(value))
+    console.log(integrationTokenName)
   }
 
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
@@ -82,7 +96,7 @@ const Api = () => {
               onChange={changeTokenName}
               placeholder="Token Name"
               type="text"
-              value=""
+              value={integrationTokenName}
               id="New Token Name"
             />
           <Autocomplete
