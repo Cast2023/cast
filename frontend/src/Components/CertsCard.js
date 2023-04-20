@@ -29,7 +29,7 @@ import consultantService from "../Services/consultantService"
 import { useSelector, useDispatch } from "react-redux"
 import {
     updateEditability, 
-    setAllCerts,
+    setConsultantCerts,
     setCertChanges,  
     updateNewCertAddability, 
     setAddableCertDetail,
@@ -40,6 +40,8 @@ import {
     updateAddCState, 
     initializeCertCard,
     addNewCert,
+    setSelectedNewVendor,
+    setSelectedNewCertificateID,
 } from "../Reducers/certCardReducer"
 import { useEffect, useState } from "react"
 
@@ -48,6 +50,10 @@ const CertsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
   const editable = useSelector((state) => state.certCard.editable)
   const allCerts = useSelector((state) => state.certCard.allCerts)// used when allCert?.map() is used
+  const allCertificates = useSelector((state) => state.certCard.allCertificates)
+  const vendors = useSelector((state) => state.certCard.vendors)
+  const selectedNewVendor = useSelector((state) => state.certCard.selectedNewVendor)
+  const selectedNewCertificateID = useSelector((state) => state.certCard.selectedNewCertificateID)
   const certChanges = useSelector((state) => state.certCard.certChanges) // This handles the changes in existing certs
   const newCertAddable = useSelector((state) => state.certCard.newCertAddable)
   const addableCertDetail = useSelector((state) => state.certCard.addableCertDetail)
@@ -55,11 +61,7 @@ const CertsCard = ({ user, activeUserId }) => {
   const newVendorId = useSelector((state) => state.certCard.newVendorId)
   const newCertificateName = useSelector((state) => state.certCard.newCertificateName)
   const newValidUntil = useSelector((state) => state.certCard.NewValidUntil)
-  const [trigger, setTrigger] = useState(false) //
-  
-  //const [newVendorId, setNewVendorId] = useState(null)
-  //const [newCertificateName, setNewCertificateName] = useState(null)
-  //const [newValidUntil, setNewValidUntil] = useState(null)
+  const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
     const id = (activeUserId===user.id)? activeUserId : user.id
@@ -109,6 +111,15 @@ const CertsCard = ({ user, activeUserId }) => {
     setTrigger(!trigger)
   }
 
+  const handleNewVendorChange = (value) => {    
+    dispatch(setSelectedNewVendor(value))
+    dispatch(setSelectedNewCertificateID(""))
+  }
+
+  const handleNewCertificateChange = (value) => {    
+    dispatch(setSelectedNewCertificateID(value))
+  }
+
   const certs = () => {
     let certlist = []
     allCerts?.map(
@@ -125,34 +136,8 @@ const CertsCard = ({ user, activeUserId }) => {
     return certlist
   }
 
-  // const handleTechChange = (event) => {
-  //   const value = event.target.value
-  //   dispatch(setAddableCertDetail({...addableCertDetail, [event.target.name]: value}))
-  // }
+  console.log(selectedNewVendor, selectedNewCertificateID)
 
-  // This method now handles both, adding the new cert and updating the consultant afterwards.
-  // That means that there is some reduntant repetition of code, feel free to refactor.
-
-  // const handleNewCert = async (event) => {
-  //   event.preventDefault()
-  //   const newCertName = {tech_name: addableCertDetail.new_cert_name}
-  //   const newCertLevel = addableCertDetail.new_cert_level
-  //   let newObject = null
-  //   let certsList = null
-  //   newObject = await certService.createTech(newCertName)// new object contains the cert_name and id of the created cert 
-  //   certsList = {certs:[{cert_level: newCertLevel, tech: newObject.result.id, tech_preference: true}]}
-  //   consultantService.editConsultant(user.id, certsList)
-  //   dispatch(updateNewCertAddability(!newCertAddable))
-  //   dispatch(setAddableCertDetail())// This empties the state after it is not needed anymore
-  //   //update certChanges
-  //   const newCertChanges = [...certChanges, { cert_level: newCertLevel, tech: newObject.result.id }]
-  //   dispatch(setCertChanges(newCertChanges))
-  //   setTrigger(!trigger)
-  // }
-
-  // const handleAdd = (edit) => {
-  //   dispatch(updateNewCertAddability(!edit))
-  // }
 
   return (
     <div>
@@ -187,9 +172,9 @@ const CertsCard = ({ user, activeUserId }) => {
                     name="vendor"
                     disablePortal
                     id="vendor-box"
-                    options={allCerts.map((cert) => ({
-                      id: cert.id,
-                      label: cert.vendor,
+                    options= {vendors.map((vendor) => ({
+                      id: vendor,
+                      label: vendor,
                     }))}
                     sx={{ width: 300 }}
                     renderInput={(params) => (
@@ -199,7 +184,7 @@ const CertsCard = ({ user, activeUserId }) => {
                       option.id === value.id
                     }
                     onChange={(event, newValue) => {
-                      setNewVendorId(newValue.id)
+                      handleNewVendorChange(newValue.label)
                     }}
                   />
                 </Box>
@@ -210,7 +195,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     name="certificate"
                     disablePortal
                     id="certs-box"
-                    options={certs.map((cert) => ({
+                    options={allCertificates.filter((certificate) => certificate.vendor === selectedNewVendor).map((cert) => ({
                       id: cert.id,
                       label: cert.certificate_name,
                     }))}
@@ -222,7 +207,7 @@ const CertsCard = ({ user, activeUserId }) => {
                       option.id === value.id
                     }
                     onChange={(event, newValue) => {
-                      setNewVendorId(newValue.id) //should be certificateID or name!!
+                      handleNewCertificateChange(newValue.id)
                     }}
                   />
                 </Box>

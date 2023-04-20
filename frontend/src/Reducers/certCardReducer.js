@@ -4,12 +4,16 @@ import consultantService from "../Services/consultantService"
 
 const initialState = {
   editable: false,
-  newCertAddable: false,
+  //newCertAddable: false,
   certChanges: [],
-  addableCertDetail: null,
+  //addableCertDetail: null,
   addCertState: false,
-  allCerts: null,
+  allCerts: [],
   addCertActivated: false,
+  allCertificates: [],
+  vendors: [],
+  selectedNewVendor: "",
+  selectedNewCertificateID: "",
 }
 
 const certCardSlice = createSlice({
@@ -22,7 +26,7 @@ const certCardSlice = createSlice({
         editable: action.payload,
       }
     },
-    setAllCerts(state,action){
+    setConsultantCerts(state,action){
       return{
         ...state,
         allCerts: action.payload
@@ -76,6 +80,30 @@ const certCardSlice = createSlice({
         addCertActivated: action.payload,
       }
     },
+    setAllCertificates(state, action) {
+      return {
+        ...state,
+        allCertificates: action.payload,
+      }
+    },
+    setVendors(state, action) {
+      return {
+        ...state,
+        vendors: action.payload,
+      }
+    },
+    setSelectedNewVendor(state, action) {
+      return {
+        ...state,
+        selectedNewVendor: action.payload,
+      }
+    },
+    setSelectedNewCertificateID(state, action) {
+      return {
+        ...state,
+        selectedNewCertificateID: action.payload,
+      }
+    },
   },
 })
 
@@ -83,8 +111,12 @@ export const initializeCertCard = (id) => {
   return async (dispatch) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const certs = consultant.certificates
-    dispatch(setAllCerts(certs))
+    const certificates = await certificateService.getAllCertificates()
+    const vendors = [...new Set(certificates.map((cert) => cert.vendor))]
+    dispatch(setConsultantCerts(certs))
     dispatch(updateEditability(false))
+    dispatch(setAllCertificates(certificates))
+    dispatch(setVendors(vendors))
   }
 }
 
@@ -94,14 +126,14 @@ export const addNewCert = (newCert) => {
       newCert.id,
       newCert
     )
-    dispatch(setAllCerts(addedCert))
+    dispatch(setConsultantCerts(addedCert))
     dispatch(updateAddCState(false))
   }
 }
 
 export const {
   updateEditability,
-  setAllCerts,
+  setConsultantCerts,
   setCertChanges,
   updateNewCertAddability,
   setAddableCertDetail,
@@ -110,6 +142,10 @@ export const {
   setNewCertificateName,
   setNewValidUntil,
   updateAddCState,
+  setAllCertificates,
+  setVendors,
+  setSelectedNewVendor,
+  setSelectedNewCertificateID,
 } = certCardSlice.actions
 
 export default certCardSlice.reducer
