@@ -3,7 +3,7 @@ import integrationService from "../Services/integrationService"
 
 const initialState = {
   allIntegrationTokens: null,
-  integrationTokenName: "",
+  integrationTokenName: "sadf",
   integrationTokenValue: null,
   ttl: null,
 }
