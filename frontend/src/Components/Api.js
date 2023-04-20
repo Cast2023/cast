@@ -25,6 +25,7 @@ const Api = () => {
       })
   }
 
+
   const handleFileChange = (event) => {<button 
   onClick={() =>  navigator.clipboard.writeText('Copy this text to clipboard')}
 >
@@ -33,6 +34,8 @@ const Api = () => {
 
     setFile(event.target.files[0])
   }
+
+  /////////////////////////////
   const handleSubmit = (event) => {
     event.preventDefault()
     const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/create-token/"
@@ -89,9 +92,13 @@ const Api = () => {
                     }
                     //onChange={(event, value) => {handleNewSkillChange(value)}}
                   />
+            <br />
+            <div><Button type="submit" id="submit_new_skill_button">
+                      Add
+                    </Button></div>
             </form></div>
 
-      <br />
+      
 
       <h3>Active integration tokens</h3>
       <div>Here you can review and manage the active integration tokens</div>
@@ -99,7 +106,9 @@ const Api = () => {
 
       <div>TABLE HERE</div>
 
+
       <div>
+        <h3>Import certificates</h3>
         <input type="file" accept="*.csv" onChange={handleFileChange} />
         <Button
           variant="contained"
