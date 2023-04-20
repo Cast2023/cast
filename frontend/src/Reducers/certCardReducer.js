@@ -22,16 +22,22 @@ const certCardSlice = createSlice({
         editable: action.payload,
       }
     },
-    updateNewCertAddability(state, action){
-      return {
+    setAllCerts(state,action){
+      return{
         ...state,
-        newCertAddable: action.payload
+        allCerts: action.payload
       }
     },
     setCertChanges(state,action) {
       return {
         ...state,
         certChanges: action.payload
+      }
+    },
+    updateNewCertAddability(state, action){
+      return {
+        ...state,
+        newCertAddable: action.payload
       }
     },
     setAddableCertDetail(state, action){
@@ -46,10 +52,22 @@ const certCardSlice = createSlice({
         addCertState: action.payload
       }
     },
-    setAllCerts(state,action){
+    setNewVendorId(state, action){
       return{
         ...state,
-        allCerts: action.payload
+        newVendorId: action.payload
+      }
+    },
+    setNewCertificateName(state, action){
+      return{
+        ...state,
+        newCertificateName: action.payload
+      }
+    },
+    setNewValidUntil(state, action){
+      return{
+        ...state,
+        newValidUntil: action.payload
       }
     },
     updateAddCState(state, action) {
@@ -83,11 +101,14 @@ export const addNewCert = (newCert) => {
 
 export const {
   updateEditability,
-  updateNewCertAddability,
+  setAllCerts,
   setCertChanges,
+  updateNewCertAddability,
   setAddableCertDetail,
   setAddCertState,
-  setAllCerts,
+  setNewVendorId,
+  setNewCertificateName,
+  setNewValidUntil,
   updateAddCState,
 } = certCardSlice.actions
 

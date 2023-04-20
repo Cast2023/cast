@@ -28,13 +28,18 @@ import consultantService from "../Services/consultantService"
 // import certService from "../Services/certificateService"
 import { useSelector, useDispatch } from "react-redux"
 import {
-  updateEditability, 
-    updateNewCertAddability, 
+    updateEditability, 
+    setAllCerts,
     setCertChanges,  
-    setAddableCertDetail, 
+    updateNewCertAddability, 
+    setAddableCertDetail,
+    setAddCertState,
+    setNewVendorId,
+    setNewCertificateName,
+    setNewValidUntil,
+    updateAddCState, 
     initializeCertCard,
     addNewCert,
-    updateAddCState,
 } from "../Reducers/certCardReducer"
 import { useEffect, useState } from "react"
 
@@ -46,12 +51,15 @@ const CertsCard = ({ user, activeUserId }) => {
   const certChanges = useSelector((state) => state.certCard.certChanges) // This handles the changes in existing certs
   const newCertAddable = useSelector((state) => state.certCard.newCertAddable)
   const addableCertDetail = useSelector((state) => state.certCard.addableCertDetail)
-  const addCertState = useSelector((state) => state.projectCard.addProjectActivated)
+  const addCertState = useSelector((state) => state.certCard.addCertActivated)
+  const newVendorId = useSelector((state) => state.certCard.newVendorId)
+  const newCertificateName = useSelector((state) => state.certCard.newCertificateName)
+  const newValidUntil = useSelector((state) => state.certCard.NewValidUntil)
   const [trigger, setTrigger] = useState(false) //
   
-  const [newVendorId, setNewVendorId] = useState(null)
-  const [newCertificateName, setNewCertificateName] = useState(null)
-  const [newValidUntil, setNewValidUntil] = useState(null)
+  //const [newVendorId, setNewVendorId] = useState(null)
+  //const [newCertificateName, setNewCertificateName] = useState(null)
+  //const [newValidUntil, setNewValidUntil] = useState(null)
 
   useEffect(() => {
     const id = (activeUserId===user.id)? activeUserId : user.id
@@ -87,9 +95,9 @@ const CertsCard = ({ user, activeUserId }) => {
     }
     dispatch(addNewCert(newEmployeeCert))
     setTrigger(!trigger)
-    setNewVendorId(null)
-    setNewCertificateName(null)
-    setNewValidUntil(null)
+    dispatch(setNewVendorId(null))
+    dispatch(setNewCertificateName(null))
+    dispatch(setNewValidUntil(null))
   }
 
   const handleSubmit = (event) => {
@@ -179,7 +187,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     name="vendor"
                     disablePortal
                     id="vendor-box"
-                    options={certs.map((cert) => ({
+                    options={allCerts.map((cert) => ({
                       id: cert.id,
                       label: cert.vendor,
                     }))}
