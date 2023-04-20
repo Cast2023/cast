@@ -12,6 +12,7 @@ import UploadIcon from "@mui/icons-material/Upload"
 import DownloadIcon from "@mui/icons-material/Download"
 import axios from "axios"
 import { useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
 
 const Api = () => {
   const [file, setFile] = useState(null)
@@ -41,7 +42,8 @@ const Api = () => {
     setFile(event.target.files[0])
   }
 
-  /////////////////////////////
+  /////////////////////////////Integration tokens///////////////////////////////
+  const dispatch = useDispatch()
   const handleSubmit = (event) => {
     event.preventDefault()
     const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/create-token/"
