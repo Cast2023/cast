@@ -20,7 +20,6 @@ import { initializeIntegrationTokenTB,
 
 const Api = () => {
   const [file, setFile] = useState(null)
-  const [selectAll, setSelectAll] = useState(false)
 
   const importCertificates = async () => {
     const baseUrl =
@@ -71,10 +70,7 @@ const Api = () => {
   const handleDelete = (event) => {
     event.preventDefault()
   }
-  const handleSelectAll = (event) => {
-    event.preventDefault()
-    setSelectAll(!selectAll)
-  }
+  
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
 
   // FOR LATER USE A BUTTON TO COPY THE TOKEN TO CLIPBOARD
@@ -160,13 +156,7 @@ const Api = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><Checkbox 
-                          key = "selectAll"
-                          onChange={handleSelectAll}
-                          name = "selectAll"
-                          //id= {token.name}
-                          />
-                        </TableCell>
+              <TableCell></TableCell>
               <TableCell>Token name</TableCell>
               <TableCell>Created by</TableCell>
               <TableCell>Token</TableCell>
@@ -181,7 +171,7 @@ const Api = () => {
                           //onChange={handlePrefrenceChange}
                           name = {token.name}
                           id= {token.name}
-                          defaultChecked={selectAll}
+                          
                         >
                         </Checkbox>
                         <TableCell>{token.name}</TableCell>
