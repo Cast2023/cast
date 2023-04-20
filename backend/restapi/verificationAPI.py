@@ -34,7 +34,6 @@ class VerifyOAuthTokenApi(APIView):
                 api_token.token = generate_token()
                 api_token.created_at = timezone.now()
                 api_token.ttl = 3600
-                api_token.is_integration_token = False
                 api_token.save()
                 
     
