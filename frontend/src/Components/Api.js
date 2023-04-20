@@ -15,7 +15,9 @@ import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { initializeIntegrationTokenTB,
         updateintegrationTokenName,
+        updateintegrationTokenTtl,
         updateintegrationTokenValue,} from "../Reducers/integrationReducer"
+import integrationService from "../Services/integrationService"
 
 const Api = () => {
   const [file, setFile] = useState(null)
@@ -51,20 +53,32 @@ const Api = () => {
   const integrationTokenName = useSelector((state)=> state.integration.integrationTokenName)
   const integrationTokenValue = useSelector((state)=> state.integration.integrationTokenValue)
   const allIntegrationTokens = useSelector((state)=> state.integration.allIntegrationTokens)
-  const tll = useSelector((state)=> state.integration.ttl)
+  const ttl = useSelector((state)=> state.integration.ttl)
   dispatch(initializeIntegrationTokenTB())
 
-
+  const currentUserId = useSelector((state) => state.session.activeUserId) 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/create-token/"
+
+    const newObject = {
+      "ttl": ttl,
+      "token_name": integrationTokenName,
+      "is_integration_token": true,
+      "user": currentUserId,
+    } 
+    const integrationTokenValue = integrationService.createToken(newObject)
+    console.log(integrationTokenValue)
   }
 
   const changeTokenName = (event) => {
     event.preventDefault()
     const value = event.target.value
     dispatch(updateintegrationTokenName(value))
-    console.log(integrationTokenName)
+  }
+
+  const changeTokenTtl = (value) => {
+    const ttl = value.id
+    dispatch(updateintegrationTokenTtl(ttl))
   }
 
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
@@ -116,7 +130,7 @@ const Api = () => {
             isOptionEqualToValue={(option, value) =>
               option.id === value.id
             }
-            //onChange={(event, value) => {handleNewSkillChange(value)}}
+            onChange={(event,value)=>{changeTokenTtl(value)}}
           />
             <br />
             <Button type="submit" id="submit_new_skill_button">

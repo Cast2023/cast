@@ -24,6 +24,12 @@ const integrationSlice = createSlice({
         integrationTokenValue: action.payload
       }
     },
+    updateintegrationTokenTtl(state, action) {
+      return {
+        ...state,
+        ttl: action.payload
+      }
+    },
     setAllIntegrationTokens(state,action){
       return{
         ...state,
@@ -43,6 +49,7 @@ export const initializeIntegrationTokenTB = () => {
 export const {
   updateintegrationTokenName,
   updateintegrationTokenValue,
+  updateintegrationTokenTtl,
   setAllIntegrationTokens,
 } = integrationSlice.actions
 

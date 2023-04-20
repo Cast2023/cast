@@ -28,5 +28,5 @@ const createToken =  (newObject) => {///id
 export default {
   getAllTokens,
   deleteToken,
-  createToken,
+  createToken
 }
