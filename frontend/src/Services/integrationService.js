@@ -14,9 +14,9 @@ const getAllTokens = () => {
 }
 
 
-const deleteToken =  (id) => {
+const deleteToken =  (tokenID) => {
   const APIToken = localStorage.getItem("APIToken")
-  const request = axios.post(`${baseUrl}${id}`, authHeader(APIToken))
+  const request = axios.post(`${baseUrl}${tokenID}`, authHeader(APIToken))
   return request.then((response) => response.data)
 }
 const createToken =  (newObject) => {///id

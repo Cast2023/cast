@@ -1,4 +1,13 @@
-import { Button, Autocomplete, TextField } from "@mui/material"
+import { Button, 
+  Autocomplete, 
+  TextField,   
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead,
+  Paper } from "@mui/material"
 import UploadIcon from "@mui/icons-material/Upload"
 import DownloadIcon from "@mui/icons-material/Download"
 import axios from "axios"
@@ -25,13 +34,10 @@ const Api = () => {
       })
   }
 
-
-  const handleFileChange = (event) => {<button 
-  onClick={() =>  navigator.clipboard.writeText('Copy this text to clipboard')}
->
-  Copy
-</button>
-
+  const handleFileChange = (event) => {
+    <button onClick={() =>  navigator.clipboard.writeText('Copy this text to clipboard')}>
+      Copy
+    </button>
     setFile(event.target.files[0])
   }
 
@@ -40,9 +46,11 @@ const Api = () => {
     event.preventDefault()
     const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/create-token/"
   }
+
   const changeTokenName = (event) => {
     event.preventDefault()
   }
+
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
 
   // FOR LATER USE A BUTTON TO COPY THE TOKEN TO CLIPBOARD
@@ -65,7 +73,9 @@ const Api = () => {
 
       <br />
 
-      <div><form onSubmit={handleSubmit}><TextField
+      <div>
+        <form onSubmit={handleSubmit}>
+          <TextField
               
               onChange={changeTokenName}
               placeholder="Token Name"
@@ -73,30 +83,31 @@ const Api = () => {
               value=""
               id="New Token Name"
             />
-            <Autocomplete
-                    label="Time To Live"
-                    text="Time To Live"
-                    name="Time To Live"
-                    disablePortal
-                    id="New Token Time To Live"
-                    options={timeToLive.map((ttl) => ({
-                      id: ttl.inSeconds,
-                      label: ttl.ttl,
-                    }))}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Time to live" />
-                    )}
-                    isOptionEqualToValue={(option, value) =>
-                      option.id === value.id
-                    }
-                    //onChange={(event, value) => {handleNewSkillChange(value)}}
-                  />
+          <Autocomplete
+            label="Time To Live"
+            text="Time To Live"
+            name="Time To Live"
+            disablePortal
+            id="New Token Time To Live"
+            options={timeToLive.map((ttl) => ({
+              id: ttl.inSeconds,
+              label: ttl.ttl,
+            }))}
+            sx={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Time to live" />
+            )}
+            isOptionEqualToValue={(option, value) =>
+              option.id === value.id
+            }
+            //onChange={(event, value) => {handleNewSkillChange(value)}}
+          />
             <br />
-            <div><Button type="submit" id="submit_new_skill_button">
-                      Add
-                    </Button></div>
-            </form></div>
+            <Button type="submit" id="submit_new_skill_button">
+              Add
+            </Button>
+        </form>
+      </div>
 
       
 
@@ -104,8 +115,18 @@ const Api = () => {
       <div>Here you can review and manage the active integration tokens</div>
       <br />
 
-      <div>TABLE HERE</div>
-
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Token name</TableCell>
+              <TableCell>Created by</TableCell>
+              <TableCell>Token</TableCell>
+              <TableCell>Valid until</TableCell>
+            </TableRow>
+          </TableHead>
+          </Table>
+      </TableContainer>
 
       <div>
         <h3>Import certificates</h3>
