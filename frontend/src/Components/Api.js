@@ -55,8 +55,9 @@ const Api = () => {
   const integrationTokenValue = useSelector((state)=> state.integration.integrationTokenValue)
   const allIntegrationTokens = useSelector((state)=> state.integration.allIntegrationTokens)
   const ttl = useSelector((state)=> state.integration.ttl)
-  dispatch(initializeIntegrationTokenTB())
 
+  dispatch(initializeIntegrationTokenTB())
+  console.log("all_tokens",allIntegrationTokens)
   const currentUserId = useSelector((state) => state.session.activeUserId) 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -98,7 +99,7 @@ const Api = () => {
 {name: "testToken3", creator: "testCreator3", token:"hdsjkhfkjhfdkjahfjjoir2uu2e ", ttl: "1 week"}]
   const tokens = () => {
     let t = []
-    tokenList?.map(
+    allIntegrationTokens?.map(
       (token) =>
         (t = t.concat([
           {

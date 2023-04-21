@@ -82,7 +82,7 @@ class Token(models.Model):
     """Authentication token for user model"""
 
     # Secret string
-    token = models.CharField(max_length=64, unique=True, default=generate_token())
+    token = models.CharField(max_length=64, unique=True, default=generate_token)
     # Time to live - number of seconds until token expiration
     ttl = models.IntegerField(default=3600)
     user = models.ForeignKey(

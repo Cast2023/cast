@@ -16,13 +16,13 @@ import { initializeProjects } from "../Reducers/projectCardReducer"
 const AuthRoutes = () => {
   const dispatch = useDispatch()
   const userInitialization = (authToken, APIToken, userId) => {
-    
     dispatch(setActiveSession(true))
     dispatch(initializeUser(userId, APIToken))
     dispatch(initializeConsultants(APIToken))
     dispatch(initializeProjects())
     dispatch(setToken(`${authToken}`))
   }
+  console.log("here")
   useEffect(() => {
     //example in part5 uses JSON, here we test with token strin first
     const authToken = window.localStorage.getItem("authToken")
@@ -34,9 +34,11 @@ const AuthRoutes = () => {
         const userId=response.data[0]
         const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
         const APIToken = response.data[2]
-        userInitialization(authToken, APIToken, userId)
+        
         window.localStorage.setItem("authToken", authToken)
         window.localStorage.setItem("APIToken", APIToken)
+
+        userInitialization(authToken, APIToken, userId)
       })
     } 
   }, [])

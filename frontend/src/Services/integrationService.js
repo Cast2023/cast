@@ -16,12 +16,12 @@ const getAllTokens = () => {
 
 const deleteToken =  (tokenID) => {
   const APIToken = localStorage.getItem("APIToken")
-  const request = axios.post(`${baseUrl}${tokenID}`, authHeader(APIToken))
+  const request = axios.delete(`${baseUrl}${tokenID}`, authHeader(APIToken))
   return request.then((response) => response.data)
 }
-const createToken =  (newObject) => {///id
+const createToken =  async (newObject) => {///id
   const APIToken = localStorage.getItem("APIToken")
-  const request = axios.post(baseUrl, newObject, authHeader(APIToken))
+  const request = await axios.post(baseUrl, newObject, authHeader(APIToken))
   return request.then((response) => response.data)
 }
 

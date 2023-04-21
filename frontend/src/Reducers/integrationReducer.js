@@ -33,7 +33,7 @@ const integrationSlice = createSlice({
     setAllIntegrationTokens(state,action){
       return{
         ...state,
-        integrationToken: action.payload
+        allIntegrationTokens: action.payload
       }
     }
   },
