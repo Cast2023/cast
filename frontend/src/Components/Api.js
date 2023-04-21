@@ -22,6 +22,7 @@ import integrationService from "../Services/integrationService"
 
 const Api = () => {
   const [file, setFile] = useState(null)
+  const [trigger, setTrigger] = useState(false)
 
   const importCertificates = async () => {
     const baseUrl =
@@ -58,8 +59,8 @@ const Api = () => {
 
   useEffect(() => {//magic
     dispatch(initializeIntegrationTokenTB())
-  }, [])
-
+  }, [trigger])
+  
   
   // console.log("all_tokens",allIntegrationTokens)
   const currentUserId = useSelector((state) => state.session.activeUserId) 
@@ -90,7 +91,9 @@ const Api = () => {
   }
   const handleDelete = (event) => {
     event.preventDefault()
-    console.log(event.value)
+    console.log(event.target.id)
+    integrationService.deleteToken(event.target.id)
+    setTrigger(!trigger)
   }
   
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
@@ -183,30 +186,23 @@ const Api = () => {
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
-              <TableRow>
-              <TableCell></TableCell>
+              <TableRow>                
                 <TableCell>Token name</TableCell>
                 <TableCell>Created by</TableCell>
                 <TableCell>Token</TableCell>
                 <TableCell>Valid until</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             {tokens().map((token) => (
                     <TableBody key={token.token}>
                         <TableRow key={token.token}>
-                          <Checkbox 
-                            key = {token.token}
-                            //onChange={handlePrefrenceChange}
-                            name = {token.name}
-                            id= {token.id.toString()}
-                            
-                          >
-                          </Checkbox>
+                          
                           <TableCell>{token.name}</TableCell>
                           <TableCell>{token.creator} </TableCell>
                           <TableCell>{token.token}</TableCell>
                           <TableCell>{token.ttl}</TableCell>
-
+                          <TableCell><Button id={token.id} onClick={(event) => {handleDelete(event)}}>Delete</Button></TableCell>
                         </TableRow>
                     </TableBody>
                     ))}
