@@ -22,6 +22,7 @@ import integrationService from "../Services/integrationService"
 
 const Api = () => {
   const [file, setFile] = useState(null)
+  const [trigger, setTrigger] = useState(false)
 
   const importCertificates = async () => {
     const baseUrl =
@@ -58,8 +59,8 @@ const Api = () => {
 
   useEffect(() => {//magic
     dispatch(initializeIntegrationTokenTB())
-  }, [])
-
+  }, [trigger])
+  
   
   // console.log("all_tokens",allIntegrationTokens)
   const currentUserId = useSelector((state) => state.session.activeUserId) 
@@ -90,6 +91,7 @@ const Api = () => {
     event.preventDefault()
     console.log(event.target.id)
     integrationService.deleteToken(event.target.id)
+    setTrigger(!trigger)
   }
   
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
