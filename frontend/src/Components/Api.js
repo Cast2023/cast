@@ -88,7 +88,8 @@ const Api = () => {
   }
   const handleDelete = (event) => {
     event.preventDefault()
-    console.log(event.value)
+    console.log(event.target.id)
+    integrationService.deleteToken(event.target.id)
   }
   
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
@@ -174,30 +175,23 @@ const Api = () => {
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
+              <TableRow>                
                 <TableCell>Token name</TableCell>
                 <TableCell>Created by</TableCell>
                 <TableCell>Token</TableCell>
                 <TableCell>Valid until</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             {tokens().map((token) => (
                     <TableBody key={token.name}>
                         <TableRow key={token.name}>
-                          <Checkbox 
-                            key = {token.name}
-                            //onChange={handlePrefrenceChange}
-                            name = {token.name}
-                            id= {token.id}
-                            
-                          >
-                          </Checkbox>
+                          
                           <TableCell>{token.name}</TableCell>
                           <TableCell>{token.creator} </TableCell>
                           <TableCell>{token.token}</TableCell>
                           <TableCell>{token.ttl}</TableCell>
-
+                          <TableCell><Button id={token.id} onClick={(event) => {handleDelete(event)}}>Delete</Button></TableCell>
                         </TableRow>
                     </TableBody>
                     ))}
