@@ -8,7 +8,9 @@ import { Button,
   TableContainer,
   TableHead,
   Paper,
-  Checkbox } from "@mui/material"
+  Checkbox,
+  Tooltip,
+ } from "@mui/material"
 import UploadIcon from "@mui/icons-material/Upload"
 import DownloadIcon from "@mui/icons-material/Download"
 import axios from "axios"
@@ -19,6 +21,7 @@ import { initializeIntegrationTokenTB,
         updateintegrationTokenTtl,
         updateintegrationTokenValue,} from "../Reducers/integrationReducer"
 import integrationService from "../Services/integrationService"
+import ClipboardButton from "./ClipboardButton"
 
 const Api = () => {
   const [file, setFile] = useState(null)
@@ -143,8 +146,10 @@ const Api = () => {
               type="text"
               value={integrationTokenName}
               id="New Token Name"
+              sx= {{ width: 300 }}
             />
           <Autocomplete
+            placeholder="Time To Live"
             label="Time To Live"
             text="Time To Live"
             name="Time To Live"
@@ -154,7 +159,7 @@ const Api = () => {
               id: ttl.inSeconds,
               label: ttl.ttl,
             }))}
-            defaultValue={{ id: 86400, label:"One Day"}}//default value is also set in the reducer
+            //defaultValue={{ id: 86400, label:"One Day"}}//default value is also set in the reducer
             sx={{ width: 300 }}
             renderInput={(params) => (
               <TextField {...params} label="Time to live" />
@@ -171,13 +176,14 @@ const Api = () => {
 
         </form>
       </div>
-      Generated token:{integrationTokenValue}
-      <button 
-     onClick={() =>  navigator.clipboard.writeText('this is copied to clipboard')}
-   >
-    Copy
-   </button>
-
+      
+      {integrationTokenValue===null 
+      ?<div></div> 
+      :<div>
+        Generated token:   {integrationTokenValue}
+        <ClipboardButton integrationTokenValue = {integrationTokenValue}/>   
+      </div>}
+      
       
 
       <h3>Active integration tokens</h3>
