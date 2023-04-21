@@ -49,7 +49,7 @@ import { useEffect, useState } from "react"
 const CertsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
   const editable = useSelector((state) => state.certCard.editable)
-  const allCerts = useSelector((state) => state.certCard.allCerts)// used when allCert?.map() is used
+  const allConsultantCerts = useSelector((state) => state.certCard.allConsultantCerts)// used when allCert?.map() is used
   const allCertificates = useSelector((state) => state.certCard.allCertificates)
   const vendors = useSelector((state) => state.certCard.vendors)
   const selectedNewVendor = useSelector((state) => state.certCard.selectedNewVendor)
@@ -83,7 +83,7 @@ const CertsCard = ({ user, activeUserId }) => {
     dispatch(updateAddCState(!addCertState))
   }
 
-  const handleSubmitNewCert = (event) => {
+  const handleAddNewCert = (event) => {
     event.preventDefault()
     const newEmployeeCert = {
       id: user.id,
@@ -96,18 +96,32 @@ const CertsCard = ({ user, activeUserId }) => {
       ],
     }
     dispatch(addNewCert(newEmployeeCert))
+    consultantService.editConsultant(user.id, newEmployeeCert.certs)
+
+    // dispatch(setNewVendorId(null))
+    // dispatch(setNewCertificateName(null))
+    // dispatch(setNewValidUntil(null))
     setTrigger(!trigger)
-    dispatch(setNewVendorId(null))
-    dispatch(setNewCertificateName(null))
-    dispatch(setNewValidUntil(null))
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const certsList = { certificates: certChanges }
+    // const certsList = { certificates: certChanges }
+    // consultantService.editConsultant(user.id, certsList)
+    // dispatch(updateEditability(!editable))
+    // dispatch(setCertChanges([])) // This empties the state after it is not needed anymore
+    // setTrigger(!trigger)
+
+
+    const newVendorId = addableCertDetail.vendor
+    const newCertificateName = addableCertDetail.certificate_name
+    const newValidUntil = addableCertDetail.valid_until    
+    const certsList = {certs:[{vendor: newVendorId, cert_name: newCertificateName, valid_until: newValidUntil}]}
     consultantService.editConsultant(user.id, certsList)
-    dispatch(updateEditability(!editable))
-    dispatch(setCertChanges([])) // This empties the state after it is not needed anymore
+    dispatch(updateNewCertAddability(!newCertAddable))
+    dispatch(setAddableCertDetail())
+    const newCertChanges = [...certChanges, { vendor: newVendorId, cert_name: newCertificateName, valid_until: newValidUntil}]
+    dispatch(setCertChanges(newCertChanges))
     setTrigger(!trigger)
   }
 
@@ -120,9 +134,9 @@ const CertsCard = ({ user, activeUserId }) => {
     dispatch(setSelectedNewCertificateID(value))
   }
 
-  const certs = () => {
+  const certss = () => {
     let certlist = []
-    allCerts?.map(
+    allConsultantCerts?.map(
       (cert) =>
         (certlist = certlist.concat([
           {
@@ -164,7 +178,7 @@ const CertsCard = ({ user, activeUserId }) => {
         <CardContent>
           <Box sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}>
             {addCertState && (
-              <form onSubmit={handleSubmitNewCert}>
+              <form onSubmit={handleAddNewCert}>
                 <Box>
                   <Autocomplete
                     label="Choose vendor"
@@ -190,6 +204,7 @@ const CertsCard = ({ user, activeUserId }) => {
                 </Box>
                 <Box>
                   <Autocomplete
+                    key="testi"
                     label="Choose certificate"
                     text="Choose certificate"
                     name="certificate"
@@ -231,7 +246,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     />
                   </LocalizationProvider>
                 </Box>
-                  <Button type="submit">Submit</Button>
+                  <Button type="submit" id="add_new_cert_button">Add</Button>
                 </form>
               )}
               </Box>
@@ -251,7 +266,7 @@ const CertsCard = ({ user, activeUserId }) => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {certs().map((certificate) => (
+                          {certss().map((certificate) => (
                             <TableRow key={certificate.id}>
                               <TableCell>{certificate.vendor}</TableCell>
                               <TableCell>{certificate.certificate}</TableCell>

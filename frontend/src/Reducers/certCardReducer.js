@@ -8,7 +8,7 @@ const initialState = {
   certChanges: [],
   //addableCertDetail: null,
   addCertState: false,
-  allCerts: [],
+  allConsultantCerts: [],
   addCertActivated: false,
   allCertificates: [],
   vendors: [],
@@ -29,7 +29,7 @@ const certCardSlice = createSlice({
     setConsultantCerts(state,action){
       return{
         ...state,
-        allCerts: action.payload
+        allConsultantCerts: action.payload
       }
     },
     setCertChanges(state,action) {
