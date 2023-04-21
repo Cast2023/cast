@@ -12,7 +12,7 @@ import { Button,
 import UploadIcon from "@mui/icons-material/Upload"
 import DownloadIcon from "@mui/icons-material/Download"
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { initializeIntegrationTokenTB,
         updateintegrationTokenName,
@@ -56,8 +56,12 @@ const Api = () => {
   const allIntegrationTokens = useSelector((state)=> state.integration.allIntegrationTokens)
   const ttl = useSelector((state)=> state.integration.ttl)
 
-  dispatch(initializeIntegrationTokenTB())
-  console.log("all_tokens",allIntegrationTokens)
+  useEffect(() => {//magic
+    dispatch(initializeIntegrationTokenTB())
+  }, [])
+
+  
+  // console.log("all_tokens",allIntegrationTokens)
   const currentUserId = useSelector((state) => state.session.activeUserId) 
   const handleSubmit = (event) => {
     event.preventDefault()
