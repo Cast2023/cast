@@ -72,8 +72,10 @@ const Api = () => {
       "is_integration_token": true,
       "user": currentUserId,
     } 
-    const integrationTokenValue = integrationService.createToken(newObject)
-    console.log(integrationTokenValue)
+    integrationService.createToken(newObject).then((response) => {
+      console.log("response",response)
+      dispatch(updateintegrationTokenValue(response.data.token))
+    })
   }
 
   const changeTokenName = (event) => {
@@ -162,8 +164,15 @@ const Api = () => {
             <Button type="submit" id="submit_new_skill_button">
               Add
             </Button>
+
         </form>
       </div>
+      Generated token:{integrationTokenValue}
+      <button 
+     onClick={() =>  navigator.clipboard.writeText('this is copied to clipboard')}
+   >
+    Copy
+   </button>
 
       
 
@@ -175,7 +184,7 @@ const Api = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
+              <TableCell></TableCell>
                 <TableCell>Token name</TableCell>
                 <TableCell>Created by</TableCell>
                 <TableCell>Token</TableCell>
@@ -183,13 +192,13 @@ const Api = () => {
               </TableRow>
             </TableHead>
             {tokens().map((token) => (
-                    <TableBody key={token.name}>
-                        <TableRow key={token.name}>
+                    <TableBody key={token.token}>
+                        <TableRow key={token.token}>
                           <Checkbox 
-                            key = {token.name}
+                            key = {token.token}
                             //onChange={handlePrefrenceChange}
                             name = {token.name}
-                            id= {token.id}
+                            id= {token.id.toString()}
                             
                           >
                           </Checkbox>
