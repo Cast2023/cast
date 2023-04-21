@@ -88,6 +88,7 @@ const Api = () => {
   }
   const handleDelete = (event) => {
     event.preventDefault()
+    console.log(event.value)
   }
   
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
@@ -98,19 +99,18 @@ const Api = () => {
   //  >
   //   Copy
   //  </button>
-  const tokenList = [{name: "testToken", creator: "testCreator", token:"hdsjkhfkjhfdkjahfjjoir2uu2e ", ttl: "1 year"},
-{name: "testToken2", creator: "testCreator2", token:"hdsjkhfkjhfdkjahfjjoir2uu2e ", ttl: "1 month"},
-{name: "testToken3", creator: "testCreator3", token:"hdsjkhfkjhfdkjahfjjoir2uu2e ", ttl: "1 week"}]
+
   const tokens = () => {
     let t = []
     allIntegrationTokens?.map(
       (token) =>
         (t = t.concat([
           {
-            name: token.name,
-            creator: token.creator,
+            id: token.id,
+            name: token.token_name,
+            creator: token.email,
             token: token.token,
-            ttl: token.ttl,
+            ttl: token.valid_until,
           },
         ]))
     )
@@ -171,41 +171,41 @@ const Api = () => {
       <div>Here you can review and manage the active integration tokens</div>
       <br />
       <form onSubmit={handleDelete}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>Token name</TableCell>
-              <TableCell>Created by</TableCell>
-              <TableCell>Token</TableCell>
-              <TableCell>Valid until</TableCell>
-            </TableRow>
-          </TableHead>
-          {tokens().map((token) => (
-                  <TableBody key={token.name}>
-                      <TableRow key={token.name}>
-                        <Checkbox 
-                          key = {token.name}
-                          //onChange={handlePrefrenceChange}
-                          name = {token.name}
-                          id= {token.name}
-                          
-                        >
-                        </Checkbox>
-                        <TableCell>{token.name}</TableCell>
-                        <TableCell>{token.creator} </TableCell>
-                        <TableCell>{token.token}</TableCell>
-                        <TableCell>{token.ttl}</TableCell>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>Token name</TableCell>
+                <TableCell>Created by</TableCell>
+                <TableCell>Token</TableCell>
+                <TableCell>Valid until</TableCell>
+              </TableRow>
+            </TableHead>
+            {tokens().map((token) => (
+                    <TableBody key={token.name}>
+                        <TableRow key={token.name}>
+                          <Checkbox 
+                            key = {token.name}
+                            //onChange={handlePrefrenceChange}
+                            name = {token.name}
+                            id= {token.id}
+                            
+                          >
+                          </Checkbox>
+                          <TableCell>{token.name}</TableCell>
+                          <TableCell>{token.creator} </TableCell>
+                          <TableCell>{token.token}</TableCell>
+                          <TableCell>{token.ttl}</TableCell>
 
-                      </TableRow>
-                  </TableBody>
-                  ))}
-          </Table>
-      </TableContainer>
-      <Button type="submit" id="delete">
-                  Delete Selected
-                </Button>
+                        </TableRow>
+                    </TableBody>
+                    ))}
+            </Table>
+        </TableContainer>
+        <Button type="submit" id="delete">
+          Delete Selected
+        </Button>
       </form>
       <div>
         <h3>Import certificates</h3>
