@@ -173,7 +173,7 @@ const Api = () => {
       <h3>Active integration tokens</h3>
       <div>Here you can review and manage the active integration tokens</div>
       <br />
-      <form onSubmit={handleDelete}>
+      
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -199,10 +199,8 @@ const Api = () => {
                     ))}
             </Table>
         </TableContainer>
-        <Button type="submit" id="delete">
-          Delete Selected
-        </Button>
-      </form>
+        
+      
       <div>
         <h3>Import certificates</h3>
         <input type="file" accept="*.csv" onChange={handleFileChange} />
