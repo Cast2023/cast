@@ -5,7 +5,7 @@ const initialState = {
   allIntegrationTokens: null,
   integrationTokenName: "",
   integrationTokenValue: null,
-  ttl: null,
+  ttl: 86400,
 }
 
 const integrationSlice = createSlice({

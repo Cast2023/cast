@@ -154,6 +154,7 @@ const Api = () => {
               id: ttl.inSeconds,
               label: ttl.ttl,
             }))}
+            defaultValue={{ id: 86400, label:"One Day"}}//default value is also set in the reducer
             sx={{ width: 300 }}
             renderInput={(params) => (
               <TextField {...params} label="Time to live" />
