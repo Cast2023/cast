@@ -1,0 +1,32 @@
+import { useState } from "react";
+import { IconButton, Snackbar, Tooltip } from "@mui/material";
+//import ShareIcon from "@mui/icons-material/Share";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+
+const ClipboardButton = ({integrationTokenValue}) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+    navigator.clipboard.writeText(integrationTokenValue)//window.location.toString());
+  };
+
+  return (
+    <>
+      <Tooltip title="Copy to clipboard" arrow>
+        <IconButton onClick={handleClick} color="primary">
+          <ContentCopyIcon />
+        </IconButton>
+      </Tooltip>
+      <Snackbar
+        message="Copied to clibboard"
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={2000}
+        onClose={() => setOpen(false)}
+        open={open}
+      />
+    </>
+  );
+};
+
+export default ClipboardButton;
