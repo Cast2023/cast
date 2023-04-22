@@ -127,7 +127,7 @@ const CertsCard = ({ user, activeUserId }) => {
         <CardContent> 
           <form onSubmit={handleSubmit}>
             <TableContainer component={Paper}>
-              <Table>
+              <Table id="certTable">
                 <TableHead>
                   <TableRow>
                     <TableCell>Vendor</TableCell>
