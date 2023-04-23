@@ -61,8 +61,7 @@ Scenario: As a visitor, after pressing plus-symbol I can see the correct fields 
     Page Should Contain Element  selectAllocationBusy
 
 Scenario: As a visitor I can't submit a new project without filling in all required fields
-    Refresh & Navigate to Profile Page
-    Wait Until Page Contains Element  projectscard
+    [SETUP]  Refresh & Navigate to Profile Page Card  projectscard
     Click Button  addProjectButton
     Click Element  selectAllocationBusy
     Click Element  allocation20
@@ -74,8 +73,7 @@ Scenario: As a visitor I can't submit a new project without filling in all requi
 
 
 Scenario: As a visitor I can edit my projects' allocations
-    Refresh & Navigate to Profile Page
-    Wait Until Page Contains Element  projectscard
+    [SETUP]  Refresh & Navigate to Profile Page Card  projectscard
     Click Button  editProjectsButton
     Click Element  JawCorpAllocation
     Click Element  allocation40%
@@ -93,4 +91,6 @@ Scenario: As a visitor I can edit my projects' allocations
     Click Element  allocation50%
     Click Button  submitProjectChanges
 
+
+*** Keywords ***
 
