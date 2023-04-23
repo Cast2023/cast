@@ -1,10 +1,10 @@
 import moment from "moment"
 import "moment/locale/en-gb"
-import { 
+import {
   Button,
   Card,
-  CardHeader, 
-  CardContent, 
+  CardHeader,
+  CardContent,
   IconButton,
   Table,
   TableBody,
@@ -17,66 +17,63 @@ import {
   TextField,
 } from "@mui/material"
 
-import EditIcon from '@mui/icons-material/Edit'
+import EditIcon from "@mui/icons-material/Edit"
 import Autocomplete from "@mui/material/Autocomplete"
-import AddCircleIcon from '@mui/icons-material/AddCircle'
+import AddCircleIcon from "@mui/icons-material/AddCircle"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import dayjs from "dayjs"
-import consultantService from "../Services/consultantService"
-// import certService from "../Services/certificateService"
 import { useSelector, useDispatch } from "react-redux"
 import {
-    updateEditability, 
-    setConsultantCerts,
-    setCertChanges,  
-    updateNewCertAddability, 
-    setAddableCertDetail,
-    setAddCertState,
-    setNewVendorId,
-    setNewCertificateName,
-    setNewValidUntil,
-    updateAddCState, 
-    initializeCertCard,
-    addNewCert,
-    setSelectedNewVendor,
-    setSelectedNewCertificateID,
+  updateEditability,
+  setCertChanges,
+  setNewVendorId,
+  setNewCertificateName,
+  setNewValidUntil,
+  updateAddCState,
+  initializeCertCard,
+  addNewCert,
+  editCertificates,
+  setSelectedNewVendor,
+  setSelectedNewCertificateID,
 } from "../Reducers/certCardReducer"
 import { useEffect, useState } from "react"
-
 
 const CertsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
   const editable = useSelector((state) => state.certCard.editable)
-  const allConsultantCerts = useSelector((state) => state.certCard.allConsultantCerts)// used when allCert?.map() is used
+  const allConsultantCerts = useSelector(
+    (state) => state.certCard.allConsultantCerts
+  ) // used when allCert?.map() is used
   const allCertificates = useSelector((state) => state.certCard.allCertificates)
   const vendors = useSelector((state) => state.certCard.vendors)
-  const selectedNewVendor = useSelector((state) => state.certCard.selectedNewVendor)
-  const selectedNewCertificateID = useSelector((state) => state.certCard.selectedNewCertificateID)
+  const selectedNewVendor = useSelector(
+    (state) => state.certCard.selectedNewVendor
+  )
+  const selectedNewCertificateID = useSelector(
+    (state) => state.certCard.selectedNewCertificateID
+  )
   const certChanges = useSelector((state) => state.certCard.certChanges) // This handles the changes in existing certs
-  const newCertAddable = useSelector((state) => state.certCard.newCertAddable)
-  const addableCertDetail = useSelector((state) => state.certCard.addableCertDetail)
   const addCertState = useSelector((state) => state.certCard.addCertActivated)
-  const newVendorId = useSelector((state) => state.certCard.newVendorId)
-  const newCertificateName = useSelector((state) => state.certCard.newCertificateName)
   const newValidUntil = useSelector((state) => state.certCard.NewValidUntil)
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
-    const id = (activeUserId===user.id)? activeUserId : user.id
-    dispatch(initializeCertCard(id))// fetch consultant from database and initialize/update certs
+    const id = activeUserId === user.id ? activeUserId : user.id
+    dispatch(initializeCertCard(id)) // fetch consultant from database and initialize/update certs
   }, [trigger])
 
-  const handleClick = (edit) => {
+  const handleUpdateEditableClick = (edit) => {
     dispatch(updateEditability(!edit))
   }
 
   const handleCertChange = (event, cert) => {
     const date = dayjs(event).format("YYYY-MM-DD")
-    date != "Invalid Date" && (
-    dispatch(setCertChanges([...certChanges, { cert: cert, valid_until: date }]))
-    )
+    date !== "Invalid Date" &&
+      dispatch(
+        setCertChanges([...certChanges, { cert: cert, valid_until: date }])
+      )
   }
 
   const updateAddCertState = (addCertState) => {
@@ -87,93 +84,78 @@ const CertsCard = ({ user, activeUserId }) => {
     event.preventDefault()
     const newEmployeeCert = {
       id: user.id,
-      certs: [
+      certificates: [
         {
-          vendor: newVendorId,
-          certificate_name: newCertificateName,
+          cert: selectedNewCertificateID,
           valid_until: dayjs(newValidUntil).format("YYYY-MM-DD"),
         },
       ],
     }
     dispatch(addNewCert(newEmployeeCert))
-    consultantService.editConsultant(user.id, newEmployeeCert.certs)
-
-    // dispatch(setNewVendorId(null))
-    // dispatch(setNewCertificateName(null))
-    // dispatch(setNewValidUntil(null))
     setTrigger(!trigger)
+    dispatch(setNewVendorId(null))
+    dispatch(setSelectedNewVendor(null))
+    dispatch(setNewCertificateName(null))
+    dispatch(setSelectedNewCertificateID(null))
+    dispatch(setNewValidUntil(null))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmitEditedCertificates = (event) => {
     event.preventDefault()
-    // const certsList = { certificates: certChanges }
-    // consultantService.editConsultant(user.id, certsList)
-    // dispatch(updateEditability(!editable))
-    // dispatch(setCertChanges([])) // This empties the state after it is not needed anymore
-    // setTrigger(!trigger)
-
-
-    const newVendorId = addableCertDetail.vendor
-    const newCertificateName = addableCertDetail.certificate_name
-    const newValidUntil = addableCertDetail.valid_until    
-    const certsList = {certs:[{vendor: newVendorId, cert_name: newCertificateName, valid_until: newValidUntil}]}
-    consultantService.editConsultant(user.id, certsList)
-    dispatch(updateNewCertAddability(!newCertAddable))
-    dispatch(setAddableCertDetail())
-    const newCertChanges = [...certChanges, { vendor: newVendorId, cert_name: newCertificateName, valid_until: newValidUntil}]
-    dispatch(setCertChanges(newCertChanges))
-    setTrigger(!trigger)
+    const editedCertificates = { id: user.id, certificates: certChanges }
+    dispatch(editCertificates(editedCertificates))
   }
 
-  const handleNewVendorChange = (value) => {    
+  const handleNewVendorChange = (value) => {
     dispatch(setSelectedNewVendor(value))
     dispatch(setSelectedNewCertificateID(""))
   }
 
-  const handleNewCertificateChange = (value) => {    
+  const handleNewCertificateChange = (value) => {
     dispatch(setSelectedNewCertificateID(value))
   }
 
-  const certss = () => {
+  const certificateList = () => {
     let certlist = []
-    allConsultantCerts?.map(
-      (cert) =>
-        (certlist = certlist.concat([
-          {
-            id: cert.cert,
-            vendor: cert.vendor,
-            certificate: cert.certificate,
-            validUntil: cert.valid_until,
-          },
-        ]))
-    )
+
+    !allConsultantCerts.id &&
+      allConsultantCerts?.map(
+        (cert) =>
+          (certlist = certlist.concat([
+            {
+              id: cert.cert,
+              vendor: cert.vendor,
+              certificate: cert.certificate,
+              validUntil: cert.valid_until,
+            },
+          ]))
+      )
     return certlist
   }
-
-  console.log(selectedNewVendor, selectedNewCertificateID)
-
 
   return (
     <div>
       <Card>
         <CardHeader
           title="Certificates"
-          action={(user.id === activeUserId) && (
-            <Box>
-              <IconButton
-                id="add_cert_button"
-                onClick={() => updateAddCertState(addCertState)}
-              >
-                <AddCircleIcon />
-              </IconButton>
-              <IconButton 
-                id="editCertsButton"
-                onClick={() => handleClick(editable)}
-              >
-                <EditIcon />
-            </IconButton>
-            </Box>
-          )}
+          action={
+            user.id === activeUserId && (
+              <Box>
+                <IconButton
+                  id="add_cert_button"
+                  onClick={() => updateAddCertState(addCertState)}
+                >
+                  <AddCircleIcon />
+                </IconButton>
+                <IconButton
+                  id="editCertsButton"
+                  onClick={() => handleUpdateEditableClick(editable)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Box>
+            )
+          }
         />
         <CardContent>
           <Box sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}>
@@ -186,7 +168,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     name="vendor"
                     disablePortal
                     id="vendor-box"
-                    options= {vendors.map((vendor) => ({
+                    options={Object.values(vendors).map((vendor) => ({
                       id: vendor,
                       label: vendor,
                     }))}
@@ -210,10 +192,15 @@ const CertsCard = ({ user, activeUserId }) => {
                     name="certificate"
                     disablePortal
                     id="certs-box"
-                    options={allCertificates.filter((certificate) => certificate.vendor === selectedNewVendor).map((cert) => ({
-                      id: cert.id,
-                      label: cert.certificate_name,
-                    }))}
+                    options={allCertificates
+                      .filter(
+                        (certificate) =>
+                          certificate.vendor === selectedNewVendor
+                      )
+                      .map((cert) => ({
+                        id: cert.id,
+                        label: cert.certificate_name,
+                      }))}
                     sx={{ width: 300 }}
                     renderInput={(params) => (
                       <TextField {...params} label="Select certificate" />
@@ -246,66 +233,69 @@ const CertsCard = ({ user, activeUserId }) => {
                     />
                   </LocalizationProvider>
                 </Box>
-                  <Button type="submit" id="add_new_cert_button">Add</Button>
-                </form>
-              )}
-              </Box>
+                <Button type="submit" id="add_new_cert_button">
+                  Add
+                </Button>
+              </form>
+            )}
+          </Box>
 
-              <Box 
-                sx={{
-                  "& .MuiTextField-root": { m: 1, width: "25ch" },
-                }}>
-                  <form onSubmit={handleSubmit}>
-                    <TableContainer component={Paper}>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Vendor</TableCell>
-                            <TableCell>Certificate</TableCell>
-                            <TableCell>Valid until</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {certss().map((certificate) => (
-                            <TableRow key={certificate.id}>
-                              <TableCell>{certificate.vendor}</TableCell>
-                              <TableCell>{certificate.certificate}</TableCell>
-                              {!editable && (
-                              <TableCell>{certificate.validUntil}</TableCell>
-                              )}
-                              {editable && (
-                              <TableCell id={certificate.id}>
-                                <LocalizationProvider 
-                                  dateAdapter={AdapterMoment}
-                                  adapterLocale={moment.locale("en-gb")}
-                                >
-                                  <DatePicker
-                                    onChange={(event) => {
-                                      handleCertChange(event,certificate.id)
-                                    }}
-                                    format="YYYY-MM-DD"
-                                    slotProps={{
-                                      textField: {
-                                        id: "cert"+certificate.id,
-                                        placeholder: certificate.validUntil
-                                      },
-                                    }}
-                                  />
-                                </LocalizationProvider>
-                              </TableCell>
-                              )}
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                    {editable && (
-                      <Button type="submit" id="submitCertsButton">
-                        Submit
-                      </Button>
-                    )}
-          </form>  
-          </Box>    
+          <Box
+            sx={{
+              "& .MuiTextField-root": { m: 1, width: "25ch" },
+            }}
+          >
+            <form onSubmit={handleSubmitEditedCertificates}>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Vendor</TableCell>
+                      <TableCell>Certificate</TableCell>
+                      <TableCell>Valid until</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {certificateList().map((certificate) => (
+                      <TableRow key={certificate.id}>
+                        <TableCell>{certificate.vendor}</TableCell>
+                        <TableCell>{certificate.certificate}</TableCell>
+                        {!editable && (
+                          <TableCell>{certificate.validUntil}</TableCell>
+                        )}
+                        {editable && (
+                          <TableCell id={certificate.id}>
+                            <LocalizationProvider
+                              dateAdapter={AdapterMoment}
+                              adapterLocale={moment.locale("en-gb")}
+                            >
+                              <DatePicker
+                                onChange={(event) => {
+                                  handleCertChange(event, certificate.id)
+                                }}
+                                format="YYYY-MM-DD"
+                                slotProps={{
+                                  textField: {
+                                    id: "cert" + certificate.id,
+                                    placeholder: certificate.validUntil,
+                                  },
+                                }}
+                              />
+                            </LocalizationProvider>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {editable && (
+                <Button type="submit" id="submitCertsButton">
+                  Submit
+                </Button>
+              )}
+            </form>
+          </Box>
         </CardContent>
       </Card>
     </div>

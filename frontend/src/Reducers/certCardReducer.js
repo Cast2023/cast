@@ -4,9 +4,7 @@ import consultantService from "../Services/consultantService"
 
 const initialState = {
   editable: false,
-  //newCertAddable: false,
   certChanges: [],
-  //addableCertDetail: null,
   addCertState: false,
   allConsultantCerts: [],
   addCertActivated: false,
@@ -26,52 +24,52 @@ const certCardSlice = createSlice({
         editable: action.payload,
       }
     },
-    setConsultantCerts(state,action){
-      return{
-        ...state,
-        allConsultantCerts: action.payload
-      }
-    },
-    setCertChanges(state,action) {
+    setConsultantCerts(state, action) {
       return {
         ...state,
-        certChanges: action.payload
+        allConsultantCerts: action.payload,
       }
     },
-    updateNewCertAddability(state, action){
+    setCertChanges(state, action) {
       return {
         ...state,
-        newCertAddable: action.payload
+        certChanges: action.payload,
       }
     },
-    setAddableCertDetail(state, action){
-      return{
+    updateNewCertAddability(state, action) {
+      return {
         ...state,
-        addableCertDetail: action.payload
+        newCertAddable: action.payload,
       }
     },
-    setAddCertState(state, action){
-      return{
+    setAddableCertDetail(state, action) {
+      return {
         ...state,
-        addCertState: action.payload
+        addableCertDetail: action.payload,
       }
     },
-    setNewVendorId(state, action){
-      return{
+    setAddCertState(state, action) {
+      return {
         ...state,
-        newVendorId: action.payload
+        addCertState: action.payload,
       }
     },
-    setNewCertificateName(state, action){
-      return{
+    setNewVendorId(state, action) {
+      return {
         ...state,
-        newCertificateName: action.payload
+        newVendorId: action.payload,
       }
     },
-    setNewValidUntil(state, action){
-      return{
+    setNewCertificateName(state, action) {
+      return {
         ...state,
-        newValidUntil: action.payload
+        newCertificateName: action.payload,
+      }
+    },
+    setNewValidUntil(state, action) {
+      return {
+        ...state,
+        newValidUntil: action.payload,
       }
     },
     updateAddCState(state, action) {
@@ -128,6 +126,15 @@ export const addNewCert = (newCert) => {
     )
     dispatch(setConsultantCerts(addedCert))
     dispatch(updateAddCState(false))
+  }
+}
+
+export const editCertificates = (cert) => {
+  return async (dispatch) => {
+    const editedCert = await consultantService.editConsultant(cert.id, cert)
+    dispatch(setConsultantCerts(editedCert.certificates))
+    dispatch(updateEditability(false))
+    dispatch(setCertChanges([]))
   }
 }
 
