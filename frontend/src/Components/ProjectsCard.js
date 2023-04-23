@@ -163,7 +163,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
             user.id === activeUserId && (
               <Box>
                 <IconButton
-                  id="add_project_button"
+                  id="addProjectButton"
                   onClick={() => handleClickPlusButton(addProjectState)}
                 >
                   <AddCircleIcon />
@@ -184,7 +184,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                 <Box>
                   <Autocomplete
                     label="Select project"
-                    id="projects-combo-box"
+                    id="projectsComboBox"
                     options={allProjects?.map((project) => ({
                       id: project.id,
                       label: project.project_name,
@@ -232,20 +232,20 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   <FormControl sx={{ m: 1, minWidth: 170 }} required>
                     <InputLabel id="allocationBusy">Allocation busy</InputLabel>
                     <Select
-                      id="allocationBusy"
+                      id="selectAllocationBusy"
                       label="Allocation busy"
                       defaultValue=""
                       onChange={(event) => handleNewProjectAllocation(event)}
                     >
                       {allocations.map((allocation) => (
-                        <MenuItem key={allocation} id={"Key"+allocation} value={allocation}>
+                        <MenuItem key={allocation} id={"allocation"+allocation} value={allocation}>
                           {allocation}%
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
                 </Box>
-                <Button type="submit">Submit</Button>
+                <Button type="submit" id="submitNewProject">Submit</Button>
               </form>
             )}
           </Box>
@@ -273,11 +273,11 @@ const ProjectsCard = ({ user, activeUserId }) => {
                             autoWidth={true}
                             onChange={(event) => handleProjectAllocationChange(event,project.id)}
                           >
-                            <MenuItem disabled id="Key0" value="none">
+                            <MenuItem disabled id="allocationDefault" value="none">
                               {project.allocation}%
                             </MenuItem>
                             {allocations.map((allocation) => (
-                              <MenuItem key={allocation} id={"Key"+allocation} value={allocation}>
+                              <MenuItem key={allocation} id={"allocation"+allocation+"%"} value={allocation}>
                                 {allocation}%
                               </MenuItem>
                             ))}
@@ -327,7 +327,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                 </Table>
               </TableContainer>
               {editProjectsState && (
-                <Button type="submit" id="submit_skills_button">
+                <Button type="submit" id="submitProjectChanges">
                   Submit
                 </Button>
               )}
