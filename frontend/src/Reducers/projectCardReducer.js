@@ -52,7 +52,6 @@ export const initializeProjectCard = (id) => {
   return async (dispatch) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const userProjects = consultant.projects
-    console.log("alustus", userProjects)
     dispatch(setUserProjects(userProjects))
     dispatch(updateEditState(false))
     dispatch(updateAddState(false))
@@ -70,7 +69,11 @@ export const addNewProject = (newProject) => {
   }
 }
 
-export const { setAllProjects, setUserProjects, updateEditState, updateAddState } =
-  projectCardSlice.actions
+export const {
+  setAllProjects,
+  setUserProjects,
+  updateEditState,
+  updateAddState,
+} = projectCardSlice.actions
 
 export default projectCardSlice.reducer
