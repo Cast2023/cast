@@ -44,7 +44,7 @@ import consultantService from "../Services/consultantService"
 
 const ProjectsCard = ({ user, activeUserId }) => {
   const addProjectState = useSelector((state) => state.projectCard.addProjectActivated)
-  const editable = useSelector((state) => state.projectCard.editProjectsActivated)
+  const editProjectsState = useSelector((state) => state.projectCard.editProjectsActivated)
   const allProjects = useSelector((state) => state.projectCard.allProjects)
   const userProjects = useSelector((state) => state.projectCard.userProjects)
   const newProjectId = useSelector((state) => state.projectCard.newProjectId)
@@ -59,12 +59,8 @@ const ProjectsCard = ({ user, activeUserId }) => {
     dispatch(initializeProjectCard(user.id))
   }, [trigger])
 
-  const updateAddProjectState = (addProjectState) => {
+  const handleClickPlusButton = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
-    dispatch(setNewProjectId(null))
-    dispatch(setNewProjectAllocation(null))
-    dispatch(setNewProjectStartDate(null))
-    dispatch(setNewProjectEndDate(null))
   }
 
   const handleClickEditButton = (editable) => {
@@ -73,44 +69,43 @@ const ProjectsCard = ({ user, activeUserId }) => {
   }
 
   const handleNewProjectId = (newValue) => {
-    newValue && (
-      dispatch(setNewProjectId(newValue.id))
-    )
+    dispatch(setNewProjectId(newValue.id))
   }
 
   const handleNewProjectStart = (newValue) => {
     const newStartDate = moment(newValue).format("YYYY-MM-DD")
-    newStartDate != "Invalid Date" && (
-    dispatch(setNewProjectStartDate(newStartDate)))
+    dispatch(setNewProjectStartDate(newStartDate))
   }
 
   const handleNewProjectEnd = (newValue) => {
     const newEndDate = moment(newValue).format("YYYY-MM-DD")
-    newEndDate != "Invalid Date" && (
-    dispatch(setNewProjectEndDate(newEndDate)))
+    dispatch(setNewProjectEndDate(newEndDate))
   }
 
   const handleNewProjectAllocation = (newValue) => {
-    newValue && (
-      dispatch(setNewProjectAllocation(newValue.target.value))
-    )
+    dispatch(setNewProjectAllocation(newValue.target.value))
   }
 
   const handleSubmitNewProject = (event) => {
     event.preventDefault()
-    const newEmployeeProject = {
-      userId: user.id,
-      projects: [
-        {
-          project: newProjectId,
-          employee_participation_start_date: newProjectStartDate,
-          employee_participation_end_date: newProjectEndDate,
-          allocation_busy: newProjectAllocation,
-        },
-      ],
+    if (
+      newProjectStartDate !== "Invalid date" &&
+      newProjectEndDate !== "Invalid date"
+    ) {
+      const newEmployeeProject = {
+        userId: user.id,
+        projects: [
+          {
+            project: newProjectId,
+            employee_participation_start_date: newProjectStartDate,
+            employee_participation_end_date: newProjectEndDate,
+            allocation_busy: newProjectAllocation,
+          },
+        ],
+      }
+      dispatch(addNewProject(newEmployeeProject))
+      setTrigger(!trigger)
     }
-    dispatch(addNewProject(newEmployeeProject))
-    setTrigger(!trigger)
   }
 
   const handleProjectAllocationChange = (event, project) => {
@@ -120,30 +115,30 @@ const ProjectsCard = ({ user, activeUserId }) => {
 
   const handleProjectStartDateChange = (event, project) => {
     const startDate = moment(event).format("YYYY-MM-DD")
-    startDate != "Invalid Date" && (
+    startDate != "Invalid date" && (
       dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_start_date: startDate }]))
     )
   }
 
   const handleProjectEndDateChange = (event, project) => {
     const endDate = moment(event).format("YYYY-MM-DD")
-    endDate != "Invalid Date" && (
+    endDate != "Invalid date" && (
       dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_end_date: endDate }]))
     )
   }
 
   const handleSubmitProjectChanges = (event) => {
     event.preventDefault()
-    const projectlist = { projects: projectChanges }
-    consultantService.editConsultant(user.id, projectlist)
+    const projects = { projects: projectChanges }
+    consultantService.editConsultant(user.id, projects)
     setTrigger(!trigger)
   }
 
   const projectlist = () => {
-    let p = []
+    let projects = []
     userProjects?.map(
-      (project) =>
-        (p = p.concat([
+      (project) => (
+        projects = projects.concat([
           {
             id: project.project,
             name: project.project_name,
@@ -151,9 +146,10 @@ const ProjectsCard = ({ user, activeUserId }) => {
             emplEndDate: project.employee_participation_end_date,
             allocation: project.allocation_busy,
           },
-        ]))
+        ])
+      )
     )
-    return p
+    return projects
   }
 
   const allocations = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"]
@@ -168,13 +164,13 @@ const ProjectsCard = ({ user, activeUserId }) => {
               <Box>
                 <IconButton
                   id="add_project_button"
-                  onClick={() => updateAddProjectState(addProjectState)}
+                  onClick={() => handleClickPlusButton(addProjectState)}
                 >
                   <AddCircleIcon />
                 </IconButton>
                 <IconButton 
                   id="editProjectsButton"
-                  onClick={() => handleClickEditButton(editable)}>
+                  onClick={() => handleClickEditButton(editProjectsState)}>
                   <EditIcon />
                 </IconButton>
               </Box>
@@ -195,7 +191,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     }))}
                     sx={{ width: 300 }}
                     renderInput={(params) => (
-                      <TextField {...params} label="Select project" />
+                      <TextField {...params} label="Select project" required />
                     )}
                     isOptionEqualToValue={(option, value) =>
                       option.id === value.id
@@ -215,6 +211,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       slotProps={{
                         textField: {
                           id: "participationStart",
+                          required: true
                         },
                       }}
                     />
@@ -225,13 +222,14 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       slotProps={{
                         textField: {
                           id: "participationEnd",
+                          required: true
                         },
                       }}
                     />
                   </LocalizationProvider>
                 </Box>
                 <Box>
-                  <FormControl sx={{ m: 1, minWidth: 170 }}>
+                  <FormControl sx={{ m: 1, minWidth: 170 }} required>
                     <InputLabel id="allocationBusy">Allocation busy</InputLabel>
                     <Select
                       id="allocationBusy"
@@ -252,7 +250,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
             )}
           </Box>
           <Box sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}>
-            <form onSubmit={handleSubmitProjectChanges}>
+            <form onSubmit={handleSubmitProjectChanges} required>
               <TableContainer component={Paper}>               
                 <Table id="projectTable">
                   <TableHead>
@@ -267,8 +265,8 @@ const ProjectsCard = ({ user, activeUserId }) => {
                       <TableRow key={project.name}>
                         <TableCell>{project.name}</TableCell>
                         <TableCell>            
-                          <Select      
-                            disabled={!editable}
+                          <Select
+                            disabled={!editProjectsState}
                             id={project.name+"Allocation"}
                             defaultValue="none"
                             variant="standard"
@@ -285,12 +283,12 @@ const ProjectsCard = ({ user, activeUserId }) => {
                             ))}
                           </Select>
                         </TableCell>
-                        {!editable && (
+                        {!editProjectsState && (
                           <TableCell>
                             {project.emplStartDate} | {project.emplEndDate}
                           </TableCell>
                         )}
-                        {editable && (
+                        {editProjectsState && (
                           <TableCell>
                             <LocalizationProvider
                               dateAdapter={AdapterMoment}
@@ -328,7 +326,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              {editable && (
+              {editProjectsState && (
                 <Button type="submit" id="submit_skills_button">
                   Submit
                 </Button>

@@ -3,15 +3,14 @@ import projectService from "../Services/projectService"
 import consultantService from "../Services/consultantService"
 
 const initialState = {
+  addProjectActivated: false,
+  editProjectsActivated: false,
+  allProjects: [],
+  userProjects: [],
   newProjectId: null,
   newProjectAllocation: null,
   newProjectStartDate: null,
   newProjectEndDate: null,
-  editProjectsActivated: false,
-  addProjectActivated: false,
-  allProjects: [],
-  userProjects: [],
-  newProjectToAdd: null,
   projectChanges: [],
 }
 
@@ -19,6 +18,30 @@ const projectCardSlice = createSlice({
   name: "projectCard",
   initialState,
   reducers: {
+    updateAddState(state, action) {
+      return {
+        ...state,
+        addProjectActivated: action.payload,
+      }
+    },
+    updateEditState(state, action) {
+      return {
+        ...state,
+        editProjectsActivated: action.payload,
+      }
+    },
+    setAllProjects(state, action) {
+      return {
+        ...state,
+        allProjects: action.payload,
+      }
+    },
+    setUserProjects(state, action) {
+      return {
+        ...state,
+        userProjects: action.payload,
+      }
+    },
     setNewProjectId(state, action) {
       return {
         ...state,
@@ -43,30 +66,6 @@ const projectCardSlice = createSlice({
         newProjectEndDate: action.payload,
       }
     },
-    updateEditState(state, action) {
-      return {
-        ...state,
-        editProjectsActivated: action.payload,
-      }
-    },
-    updateAddState(state, action) {
-      return {
-        ...state,
-        addProjectActivated: action.payload,
-      }
-    },
-    setAllProjects(state, action) {
-      return {
-        ...state,
-        allProjects: action.payload,
-      }
-    },
-    setUserProjects(state, action) {
-      return {
-        ...state,
-        userProjects: action.payload,
-      }
-    },
     setProjectChanges(state,action) {
       return {
         ...state,
@@ -79,7 +78,8 @@ const projectCardSlice = createSlice({
 export const initializeProjects = () => {
   return async (dispatch) => {
     const projects = await projectService.getAllProjects()
-    dispatch(setAllProjects(projects))
+    const sortedProjects = projects.sort((a, b) => a.project_name.localeCompare(b.project_name))
+    dispatch(setAllProjects(sortedProjects))
   }
 }
 
@@ -88,9 +88,8 @@ export const initializeProjectCard = (id) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const userProjects = consultant.projects
     dispatch(setUserProjects(userProjects))
-    dispatch(updateEditState(false))
     dispatch(updateAddState(false))
-    dispatch(setProjectChanges([]))
+    dispatch(updateEditState(false))
   }
 }
 
@@ -100,7 +99,16 @@ export const addNewProject = (newProject) => {
       newProject.userId,
       newProject
     )
-    //dispatch(setUserProjects(addedProject))
+    dispatch(updateAddState(false))
+  }
+}
+
+export const resetNewProjectData = () => {
+  return async (dispatch) => {
+    dispatch(setNewProjectId(null))
+    dispatch(setNewProjectAllocation(null))
+    dispatch(setNewProjectStartDate(null))
+    dispatch(setNewProjectEndDate(null))
   }
 }
 
