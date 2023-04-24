@@ -76,6 +76,7 @@ const CertsCard = ({ user, activeUserId }) => {
   }
 
   const updateAddCertState = (addCertState) => {
+    dispatch(setSelectedNewVendor(null))
     dispatch(updateAddCState(!addCertState))
   }
 
