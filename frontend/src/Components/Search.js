@@ -15,6 +15,8 @@ import {
   setFilteredName,
   setFilteredCertificates,
   setFilteredCertificatesInputValue,
+  setFilteredVendors,
+  setFilteredVendorsInputValue,
   setFilteredSkills,
   setFilteredSkillsInputValue,
 } from "../Reducers/consultantReducer"
@@ -26,6 +28,7 @@ const Search = () => {
   const consultants = useSelector((state) => state.consultants.allConsultants)
   const skills = useSelector((state) => state.consultants.allTechSkills)
   const certs = useSelector((state) => state.consultants.allCertificates)
+  const vendors = useSelector((state) => state.consultants.allVendors)
   const filteredUsers = useSelector(
     (state) => state.consultants.filteredConsultants
   )
@@ -92,8 +95,8 @@ const Search = () => {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Autocomplete
               multiple
-              label="Select certs"
-              text="Select certs"
+              label="Select certs by name"
+              text="Select certs by name"
               name="certs"
               disablePortal
               id="certs-combo-box"
@@ -110,7 +113,37 @@ const Search = () => {
               }))}
               sx={{ width: 300 }}
               renderInput={(params) => (
-                <TextField {...params} label="Select certs" />
+                <TextField {...params} label="Select certs by name" />
+              )}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(event, value) => {
+                dispatch(setFilteredCertificates(value))
+                dispatch(updateFilteredConsultants())
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Autocomplete
+              multiple
+              label="Select certs by vendor"
+              text="Select certs by vendor"
+              name="certsVendor"
+              disablePortal
+              id="certsVendor-combo-box"
+              value={useSelector((state) => state.consultants.filteredCertificates)}
+              inputValue={useSelector(
+                (state) => state.consultants.filteredCertificatesInputValue
+              )}
+              onInputChange={(event, value) => {
+                dispatch(setFilteredCertificatesInputValue(value))
+              }}
+              options={certs.map((certificate) => ({
+                id: certificate.id,
+                label: certificate.certificate_name,
+              }))}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Select certs by vendor" />
               )}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={(event, value) => {

@@ -74,6 +74,18 @@ const consultantSlice = createSlice({
         filteredCertificatesInputValue: action.payload,
       }
     },
+    setFilteredVendors(state, action) {
+      return {
+        ...state,
+        filteredVendors: action.payload,
+      }
+    },
+    setFilteredVendorsInputValue(state, action) {
+      return {
+        ...state,
+        filteredVendorsInputValue: action.payload,
+      }
+    },
     setFilteredName(state, action) {
       return {
         ...state,
@@ -143,6 +155,8 @@ export const {
   setFilteredName,
   setFilteredCertificates,
   setFilteredCertificatesInputValue,
+  setFilteredVendors,
+  setFilteredVendorsInputValue,
   setFilteredSkills,
   setFilteredSkillsInputValue,
 } = consultantSlice.actions
