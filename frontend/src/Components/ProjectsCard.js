@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import {
   Autocomplete,
@@ -30,6 +30,7 @@ import moment from "moment"
 import "moment/locale/en-gb"
 import {
   addNewProject,
+  editProjects,
   initializeProjectCard,
   setNewProjectId,
   setNewProjectAllocation,
@@ -39,7 +40,6 @@ import {
   updateAddState,
   updateEditState,
 } from "../Reducers/projectCardReducer"
-import consultantService from "../Services/consultantService"
 
 
 const ProjectsCard = ({ user, activeUserId }) => {
@@ -52,12 +52,11 @@ const ProjectsCard = ({ user, activeUserId }) => {
   const newProjectStartDate = useSelector((state) => state.projectCard.newProjectStartDate)
   const newProjectEndDate = useSelector((state) => state.projectCard.newProjectEndDate)
   const projectChanges = useSelector((state) => state.projectCard.projectChanges)
-  const [trigger, setTrigger] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(initializeProjectCard(user.id))
-  }, [trigger])
+  }, [])
 
   const handleClickPlusButton = (addProjectState) => {
     dispatch(updateAddState(!addProjectState))
@@ -104,7 +103,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
         ],
       }
       dispatch(addNewProject(newEmployeeProject))
-      setTrigger(!trigger)
     }
   }
 
@@ -115,23 +113,25 @@ const ProjectsCard = ({ user, activeUserId }) => {
 
   const handleProjectStartDateChange = (event, project) => {
     const startDate = moment(event).format("YYYY-MM-DD")
-    startDate != "Invalid date" && (
+    startDate !== "Invalid date" && (
       dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_start_date: startDate }]))
     )
   }
 
   const handleProjectEndDateChange = (event, project) => {
     const endDate = moment(event).format("YYYY-MM-DD")
-    endDate != "Invalid date" && (
+    endDate !== "Invalid date" && (
       dispatch(setProjectChanges([...projectChanges, { project: project, employee_participation_end_date: endDate }]))
     )
   }
 
   const handleSubmitProjectChanges = (event) => {
     event.preventDefault()
-    const projects = { projects: projectChanges }
-    consultantService.editConsultant(user.id, projects)
-    setTrigger(!trigger)
+    const editedProjects = {
+      userId: user.id,
+      projects: projectChanges
+    }
+    dispatch(editProjects(editedProjects))
   }
 
   const projectlist = () => {
@@ -183,6 +183,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
               <form onSubmit={handleSubmitNewProject}>
                 <Box>
                   <Autocomplete
+                    disableClearable
                     label="Select project"
                     id="projectsComboBox"
                     options={allProjects?.map((project) => ({
@@ -245,7 +246,7 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     </Select>
                   </FormControl>
                 </Box>
-                <Button type="submit" id="submitNewProject">Submit</Button>
+                <Button type="submit" id="submitNewProject">Add</Button>
               </form>
             )}
           </Box>
@@ -264,25 +265,31 @@ const ProjectsCard = ({ user, activeUserId }) => {
                     {projectlist().map((project) => (
                       <TableRow key={project.name}>
                         <TableCell>{project.name}</TableCell>
-                        <TableCell>            
-                          <Select
-                            disabled={!editProjectsState}
-                            id={project.name+"Allocation"}
-                            defaultValue="none"
-                            variant="standard"
-                            autoWidth={true}
-                            onChange={(event) => handleProjectAllocationChange(event,project.id)}
-                          >
-                            <MenuItem disabled id="allocationDefault" value="none">
-                              {project.allocation}%
-                            </MenuItem>
-                            {allocations.map((allocation) => (
-                              <MenuItem key={allocation} id={"allocation"+allocation+"%"} value={allocation}>
-                                {allocation}%
+                        {!editProjectsState && (
+                          <TableCell>
+                            {project.allocation}%
+                          </TableCell>
+                        )}
+                        {editProjectsState && (
+                          <TableCell>            
+                            <Select
+                              id={project.name+"Allocation"}
+                              defaultValue="none"
+                              variant="standard"
+                              autoWidth={true}
+                              onChange={(event) => handleProjectAllocationChange(event,project.id)}
+                            >
+                              <MenuItem disabled id="allocationDefault" value="none">
+                                {project.allocation}%
                               </MenuItem>
-                            ))}
-                          </Select>
-                        </TableCell>
+                              {allocations.map((allocation) => (
+                                <MenuItem key={allocation} id={"allocation"+allocation+"%"} value={allocation}>
+                                  {allocation}%
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </TableCell>
+                        )}
                         {!editProjectsState && (
                           <TableCell>
                             {project.emplStartDate} | {project.emplEndDate}
