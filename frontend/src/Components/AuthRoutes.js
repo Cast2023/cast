@@ -25,11 +25,11 @@ const AuthRoutes = () => {
   useEffect(() => {
     //example in part5 uses JSON, here we test with token strin first
     const authToken = window.localStorage.getItem("authToken")
-    
+
     if (authToken) {
-      authenticationService.verifyToken( authToken ).then((response) => {
+      authenticationService.verifyToken(authToken).then((response) => {
         //console.log('response.data[0]: ', response.data[0])
-        const userId=response.data[0]
+        const userId = response.data[0]
         const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
         const APIToken = response.data[2]
         userInitialization(authToken, APIToken, userId)
@@ -47,7 +47,6 @@ const AuthRoutes = () => {
       </Routes>
       <GoogleLogin
         onSuccess={(credentialResponse) => {
-          //console.log("CredentialResponse", credentialResponse)
           authenticationService
             .successCallback({
               //now inside SuccessCallback only have axios.get().. we may also need to implement axios.post
@@ -55,7 +54,6 @@ const AuthRoutes = () => {
             })
             .then((response) => {
               //need to apply response when backend side is handeled
-              //console.log("login response", response)
               const userId = response.data[0]
               const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
               const APIToken = response.data[2]

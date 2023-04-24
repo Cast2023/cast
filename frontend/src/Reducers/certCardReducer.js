@@ -1,14 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit"
-import techService from "../Services/techService"
+import certificateService from "../Services/certificateService"
 import consultantService from "../Services/consultantService"
 
 const initialState = {
   editable: false,
-  newCertAddable: false,
   certChanges: [],
-  addableCertDetail: null,//{new_skill_level: "", new_skill_name: ""}
-  allCerts: null,//from consultant
-
+  addCertState: false,
+  allConsultantCerts: [],
+  addCertActivated: false,
+  allCertificates: [],
+  vendors: [],
+  selectedNewVendor: "",
+  selectedNewCertificateID: "",
+  selectedNewCertificate: { id: 0, certificate: "" },
+  newValidUntil: null,
 }
 
 const certCardSlice = createSlice({
@@ -21,30 +26,60 @@ const certCardSlice = createSlice({
         editable: action.payload,
       }
     },
-    updateNewCertAddability(state, action){
+    setConsultantCerts(state, action) {
       return {
         ...state,
-        newCertAddable: action.payload
+        allConsultantCerts: action.payload,
       }
     },
-    setCertChanges(state,action) {
+    setCertChanges(state, action) {
       return {
         ...state,
-        certChanges: action.payload
+        certChanges: action.payload,
       }
     },
-    setAddableCertDetail(state, action){
-      return{
+    setNewValidUntil(state, action) {
+      return {
         ...state,
-        addableCertDetail: action.payload
+        newValidUntil: action.payload,
       }
     },
-    setAllCerts(state,action){
-      return{
+    updateAddCState(state, action) {
+      return {
         ...state,
-        allCerts: action.payload
+        addCertActivated: action.payload,
       }
-    }
+    },
+    setAllCertificates(state, action) {
+      return {
+        ...state,
+        allCertificates: action.payload,
+      }
+    },
+    setVendors(state, action) {
+      return {
+        ...state,
+        vendors: action.payload,
+      }
+    },
+    setSelectedNewVendor(state, action) {
+      return {
+        ...state,
+        selectedNewVendor: action.payload,
+      }
+    },
+    setSelectedNewCertificateID(state, action) {
+      return {
+        ...state,
+        selectedNewCertificateID: action.payload,
+      }
+    },
+    setSelectedNewCertificate(state, action) {
+      return {
+        ...state,
+        selectedNewCertificate: action.payload,
+      }
+    },
   },
 })
 
@@ -52,17 +87,55 @@ export const initializeCertCard = (id) => {
   return async (dispatch) => {
     const consultant = await consultantService.getSelectedConsultant(id)
     const certs = consultant.certificates
-    dispatch(setAllCerts(certs))
+    const certificates = await certificateService.getAllCertificates()
+    const vendors = [...new Set(certificates.map((cert) => cert.vendor))]
+    dispatch(setConsultantCerts(certs))
     dispatch(updateEditability(false))
+    dispatch(setAllCertificates(certificates))
+    dispatch(setVendors(vendors))
+  }
+}
+
+export const addNewCert = (newCert) => {
+  return async (dispatch) => {
+    const consultant = await consultantService.editConsultant(
+      newCert.id,
+      newCert
+    )
+    dispatch(setConsultantCerts(consultant.certificates))
+    dispatch(updateAddCState(false))
+  }
+}
+
+export const editCertificates = (cert) => {
+  return async (dispatch) => {
+    const editedCert = await consultantService.editConsultant(cert.id, cert)
+    dispatch(setConsultantCerts(editedCert.certificates))
+    dispatch(updateEditability(false))
+    dispatch(setCertChanges([]))
+  }
+}
+
+export const resetNewCertData = () => {
+  return async (dispatch) => {
+    dispatch(setSelectedNewVendor(""))
+    dispatch(setSelectedNewCertificateID(""))
+    dispatch(setSelectedNewCertificate({ id: 0, certificate: "" }))
+    dispatch(setNewValidUntil(null))
   }
 }
 
 export const {
   updateEditability,
-  updateNewCertAddability,
+  setConsultantCerts,
   setCertChanges,
-  setAddableCertDetail,
-  setAllCerts
+  setNewValidUntil,
+  updateAddCState,
+  setAllCertificates,
+  setVendors,
+  setSelectedNewVendor,
+  setSelectedNewCertificateID,
+  setSelectedNewCertificate,
 } = certCardSlice.actions
 
 export default certCardSlice.reducer

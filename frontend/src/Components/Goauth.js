@@ -1,7 +1,6 @@
 import axios from "axios"
 
 const successCallback = (response) => {
-  console.log(response)
   axios.get(process.env.REACT_APP_BACKEND_URL, {
     headers: {
       "Content-Type": "application/json",
