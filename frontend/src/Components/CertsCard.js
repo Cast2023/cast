@@ -23,7 +23,6 @@ import AddCircleIcon from "@mui/icons-material/AddCircle"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import dayjs from "dayjs"
 import { useSelector, useDispatch } from "react-redux"
 import {
   updateEditability,
