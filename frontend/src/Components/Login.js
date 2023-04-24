@@ -1,20 +1,5 @@
 import { Button, Grid } from "@mui/material"
 
-// const Login = ({setSessionState}) => (
-//   <div className="login">
-//     <div className="rectangle-1">
-//       <span className="cast">CAST</span>
-//       <button className="rectangle-2">
-//         <span className="googlelogin">Googlelogin</span>
-//       </button>
-//     </div>
-//   </div>
-// )
-
-// const handleLogIn=({event, setSessionState})=>{
-//     event.preventDefault()
-//     setSessionState(true)
-// }
 
 const Login = ({handleLogIn}) => (
   <Grid container>
