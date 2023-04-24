@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
 import { setSelectedConsultant, setActiveConsultant } from "./consultantReducer"
 
+
 // User-id is set to 1 for now to highlight if the correct user info is not fecthed from database
 const initialState = {
   activeSession: false,
@@ -38,7 +39,6 @@ const sessionSlice = createSlice({
 })
 
 export const initializeUser = (id, APIToken) => {
-  //console.log("USER: ", id)
   return async (dispatch) => {
     const user = await consultantService.getSelectedConsultant(id, APIToken)
     // dispatch(setSelectedConsultant(user))
@@ -49,7 +49,6 @@ export const initializeUser = (id, APIToken) => {
 
 export const { setToken, setActiveUserId, setActiveSession, setActiveUser } =
   sessionSlice.actions
-
 export const selectSessionState = (state) => state.session.activeSession
 export const selectSessionUser = (state) => state.session.activeUserId
 export const selectSessionToken = (state) => state.session.token
