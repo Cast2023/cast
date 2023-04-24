@@ -232,6 +232,7 @@ const CertsCard = ({ user, activeUserId }) => {
                       slotProps={{
                         textField: {
                           id: "certValidUntil",
+                          required: true,
                         },
                       }}
                     />
