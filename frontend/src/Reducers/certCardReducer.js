@@ -36,24 +36,6 @@ const certCardSlice = createSlice({
         certChanges: action.payload,
       }
     },
-    updateNewCertAddability(state, action) {
-      return {
-        ...state,
-        newCertAddable: action.payload,
-      }
-    },
-    setAddableCertDetail(state, action) {
-      return {
-        ...state,
-        addableCertDetail: action.payload,
-      }
-    },
-    setAddCertState(state, action) {
-      return {
-        ...state,
-        addCertState: action.payload,
-      }
-    },
     setNewVendorId(state, action) {
       return {
         ...state,
@@ -142,9 +124,6 @@ export const {
   updateEditability,
   setConsultantCerts,
   setCertChanges,
-  updateNewCertAddability,
-  setAddableCertDetail,
-  setAddCertState,
   setNewVendorId,
   setNewCertificateName,
   setNewValidUntil,
