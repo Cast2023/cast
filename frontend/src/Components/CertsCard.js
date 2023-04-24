@@ -27,8 +27,6 @@ import { useSelector, useDispatch } from "react-redux"
 import {
   updateEditability,
   setCertChanges,
-  setNewVendorId,
-  setNewCertificateName,
   setNewValidUntil,
   updateAddCState,
   initializeCertCard,
@@ -37,51 +35,43 @@ import {
   setSelectedNewVendor,
   setSelectedNewCertificateID,
   setSelectedNewCertificate,
+  resetNewCertData,
 } from "../Reducers/certCardReducer"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 const CertsCard = ({ user, activeUserId }) => {
   const dispatch = useDispatch()
   const editable = useSelector((state) => state.certCard.editable)
-  const allConsultantCerts = useSelector(
-    (state) => state.certCard.allConsultantCerts
-  ) // used when allCert?.map() is used
+  const allConsultantCerts = useSelector((state) => state.certCard.allConsultantCerts) 
   const allCertificates = useSelector((state) => state.certCard.allCertificates)
   const vendors = useSelector((state) => state.certCard.vendors)
-  const selectedNewVendor = useSelector(
-    (state) => state.certCard.selectedNewVendor
-  )
-  const selectedNewCertificateID = useSelector(
-    (state) => state.certCard.selectedNewCertificateID
-  )
-  const certChanges = useSelector((state) => state.certCard.certChanges) // This handles the changes in existing certs
+  const selectedNewVendor = useSelector((state) => state.certCard.selectedNewVendor)
+  const selectedNewCertificateID = useSelector((state) => state.certCard.selectedNewCertificateID)
+  const certChanges = useSelector((state) => state.certCard.certChanges)
   const addCertState = useSelector((state) => state.certCard.addCertActivated)
   const newValidUntil = useSelector((state) => state.certCard.newValidUntil)
-  const selectedNewCertificate = useSelector(
-    (state) => state.certCard.selectedNewCertificate
-  )
-  const [trigger, setTrigger] = useState(false)
+  const selectedNewCertificate = useSelector((state) => state.certCard.selectedNewCertificate)
 
   useEffect(() => {
-    const id = activeUserId === user.id ? activeUserId : user.id
-    dispatch(initializeCertCard(id)) // fetch consultant from database and initialize/update certs
-  }, [trigger])
+    dispatch(initializeCertCard(user.id))
+  }, [])
 
   const handleUpdateEditableClick = (edit) => {
     dispatch(updateEditability(!edit))
+    dispatch(setCertChanges([]))
   }
 
   const handleCertChange = (event, certId) => {
     const date = moment(event).format("YYYY-MM-DD")
-    date !== "Invalid Date" &&
+    date !== "Invalid date" &&
       dispatch(
         setCertChanges([...certChanges, { cert: certId, valid_until: date }])
       )
   }
 
   const updateAddCertState = (addCertState) => {
-    dispatch(setSelectedNewVendor(null))
     dispatch(updateAddCState(!addCertState))
+    dispatch(resetNewCertData())
   }
 
   const handleAddNewCert = (event) => {
@@ -96,12 +86,7 @@ const CertsCard = ({ user, activeUserId }) => {
       ],
     }
     dispatch(addNewCert(newEmployeeCert))
-    setTrigger(!trigger)
-    dispatch(setNewVendorId(null))
-    dispatch(setSelectedNewVendor(null))
-    dispatch(setNewCertificateName(null))
-    dispatch(setSelectedNewCertificateID(null))
-    dispatch(setNewValidUntil(null))
+    dispatch(resetNewCertData())
   }
 
   const handleSubmitEditedCertificates = (event) => {
@@ -268,7 +253,7 @@ const CertsCard = ({ user, activeUserId }) => {
           >
             <form onSubmit={handleSubmitEditedCertificates}>
               <TableContainer component={Paper}>
-                <Table>
+                <Table id="certTable">
                   <TableHead>
                     <TableRow>
                       <TableCell>Vendor</TableCell>
