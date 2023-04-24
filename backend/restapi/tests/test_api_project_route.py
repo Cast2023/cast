@@ -1,15 +1,25 @@
 from django.test import Client
 from django.test.client import encode_multipart
 from django.urls import reverse
-from rest_framework.test import APITestCase
-from restapi.models import Project
+from rest_framework.test import APIRequestFactory, APITestCase, APIClient
+from restapi.models import Project, Employees, Token
 
 
-class TechGetTests(APITestCase):
+class ProjectGetTests(APITestCase):
     url = reverse('project-list')
     
     def setUp(self):
         self.client = Client()
+
+        user1 = Employees.objects.create(
+            first_name='John',
+            last_name='Doe',
+            email='tester@gmail.com'
+        )
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
 
         Project.objects.create(
             project_name='CastCorp',
@@ -39,11 +49,21 @@ class TechGetTests(APITestCase):
         self.assertEqual(result[0]['project_name'] + result[1]['project_name'], 'CastCorpCastbook')
 
 
-class TechPostTests(APITestCase):
+class ProjectPostTests(APITestCase):
     url = reverse('project-list')
     
     def setUp(self):
         self.client = Client()
+
+        user1 = Employees.objects.create(
+            first_name='John',
+            last_name='Doe',
+            email='tester@gmail.com'
+        )
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
+        self.factory = APIRequestFactory()
 
         Project.objects.create(
             project_name='Castbook',

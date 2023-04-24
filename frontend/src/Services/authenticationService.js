@@ -12,7 +12,7 @@ const successCallback = async ({ credentialResponse }) => {
   return result
 }
 
-const verifyToken = async ({ token }) => {
+const verifyToken = async (token) => {
   const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/verify-google-token/"
 
   const result = await axios.get(baseUrl, {

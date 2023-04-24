@@ -1,12 +1,14 @@
+import datetime
+
 from rest_framework import viewsets, filters, generics, status
+from rest_framework.response import Response
 from django_filters import rest_framework as rest_filters
 import pandas as pd
-from rest_framework.response import Response
-import datetime
 from django.db import connection
 
-from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project
-from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer
+from restapi.models import Employees, Techs, Certificate, Employee_certificates, Project, Token
+from .serializers import TechSerializer, CertSerializer, ConsultantSerializer, FileUploadSerializer, ProjectSerializer, IntegrationTokenSerializer
+
 
 class TechsFilter(rest_filters.FilterSet):
     tech_name = rest_filters.CharFilter(field_name='tech_name')
@@ -14,6 +16,7 @@ class TechsFilter(rest_filters.FilterSet):
     class Meta:
         fields = ("tech_name",)
         model = Techs
+
 
 class TechAPIView(viewsets.ModelViewSet):
     serializer_class = TechSerializer
@@ -28,15 +31,32 @@ class TechAPIView(viewsets.ModelViewSet):
         result = {"id": instance.id, "tech_name": instance.tech_name}
         return Response({"status": "success", "result": result}, status.HTTP_201_CREATED)
 
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
+
+
 class CertAPIView(viewsets.ModelViewSet):
     serializer_class = CertSerializer
     queryset = Certificate.objects.all()
-    
-    
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
+
+class IntegrationTokenView(viewsets.ModelViewSet):
+    queryset = Token.objects.all().filter(is_integration_token=True)
+    serializer_class = IntegrationTokenSerializer
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
+
+
 class ProjectAPIView(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
-
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
 
 class EmployeeFilter(rest_filters.FilterSet):
     first_name = rest_filters.CharFilter(
@@ -150,10 +170,14 @@ class ConsultantAPIView(viewsets.ModelViewSet):
     filter_backends = [rest_filters.DjangoFilterBackend, filters.SearchFilter]
     filterset_class = EmployeeFilter
 
+    def initialize_request(self, request, *args, **kwargs):
+        setattr(request, 'csrf_processing_done', True) 
+        return super().initialize_request(request, *args, **kwargs)
 
+    
 class ImportCertificatesView(generics.CreateAPIView):
     serializer_class = FileUploadSerializer
-
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -212,4 +236,3 @@ class ImportCertificatesView(generics.CreateAPIView):
             return True, date
         except ValueError as error:
             return False, None
-
