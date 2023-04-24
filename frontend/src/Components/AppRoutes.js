@@ -4,7 +4,6 @@ import Home from "./Home"
 import Profile from "./Profile"
 import Search from "./Search"
 import Api from "./Api"
-import MyTeam from "./MyTeam"
 import Logout from "./Logout"
 import { useSelector } from "react-redux"
 
@@ -36,9 +35,6 @@ const AppRoutes = () => {
           <Button color="inherit" component={Link} to="/api" id="api">
             api
           </Button>
-          <Button color="inherit" component={Link} to="/myteam" id="myteam">
-            my team
-          </Button>
           <Button color="inherit" component={Link} to="/search" id="search">
             search
           </Button>
@@ -62,7 +58,6 @@ const AppRoutes = () => {
           }
         />
         <Route path="/api" element={<Api />} />
-        <Route path="/myteam" element={<MyTeam />} />
         <Route path="/search" element={<Search />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>

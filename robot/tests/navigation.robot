@@ -15,12 +15,6 @@ Scenario: As a visitor I can visit the home page
 #  Refresh & Navigate to Profile Page
 #  Page Should Contain  Profile
 
-Scenario: As A visitor I can inspect my team page
-  Go To  ${SERVER}
-  Wait until page contains element  myteam
-  Click element  myteam
-  Page Should Contain  My Team Page
-
 Scenario: As A visitor I can inspect search page
   Go To  ${SERVER}
   Wait until page contains element  search
