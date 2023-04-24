@@ -27,14 +27,16 @@ const Search = () => {
   const dispatch = useDispatch()
   const consultants = useSelector((state) => state.consultants.allConsultants)
   const skills = useSelector((state) => state.consultants.allTechSkills)
-  const certs = useSelector((state) => state.consultants.allCertificates)
-  const vendors = useSelector((state) => state.consultants.allVendors)
+  const allCertificates = useSelector(
+    (state) => state.consultants.allCertificates
+  )
+  const allVendors = useSelector((state) => state.consultants.allVendors)
   const filteredUsers = useSelector(
     (state) => state.consultants.filteredConsultants
   )
   const nameFilter = useSelector((state) => state.consultants.filteredName)
 
-  console.log(certs)
+  console.log(allVendors)
 
   useEffect(() => {
     dispatch(updateFilteredConsultants())
@@ -44,6 +46,8 @@ const Search = () => {
     dispatch(setFilteredName(e.target.value))
     dispatch(updateFilteredConsultants())
   }
+
+  console.log(allVendors)
 
   return (
     <div>
@@ -100,14 +104,16 @@ const Search = () => {
               name="certs"
               disablePortal
               id="certs-combo-box"
-              value={useSelector((state) => state.consultants.filteredCertificates)}
+              value={useSelector(
+                (state) => state.consultants.filteredCertificates
+              )}
               inputValue={useSelector(
                 (state) => state.consultants.filteredCertificatesInputValue
               )}
               onInputChange={(event, value) => {
                 dispatch(setFilteredCertificatesInputValue(value))
               }}
-              options={certs.map((certificate) => ({
+              options={allCertificates.map((certificate) => ({
                 id: certificate.id,
                 label: certificate.certificate_name,
               }))}
@@ -130,16 +136,17 @@ const Search = () => {
               name="certsVendor"
               disablePortal
               id="certsVendor-combo-box"
-              value={useSelector((state) => state.consultants.filteredCertificates)}
+              value={useSelector((state) => state.consultants.filteredVendors)}
               inputValue={useSelector(
-                (state) => state.consultants.filteredCertificatesInputValue
+                (state) => state.consultants.setFilteredVendorsInputValue
               )}
               onInputChange={(event, value) => {
-                dispatch(setFilteredCertificatesInputValue(value))
+                console.log(value)
+                dispatch(setFilteredVendorsInputValue(value))
               }}
-              options={certs.map((certificate) => ({
-                id: certificate.id,
-                label: certificate.certificate_name,
+              options={allVendors.map((vendor) => ({
+                id: vendor.id,
+                label: vendor.name,
               }))}
               sx={{ width: 300 }}
               renderInput={(params) => (
@@ -147,7 +154,7 @@ const Search = () => {
               )}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={(event, value) => {
-                dispatch(setFilteredCertificates(value))
+                dispatch(setFilteredVendors(value))
                 dispatch(updateFilteredConsultants())
               }}
             />
@@ -162,7 +169,6 @@ const Search = () => {
                 Search
               </Button>
             </Grid> */}
-            
         </Grid>
       </div>
       <br />
