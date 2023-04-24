@@ -79,6 +79,7 @@ const Api = () => {
       console.log("response",response)
       dispatch(updateintegrationTokenValue(response.data.token))
     })
+    setTrigger(!trigger)
   }
 
   const changeTokenName = (event) => {
@@ -209,20 +210,20 @@ const Api = () => {
               </TableRow>
             </TableHead>
             {tokens().map((token) => (
-                    <TableBody key={token.token}>
-                        <TableRow key={token.token}>
-                          
-                          <TableCell>{token.name}</TableCell>
-                          <TableCell>{token.creator} </TableCell>
-                          <TableCell>{token.token} </TableCell>
-                          <TableCell>{token.ttl}</TableCell>
-                          <TableCell><ClipboardButton integrationTokenValue = {tokens().find((t) => t.id === token.id).token}/> 
-                            <IconButton id={token.id} onClick={(event) => {handleDelete(event, token.id)}}><DeleteIcon /></IconButton>
-                            
-                          </TableCell>
-                        </TableRow>
-                    </TableBody>
-                    ))}
+              <TableBody key={token.token}>
+                  <TableRow key={token.token}>
+                    
+                    <TableCell>{token.name}</TableCell>
+                    <TableCell>{token.creator} </TableCell>
+                    <TableCell>{token.token} </TableCell>
+                    <TableCell>{token.ttl}</TableCell>
+                    <TableCell><ClipboardButton integrationTokenValue = {tokens().find((t) => t.id === token.id).token}/> 
+                      <IconButton id={token.id} onClick={(event) => {handleDelete(event, token.id)}}><DeleteIcon /></IconButton>
+                      
+                    </TableCell>
+                  </TableRow>
+              </TableBody>
+              ))}
             </Table>
         </TableContainer>
         
