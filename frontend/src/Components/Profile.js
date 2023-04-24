@@ -1,23 +1,16 @@
-import { Grid, Container } from "@mui/material"
-import SkillsCard from "./SkillsCard"
-import PersonalInfoCard from "./PersonalInfoCard"
-import CertsCard from "./CertsCard"
-import ProjectsCard from "./ProjectsCard"
 import { useSelector } from "react-redux"
+import { Grid } from "@mui/material"
+import CertsCard from "./CertsCard"
+import PersonalInfoCard from "./PersonalInfoCard"
+import ProjectsCard from "./ProjectsCard"
+import SkillsCard from "./SkillsCard"
 
 const Profile = ({ consultant }) => {
-  // const user = useSelector((state) => state.session.activeUser)
   const activeUserId = useSelector((state) => state.session.activeUserId)
+  
   const selectedConsultant = consultant
     ? consultant
     : this.defaultProps.consultant
-
-  // const selectedConsultant = useSelector(
-  //   (state) => state.consultants.selectedConsultant
-  // )
-  // if (!selectedConsultant.length) {
-  //   return <div>Nothing to render</div>
-  // }
 
   return selectedConsultant.id ? (
     <div>
@@ -34,13 +27,22 @@ const Profile = ({ consultant }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6} md={6} id="projectscard">
-          <ProjectsCard user={selectedConsultant} activeUserId={activeUserId} />
+          <ProjectsCard
+            user={selectedConsultant}
+            activeUserId={activeUserId} 
+          />
         </Grid>
         <Grid item xs={12} sm={6} md={6} id="skillscard">
-          <SkillsCard user={selectedConsultant} activeUserId={activeUserId} />
+          <SkillsCard 
+            user={selectedConsultant}
+            activeUserId={activeUserId} 
+          />
         </Grid>
         <Grid item xs={12} sm={6} md={6} id="certscard">
-          <CertsCard user={selectedConsultant} activeUserId={activeUserId} />
+          <CertsCard
+            user={selectedConsultant}
+            activeUserId={activeUserId} 
+          />
         </Grid>
       </Grid>
     </div>
