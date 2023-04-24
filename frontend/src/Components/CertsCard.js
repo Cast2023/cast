@@ -36,6 +36,7 @@ import {
   editCertificates,
   setSelectedNewVendor,
   setSelectedNewCertificateID,
+  setSelectedNewCertificate,
 } from "../Reducers/certCardReducer"
 import { useEffect, useState } from "react"
 
@@ -56,6 +57,9 @@ const CertsCard = ({ user, activeUserId }) => {
   const certChanges = useSelector((state) => state.certCard.certChanges) // This handles the changes in existing certs
   const addCertState = useSelector((state) => state.certCard.addCertActivated)
   const newValidUntil = useSelector((state) => state.certCard.newValidUntil)
+  const selectedNewCertificate = useSelector(
+    (state) => state.certCard.selectedNewCertificate
+  )
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
@@ -109,10 +113,20 @@ const CertsCard = ({ user, activeUserId }) => {
   const handleNewVendorChange = (value) => {
     dispatch(setSelectedNewVendor(value))
     dispatch(setSelectedNewCertificateID(""))
+    dispatch(setSelectedNewCertificate({ id: 0, certificate: "" }))
   }
 
-  const handleNewCertificateChange = (value) => {
+  const handleNewCertificateChange = async (value) => {
     dispatch(setSelectedNewCertificateID(value))
+    const selectedCertificate = await allCertificates.find(
+      (cert) => cert.id === value
+    )
+    dispatch(
+      setSelectedNewCertificate({
+        id: selectedCertificate.id,
+        certificate: selectedCertificate.certificate_name,
+      })
+    )
   }
 
   const handleNewValidUntilChange = (value) => {
@@ -198,6 +212,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     disablePortal
                     disableClearable
                     id="certs-box"
+                    value={selectedNewCertificate.certificate}
                     options={allCertificates
                       .filter(
                         (certificate) =>

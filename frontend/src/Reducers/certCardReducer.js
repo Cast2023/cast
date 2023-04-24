@@ -13,6 +13,7 @@ const initialState = {
   selectedNewVendor: "",
   selectedNewCertificateID: "",
   newValidUntil: null,
+  selectedNewCertificate: { id: 0, certificate: "" },
 }
 
 const certCardSlice = createSlice({
@@ -85,6 +86,12 @@ const certCardSlice = createSlice({
         selectedNewCertificateID: action.payload,
       }
     },
+    setSelectedNewCertificate(state, action) {
+      return {
+        ...state,
+        selectedNewCertificate: action.payload,
+      }
+    },
   },
 })
 
@@ -133,6 +140,7 @@ export const {
   setVendors,
   setSelectedNewVendor,
   setSelectedNewCertificateID,
+  setSelectedNewCertificate,
 } = certCardSlice.actions
 
 export default certCardSlice.reducer
