@@ -170,6 +170,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     text="Choose vendor"
                     name="vendor"
                     disablePortal
+                    disableClearable
                     id="vendor-box"
                     options={Object.values(vendors).map((vendor) => ({
                       id: vendor,
@@ -194,6 +195,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     text="Choose certificate"
                     name="certificate"
                     disablePortal
+                    disableClearable
                     id="certs-box"
                     options={allCertificates
                       .filter(
