@@ -12,6 +12,7 @@ const initialState = {
   vendors: [],
   selectedNewVendor: "",
   selectedNewCertificateID: "",
+  newValidUntil: null,
 }
 
 const certCardSlice = createSlice({
@@ -102,11 +103,11 @@ export const initializeCertCard = (id) => {
 
 export const addNewCert = (newCert) => {
   return async (dispatch) => {
-    const addedCert = await consultantService.editConsultant(
+    const consultant = await consultantService.editConsultant(
       newCert.id,
       newCert
     )
-    dispatch(setConsultantCerts(addedCert))
+    dispatch(setConsultantCerts(consultant.certificates))
     dispatch(updateAddCState(false))
   }
 }

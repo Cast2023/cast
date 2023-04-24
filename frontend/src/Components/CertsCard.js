@@ -56,7 +56,7 @@ const CertsCard = ({ user, activeUserId }) => {
   )
   const certChanges = useSelector((state) => state.certCard.certChanges) // This handles the changes in existing certs
   const addCertState = useSelector((state) => state.certCard.addCertActivated)
-  const newValidUntil = useSelector((state) => state.certCard.NewValidUntil)
+  const newValidUntil = useSelector((state) => state.certCard.newValidUntil)
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
@@ -68,11 +68,11 @@ const CertsCard = ({ user, activeUserId }) => {
     dispatch(updateEditability(!edit))
   }
 
-  const handleCertChange = (event, cert) => {
-    const date = dayjs(event).format("YYYY-MM-DD")
+  const handleCertChange = (event, certId) => {
+    const date = moment(event).format("YYYY-MM-DD")
     date !== "Invalid Date" &&
       dispatch(
-        setCertChanges([...certChanges, { cert: cert, valid_until: date }])
+        setCertChanges([...certChanges, { cert: certId, valid_until: date }])
       )
   }
 
@@ -87,7 +87,7 @@ const CertsCard = ({ user, activeUserId }) => {
       certificates: [
         {
           cert: selectedNewCertificateID,
-          valid_until: dayjs(newValidUntil).format("YYYY-MM-DD"),
+          valid_until: newValidUntil,
         },
       ],
     }
@@ -113,6 +113,10 @@ const CertsCard = ({ user, activeUserId }) => {
 
   const handleNewCertificateChange = (value) => {
     dispatch(setSelectedNewCertificateID(value))
+  }
+
+  const handleNewValidUntilChange = (value) => {
+    dispatch(setNewValidUntil(moment(value).format("YYYY-MM-DD")))
   }
 
   const certificateList = () => {
@@ -221,10 +225,9 @@ const CertsCard = ({ user, activeUserId }) => {
                     <DatePicker
                       label="Certificate valid until date"
                       format="YYYY-MM-DD"
-                      onChange={(newValue) => {
-                        setNewValidUntil(newValue)
-                      }}
-                      value={newValidUntil}
+                      onChange={(newValue) =>
+                        handleNewValidUntilChange(newValue)
+                      }
                       slotProps={{
                         textField: {
                           id: "certValidUntil",
