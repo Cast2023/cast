@@ -11,9 +11,12 @@ const initialState = {
   filteredSkillsInputValue: "",
   filteredCertificates: [],
   filteredCertificatesInputValue: "",
+  filteredVendors: [],
+  filteredVendorsInputValue: "",
   activeConsultant: [],
   allCertificates: [],
   allTechSkills: [],
+  allVendors: [],
 }
 
 const consultantSlice = createSlice({
@@ -74,6 +77,18 @@ const consultantSlice = createSlice({
         filteredCertificatesInputValue: action.payload,
       }
     },
+    setFilteredVendors(state, action) {
+      return {
+        ...state,
+        filteredVendors: action.payload,
+      }
+    },
+    setFilteredVendorsInputValue(state, action) {
+      return {
+        ...state,
+        filteredVendorsInputValue: action.payload,
+      }
+    },
     setFilteredName(state, action) {
       return {
         ...state,
@@ -110,12 +125,29 @@ const consultantSlice = createSlice({
             })
           }
         })
+        .filter((user) => {
+          if (state.filteredVendors.length === 0) {
+            return true
+          } else {
+            return state.filteredVendors.every((certName) => {
+              return user.certificates.some(
+                (cert) => cert.vendor === certName.label
+              )
+            })
+          }
+        })
     },
     setActiveConsultant(state, action) {
       
       return {
         ...state,
         activeConsultant: action.payload,
+      }
+    },
+    setAllVendors(state, action) {
+      return {
+        ...state,
+        allVendors: action.payload,
       }
     },
   },
@@ -128,6 +160,11 @@ export const initializeConsultants = (APIToken) => {
     dispatch(setAllConsultants(consultants))
     const certificates = await certificateService.getAllCertificates()
     dispatch(setAllCertificates(certificates))
+    const setOfVendors = [...new Set(certificates.map((cert) => cert.vendor))]
+    const vendors = setOfVendors.map((vendor, index) => {
+      return { id: index, name: vendor }
+    })
+    dispatch(setAllVendors(vendors))
     const techSkills = await techService.getAllTechs()
     dispatch(setAllTechSkills(techSkills))
     dispatch(setFilteredConsultants(consultants))
@@ -145,8 +182,11 @@ export const {
   setFilteredName,
   setFilteredCertificates,
   setFilteredCertificatesInputValue,
+  setFilteredVendors,
+  setFilteredVendorsInputValue,
   setFilteredSkills,
   setFilteredSkillsInputValue,
+  setAllVendors,
 } = consultantSlice.actions
 
 export default consultantSlice.reducer

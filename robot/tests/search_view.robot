@@ -131,3 +131,33 @@ Scenario: As a visitor I can filter consultants based on multiple selected certi
     Page Should Contain Element  id=1
     Sleep  1s
     Page Should Not Contain Element  id=7
+ 
+Scenario: As a visitor I can filter consultants based on selected certificate vendor
+    Refresh & Navigate to  search
+    Wait Until Page Contains Element  certsVendor-combo-box
+    Click Element  certsVendor-combo-box
+    Sleep  1s
+    Set Selenium Speed	2.5 seconds
+    Click Element  id=certsVendor-combo-box-option-1
+    Set Selenium Speed	0 seconds
+    Click Element  profile
+    Sleep  1s
+    Click Element  search
+    Sleep  2s
+    Page Should Contain Element  id=1
+    Page Should Not Contain Element  id=4
+
+Scenario: As a visitor I can filter consultants based on multiple selected certificate vendors
+    Refresh & Navigate to  search
+    Wait Until Page Contains Element  certsVendor-combo-box
+    Click Element  certsVendor-combo-box
+    Sleep  1s
+    Click Element  id=certsVendor-combo-box-option-1
+    Sleep  1s
+    Click Element  certsVendor-combo-box
+    Sleep  1s
+    Click Element  id=certsVendor-combo-box-option-0
+    Sleep  1s
+    Page Should Contain Element  id=1
+    Sleep  1s
+    Page Should Not Contain Element  id=9

@@ -15,6 +15,8 @@ import {
   setFilteredName,
   setFilteredCertificates,
   setFilteredCertificatesInputValue,
+  setFilteredVendors,
+  setFilteredVendorsInputValue,
   setFilteredSkills,
   setFilteredSkillsInputValue,
 } from "../Reducers/consultantReducer"
@@ -25,13 +27,16 @@ const Search = () => {
   const dispatch = useDispatch()
   const consultants = useSelector((state) => state.consultants.allConsultants)
   const skills = useSelector((state) => state.consultants.allTechSkills)
-  const certs = useSelector((state) => state.consultants.allCertificates)
+  const allCertificates = useSelector(
+    (state) => state.consultants.allCertificates
+  )
+  const allVendors = useSelector((state) => state.consultants.allVendors)
   const filteredUsers = useSelector(
     (state) => state.consultants.filteredConsultants
   )
   const nameFilter = useSelector((state) => state.consultants.filteredName)
 
-  useEffect(() => {
+useEffect(() => {
     dispatch(updateFilteredConsultants())
   }, [])
 
@@ -39,6 +44,8 @@ const Search = () => {
     dispatch(setFilteredName(e.target.value))
     dispatch(updateFilteredConsultants())
   }
+
+  console.log(allVendors)
 
   return (
     <div>
@@ -90,29 +97,62 @@ const Search = () => {
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Autocomplete
               multiple
-              label="Select certs"
-              text="Select certs"
+              label="Select certs by name"
+              text="Select certs by name"
               name="certs"
               disablePortal
               id="certs-combo-box"
-              value={useSelector((state) => state.consultants.filteredCertificates)}
+              value={useSelector(
+                (state) => state.consultants.filteredCertificates
+              )}
               inputValue={useSelector(
                 (state) => state.consultants.filteredCertificatesInputValue
               )}
               onInputChange={(event, value) => {
                 dispatch(setFilteredCertificatesInputValue(value))
               }}
-              options={certs.map((certificate) => ({
+              options={allCertificates.map((certificate) => ({
                 id: certificate.id,
                 label: certificate.certificate_name,
               }))}
               sx={{ width: 300 }}
               renderInput={(params) => (
-                <TextField {...params} label="Select certs" />
+                <TextField {...params} label="Select certs by name" />
               )}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={(event, value) => {
                 dispatch(setFilteredCertificates(value))
+                dispatch(updateFilteredConsultants())
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Autocomplete
+              multiple
+              label="Select certs by vendor"
+              text="Select certs by vendor"
+              name="certsVendor"
+              disablePortal
+              id="certsVendor-combo-box"
+              value={useSelector((state) => state.consultants.filteredVendors)}
+              inputValue={useSelector(
+                (state) => state.consultants.setFilteredVendorsInputValue
+              )}
+              onInputChange={(event, value) => {
+                console.log(value)
+                dispatch(setFilteredVendorsInputValue(value))
+              }}
+              options={allVendors.map((vendor) => ({
+                id: vendor.id,
+                label: vendor.name,
+              }))}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Select certs by vendor" />
+              )}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(event, value) => {
+                dispatch(setFilteredVendors(value))
                 dispatch(updateFilteredConsultants())
               }}
             />
@@ -127,7 +167,6 @@ const Search = () => {
                 Search
               </Button>
             </Grid> */}
-            
         </Grid>
       </div>
       <br />
