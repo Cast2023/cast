@@ -53,6 +53,22 @@ const Api = () => {
       dispatch(updateintegrationTokenValue(response.data.token))
     })
     setTrigger(!trigger)
+  
+  const importCertificates = async () => {
+    const baseUrl =
+      process.env.REACT_APP_BACKEND_URL + "api/import-certificates/"
+    const formData = new FormData()
+    formData.append("file", file)
+    await axios
+      .post(baseUrl, formData) //newFile
+      .then((response) => {
+        return response.data
+      })
+      .catch((error) => {
+        alert(
+          error //errors to alert, it should be edited
+        )
+      })
   }
 
   const changeTokenName = (event) => {

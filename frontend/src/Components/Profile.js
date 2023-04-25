@@ -15,16 +15,23 @@ const Profile = ({ consultant }) => {
   // const selectedConsultant = useSelector(
   //   (state) => state.consultants.selectedConsultant
   // )
-  // 
   // if (!selectedConsultant.length) {
   //   return <div>Nothing to render</div>
   // }
 
   return selectedConsultant.id ? (
     <div>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} id="grid">
+      <Grid
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        id="grid"
+      >
         <Grid item xs={12} sm={6} md={6} id="personalinfocard">
-          <PersonalInfoCard user={selectedConsultant} activeUserId={activeUserId} />
+          <PersonalInfoCard
+            user={selectedConsultant}
+            activeUserId={activeUserId}
+          />
         </Grid>
         <Grid item xs={12} sm={6} md={6} id="projectscard">
           <ProjectsCard user={selectedConsultant} activeUserId={activeUserId} />

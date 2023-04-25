@@ -27,9 +27,7 @@ const getSelectedConsultant = (id) => {
 
 const editConsultant = (id, payload) => {
   const APIToken = localStorage.getItem("APIToken")
-  
   const request = axios.patch(`${baseUrl}${id}/`, payload, authHeader(APIToken))
-  
   return request.then((response) => response.data)
 }
 

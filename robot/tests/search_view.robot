@@ -7,18 +7,18 @@ Suite Setup     ${SETUP}
 *** Test Cases ***
 
 Scenario: As a visitor I can navigate to the search view
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Page Should Contain Element  search
   
 Scenario: As a visitor I can write text to search bar
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  search_bar
   Click element  search_bar
   Set Value  search_bar  Gwen
   Textfield value should be  id=search_bar  Gwen
 
 Scenario: As a visitor I can filter shown consultants
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  search_bar
   Wait Until Page Contains Element  id=20
   Click element  search_bar
@@ -29,7 +29,7 @@ Scenario: As a visitor I can filter shown consultants
   Page Should Contain  Gwen
 
 Scenario: As a visitor I can view the profile page of selected consultant
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  search_bar
   Click element  search_bar
   Sleep  2s
@@ -41,7 +41,7 @@ Scenario: As a visitor I can view the profile page of selected consultant
   Textfield Value Should Be  id=lastname  Stacy
 
 Scenario: As a visitor I can still see the search results after visiting another page
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  search_bar
   Click Element  search_bar
   Sleep  2s
@@ -58,7 +58,7 @@ Scenario: As a visitor I can still see the search results after visiting another
 
 
 Scenario: As a visitor I can filter consultants based on selected skill
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  skills-combo-box
   Click Element  skills-combo-box
   Sleep  1s
@@ -73,7 +73,7 @@ Scenario: As a visitor I can filter consultants based on selected skill
   Page Should Not Contain Element  id=2
 
 Scenario: As a visitor I can filter consultants based on multiple selected skills
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  skills-combo-box
   Click Element  skills-combo-box
   Sleep  1s
@@ -88,7 +88,7 @@ Scenario: As a visitor I can filter consultants based on multiple selected skill
   Page Should Not Contain Element  id=4
 
 Scenario: As a visitor when I return to search view my selected skill filtering remains unchanged
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  skills-combo-box
   Click Element  skills-combo-box
   Click Element  id=skills-combo-box-option-2
@@ -103,7 +103,7 @@ Scenario: As a visitor when I return to search view my selected skill filtering 
   Page Should Not Contain Element  id=7
 
 Scenario: As a visitor I can filter consultants based on selected certificate
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  certs-combo-box
   Click Element  certs-combo-box
   Sleep  1s
@@ -118,7 +118,7 @@ Scenario: As a visitor I can filter consultants based on selected certificate
   Page Should Not Contain Element  id=2
 
 Scenario: As a visitor I can filter consultants based on multiple selected certificates
-  Refresh & Navigate to Selected View  search
+  Refresh & Navigate to  search
   Wait Until Page Contains Element  certs-combo-box
   Click Element  certs-combo-box
   Sleep  1s
