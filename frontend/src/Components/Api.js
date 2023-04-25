@@ -23,7 +23,7 @@ import { initializeIntegrationTokenTB,
         updateintegrationTokenValue,} from "../Reducers/integrationReducer"
 import integrationService from "../Services/integrationService"
 import ClipboardButton from "./ClipboardButton"
-import dayjs from "dayjs"
+import moment from "moment"
 
 const Api = () => {
   const [trigger, setTrigger] = useState(false)
@@ -92,7 +92,7 @@ const Api = () => {
             name: token.token_name,
             creator: token.email,
             token: token.token,
-            ttl: dayjs(token.valid_until).toString(),
+            ttl: moment(token.valid_until).toString(),
           },
         ]))
     )
