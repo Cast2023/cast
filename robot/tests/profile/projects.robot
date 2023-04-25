@@ -6,8 +6,7 @@ Suite Setup     ${SETUP}
 
 *** Test Cases ***
 Scenario: As a visitor I can see the projects card on profile page
-    Refresh & Navigate to Profile Page
-    Wait Until Page Contains Element  projectscard
+    Refresh & Navigate to Profile Page Card  projectscard
 
 Scenario: As a visitor I can't add projects for other users
     [Setup]  Refresh & Navigate to  search

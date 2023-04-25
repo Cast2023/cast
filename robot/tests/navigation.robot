@@ -34,7 +34,7 @@ Scenario: As a visitor clicking get started button opens a popup
   Page Should Contain  This is very helpful
 
 Scenario: As a visitor I can see the grid on profile page
-  Refresh & Navigate to Profile Page
+  Refresh & Navigate to  profile
   Wait until page contains element  grid
 
 

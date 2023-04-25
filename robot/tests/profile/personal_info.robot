@@ -107,7 +107,7 @@ Scenario: As a visitor I can edit my preferences & dislikes in personal info on 
     [Teardown]  Reset Preferences & Dislikes
     
 Scenario: As a visitor I can't edit other user's personal info
-    Refresh & Navigate to Selected View  search
+    Refresh & Navigate to  search
     Wait Until Page Contains Element  searchresults
     Sleep  2s
     Click Link  Janet
