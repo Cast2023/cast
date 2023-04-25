@@ -66,7 +66,6 @@ Scenario: As a visitor I can edit many skills
     Element Attribute Value Should Be  id=1  value  Proficient
     Element Attribute Value Should Be  id=3  value  Beginner
 
-
 Scenario: As a visitor I can Add a new skill
     [Setup]  Refresh & Navigate to Profile Page Card  skillscard
     Click Button  add_skills_button

@@ -92,4 +92,5 @@ Reset Project Allocations
     Click Element  allocation50%
     Click Element  KeutzCorpAllocation
     Click Element  allocation50%
+    Sleep  1s
     Click Button  submitProjectChanges

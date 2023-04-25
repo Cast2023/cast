@@ -17,28 +17,28 @@ Init Browser
     Set Window Size    1200    1000  #run on docker can't use Maximize Browser Window
 
 Open Local Browser
-  Open Browser  ${SERVER}  ${BROWSER}
+    Open Browser  ${SERVER}  ${BROWSER}
 
 Close Local Browser
-  Close Browser
+    Close Browser
 
 Set Skill
-  [arguments]  ${id}  ${level} 
-  Input Text  ${id}  ${level}
+    [arguments]  ${id}  ${level} 
+    Input Text  ${id}  ${level}
 
 Set Value
-  [arguments]  ${id}  ${value}
-  Input Text  ${id}  ${value}
+    [arguments]  ${id}  ${value}
+    Input Text  ${id}  ${value}
 
 Refresh & Navigate to Profile Page Card
-  [arguments]  ${element}
-  Go To  ${SERVER}
-  Wait until page contains element  profile
-  Click element  profile
-  Wait Until Page Contains Element  ${element}
+    [arguments]  ${element}
+    Go To  ${SERVER}
+    Wait until page contains element  profile
+    Click element  profile
+    Wait Until Page Contains Element  ${element}
 
 Refresh & Navigate to
-  [arguments]  ${element}
-  Go To  ${SERVER}
-  Wait until page contains element  ${element}
-  Click element  ${element}
+    [arguments]  ${element}
+    Go To  ${SERVER}
+    Wait until page contains element  ${element}
+    Click element  ${element}

@@ -27,9 +27,10 @@ const sessionSlice = createSlice({
     setToken: (state, action) => {
       let token = null
       token = action.payload
+      
       state.token = token//`Bearer ${action.payload}`
       // state.token = jwt.sign(state.activeUserId, process.env.SECRET)
-      // console.log("token is: ",state.token)
+      // 
     },
     setActiveUserId: (state, action) => {
       state.activeUserId = action.payload
@@ -41,6 +42,7 @@ const sessionSlice = createSlice({
 export const initializeUser = (id, APIToken) => {
   return async (dispatch) => {
     const user = await consultantService.getSelectedConsultant(id, APIToken)
+    
     // dispatch(setSelectedConsultant(user))
     dispatch(setActiveConsultant(user))
     dispatch(setActiveUserId(id))

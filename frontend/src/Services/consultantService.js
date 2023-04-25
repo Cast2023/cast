@@ -11,8 +11,11 @@ const authHeader = (token) => ({
 })
 
 const getAllConsultants = () => {
+   
   const APIToken = localStorage.getItem("APIToken")
+  
   const request = axios.get(baseUrl, authHeader(APIToken))
+  
   return request.then((response) => response.data)
 }
 

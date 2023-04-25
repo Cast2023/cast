@@ -38,7 +38,6 @@ class AuthAPI(object):
             return self.get_response(request)
 
         token = get_token(request)
-
         if token:
             user = authenticate(token=token)
             fetched_token = Token.objects.get(token=token)

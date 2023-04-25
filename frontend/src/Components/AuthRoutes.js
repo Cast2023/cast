@@ -10,7 +10,7 @@ import {
   setActiveSession,
 } from "../Reducers/sessionReducer"
 import authenticationService from "../Services/authenticationService"
-import verifyToken from "../Services/authenticationService"
+//import verifyToken from "../Services/authenticationService"
 import { initializeProjects } from "../Reducers/projectCardReducer"
 
 const AuthRoutes = () => {
@@ -22,6 +22,7 @@ const AuthRoutes = () => {
     dispatch(initializeProjects())
     dispatch(setToken(`${authToken}`))
   }
+  console.log("here")
   useEffect(() => {
     //example in part5 uses JSON, here we test with token strin first
     const authToken = window.localStorage.getItem("authToken")
@@ -31,11 +32,13 @@ const AuthRoutes = () => {
         const userId = response.data[0]
         const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
         const APIToken = response.data[2]
-        userInitialization(authToken, APIToken, userId)
+        
         window.localStorage.setItem("authToken", authToken)
         window.localStorage.setItem("APIToken", APIToken)
+
+        userInitialization(authToken, APIToken, userId)
       })
-    }
+    } 
   }, [])
   return (
     <div>
@@ -56,16 +59,17 @@ const AuthRoutes = () => {
               const userId = response.data[0]
               const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
               const APIToken = response.data[2]
-
-              userInitialization(authToken, APIToken, userId)
-
+              
               //saving the tokens to the browser's local storage
               window.localStorage.setItem("authToken", authToken)
               window.localStorage.setItem("APIToken", APIToken)
+              userInitialization(authToken, APIToken, userId)
+
+              
             })
         }}
         onError={() => {
-          console.log("Login Failed")
+          
         }}
       />
     </div>

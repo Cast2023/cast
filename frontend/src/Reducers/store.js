@@ -5,6 +5,7 @@ import searchReducer from "./searchReducer"
 import skillCardReducer from "./skillCardReducer"
 import projectCardReducer from "./projectCardReducer"
 import certCardReducer from "./certCardReducer"
+import integrationReducer from "./integrationReducer"
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     skillCard: skillCardReducer,
     projectCard: projectCardReducer,
     certCard: certCardReducer,
+    integration: integrationReducer,
   },
 })
 
