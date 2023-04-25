@@ -7,7 +7,7 @@ Suite Setup     ${SETUP}
 *** Test Cases ***
 
 As A Visitor I Can Generate An Api Token
-    Refresh & Navigate to Selected View  api
+    [Setup]  Refresh & Navigate to  api
     Set Value  New Token Name  robot token
     Click Element  id=New Token Time To Live    
     Click Element  id=New Token Time To Live-option-0
@@ -17,14 +17,13 @@ As A Visitor I Can Generate An Api Token
     Handle Alert  accept
     
 As A Visitor I Can Delete An Generated Api Token
-    Refresh & Navigate to Selected View  api
-    
+    [Setup]  Refresh & Navigate to  api
     Set Value  New Token Name  delete me
     Click Element  id=New Token Time To Live    
     Click Element  id=New Token Time To Live-option-0
     Click Element  id=generate new token button
     
-    Refresh & Navigate to Selected View  api
+    Refresh & Navigate to  api
     Click Element  name=delete token button
     sleep  1s
     Handle Alert  accept
