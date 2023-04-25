@@ -53,22 +53,6 @@ const Api = () => {
       dispatch(updateintegrationTokenValue(response.data.token))
     })
     setTrigger(!trigger)
-  
-  const importCertificates = async () => {
-    const baseUrl =
-      process.env.REACT_APP_BACKEND_URL + "api/import-certificates/"
-    const formData = new FormData()
-    formData.append("file", file)
-    await axios
-      .post(baseUrl, formData) //newFile
-      .then((response) => {
-        return response.data
-      })
-      .catch((error) => {
-        alert(
-          error //errors to alert, it should be edited
-        )
-      })
   }
 
   const changeTokenName = (event) => {
@@ -120,9 +104,8 @@ const Api = () => {
     
 
       <div>
-        Use the form below to create new integration tokens. Integration tokens
-        have a ttl (time-to-live) of one day to one year. Please provide the
-        ttl-value as an integer value.
+        Use the form below to create new integration tokens. Please give the token a name that describes the use case. 
+        The token will be valid until the time to live expires or until you delete it.
       </div>
 
       <br />

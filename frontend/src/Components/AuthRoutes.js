@@ -50,10 +50,6 @@ const AuthRoutes = () => {
       </Routes>
       <GoogleLogin
         onSuccess={(credentialResponse) => {
-<<<<<<< HEAD
-          
-=======
->>>>>>> e22cec47346ad77523260468871ad50f1be48f61
           authenticationService
             .successCallback({
               //now inside SuccessCallback only have axios.get().. we may also need to implement axios.post
@@ -61,10 +57,6 @@ const AuthRoutes = () => {
             })
             .then((response) => {
               //need to apply response when backend side is handeled
-<<<<<<< HEAD
-              
-=======
->>>>>>> e22cec47346ad77523260468871ad50f1be48f61
               const userId = response.data[0]
               const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
               const APIToken = response.data[2]
