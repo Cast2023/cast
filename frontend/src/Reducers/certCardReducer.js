@@ -12,6 +12,7 @@ const initialState = {
   vendors: [],
   selectedNewVendor: "",
   selectedNewCertificateID: "",
+  selectedNewCertificate: { id: 0, certificate: "" },
   newValidUntil: null,
 }
 
@@ -35,18 +36,6 @@ const certCardSlice = createSlice({
       return {
         ...state,
         certChanges: action.payload,
-      }
-    },
-    setNewVendorId(state, action) {
-      return {
-        ...state,
-        newVendorId: action.payload,
-      }
-    },
-    setNewCertificateName(state, action) {
-      return {
-        ...state,
-        newCertificateName: action.payload,
       }
     },
     setNewValidUntil(state, action) {
@@ -85,6 +74,12 @@ const certCardSlice = createSlice({
         selectedNewCertificateID: action.payload,
       }
     },
+    setSelectedNewCertificate(state, action) {
+      return {
+        ...state,
+        selectedNewCertificate: action.payload,
+      }
+    },
   },
 })
 
@@ -121,18 +116,26 @@ export const editCertificates = (cert) => {
   }
 }
 
+export const resetNewCertData = () => {
+  return async (dispatch) => {
+    dispatch(setSelectedNewVendor(""))
+    dispatch(setSelectedNewCertificateID(""))
+    dispatch(setSelectedNewCertificate({ id: 0, certificate: "" }))
+    dispatch(setNewValidUntil(null))
+  }
+}
+
 export const {
   updateEditability,
   setConsultantCerts,
   setCertChanges,
-  setNewVendorId,
-  setNewCertificateName,
   setNewValidUntil,
   updateAddCState,
   setAllCertificates,
   setVendors,
   setSelectedNewVendor,
   setSelectedNewCertificateID,
+  setSelectedNewCertificate,
 } = certCardSlice.actions
 
 export default certCardSlice.reducer

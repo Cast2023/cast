@@ -1,4 +1,4 @@
-import { initializeUser, setActiveSession } from "../Reducers/sessionReducer"
+import { setActiveSession } from "../Reducers/sessionReducer"
 import { useDispatch } from "react-redux"
 import { Navigate } from "react-router-dom"
 

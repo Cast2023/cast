@@ -35,7 +35,7 @@ class VerifyOAuthTokenApi(APIView):
                 api_token.created_at = timezone.now()
                 api_token.ttl = 3600
                 api_token.save()
-
+                
     
         except (ValueError, KeyError) as error: # error for debugging purposes, should be removed later
             return Response(f"Invalid token, you shall not pass! {error}", status=401) # Auth token invalid

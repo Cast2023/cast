@@ -138,6 +138,7 @@ const consultantSlice = createSlice({
         })
     },
     setActiveConsultant(state, action) {
+      
       return {
         ...state,
         activeConsultant: action.payload,
@@ -153,6 +154,7 @@ const consultantSlice = createSlice({
 })
 
 export const initializeConsultants = (APIToken) => {
+  
   return async (dispatch) => {
     const consultants = await consultantService.getAllConsultants(APIToken)
     dispatch(setAllConsultants(consultants))

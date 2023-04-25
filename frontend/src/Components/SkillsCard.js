@@ -224,7 +224,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                         <Checkbox 
                           key = {skill.id}
                           onChange={handlePrefrenceChange}
-                          name = {skill.id}
+                          name = {skill.id.toString()}
                           id= {skill.id +"pref"}
                           disabled={!editable}
                           defaultChecked = {skill.preference}
