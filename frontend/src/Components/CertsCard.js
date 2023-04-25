@@ -145,7 +145,7 @@ const CertsCard = ({ user, activeUserId }) => {
             user.id === activeUserId && (
               <Box>
                 <IconButton
-                  id="add_cert_button"
+                  id="addCertButton"
                   onClick={() => updateAddCertState(addCertState)}
                 >
                   <AddCircleIcon />
@@ -171,7 +171,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     name="vendor"
                     disablePortal
                     disableClearable
-                    id="vendor-box"
+                    id="cert-vendor-box"
                     options={Object.values(vendors).map((vendor) => ({
                       id: vendor,
                       label: vendor,
@@ -239,7 +239,7 @@ const CertsCard = ({ user, activeUserId }) => {
                     />
                   </LocalizationProvider>
                 </Box>
-                <Button type="submit" id="add_new_cert_button">
+                <Button type="submit" id="submitNewCert">
                   Add
                 </Button>
               </form>
@@ -282,7 +282,7 @@ const CertsCard = ({ user, activeUserId }) => {
                                 format="YYYY-MM-DD"
                                 slotProps={{
                                   textField: {
-                                    id: "cert" + certificate.id,
+                                    id: "datepicker" + certificate.id,
                                     placeholder: certificate.validUntil,
                                   },
                                 }}
@@ -296,7 +296,7 @@ const CertsCard = ({ user, activeUserId }) => {
                 </Table>
               </TableContainer>
               {editable && (
-                <Button type="submit" id="submitCertsButton">
+                <Button type="submit" id="submitCertChanges">
                   Submit
                 </Button>
               )}

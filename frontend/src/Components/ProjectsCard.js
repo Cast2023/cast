@@ -233,7 +233,6 @@ const ProjectsCard = ({ user, activeUserId }) => {
                   <FormControl sx={{ m: 1, minWidth: 170 }} required>
                     <InputLabel id="allocationBusy">Allocation busy</InputLabel>
                     <Select
-                      disablePortal
                       id="selectAllocationBusy"
                       label="Allocation busy"
                       defaultValue=""
