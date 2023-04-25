@@ -26,34 +26,7 @@ import ClipboardButton from "./ClipboardButton"
 import dayjs from "dayjs"
 
 const Api = () => {
-  const [file, setFile] = useState(null)
   const [trigger, setTrigger] = useState(false)
-  const importCertificates = async () => {
-    const baseUrl =
-      process.env.REACT_APP_BACKEND_URL + "api/import-certificates/"
-    const formData = new FormData()
-    formData.append("file", file)
-    //
-    await axios
-      .post(baseUrl, formData) //newFile
-      .then((response) => {
-        return response.data
-      })
-      .catch((error) => {
-        alert(
-          error //errors to alert, it should be edited
-        )
-      })
-  }
-
-  const handleFileChange = (event) => {
-    <button onClick={() =>  navigator.clipboard.writeText('Copy this text to clipboard')}>
-      Copy
-    </button>
-    setFile(event.target.files[0])
-  }
-
-  /////////////////////////////Integration tokens///////////////////////////////
   const dispatch = useDispatch()
 
   const integrationTokenName = useSelector((state)=> state.integration.integrationTokenName)
@@ -221,20 +194,6 @@ const Api = () => {
         </TableContainer>
         
       
-      <div>
-        <h3>Import certificates</h3>
-        <input type="file" accept="*.csv" onChange={handleFileChange} />
-        <Button
-          variant="contained"
-          component="label"
-          size="small"
-          id="import-certs-button"
-          startIcon={<UploadIcon />}
-          onClick={importCertificates}
-        >
-          Import Certificates
-        </Button>
-      </div>
       <br />
     </div>
   )
