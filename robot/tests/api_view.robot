@@ -12,7 +12,7 @@ As A Visitor I Can Generate An Api Token
     Click Element  id=New Token Time To Live    
     Click Element  id=New Token Time To Live-option-0
     Click Element  id=generate new token button
-    Page Should Contain  Generated token:
+    Wait Until Page Contains  Generated token:
     Click Element  name=delete token button
     Handle Alert  accept
     
