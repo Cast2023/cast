@@ -10,16 +10,13 @@
 
 ### Backend
 
-Backend unittests tests focus on testing the features provided by the `DRF API` (Django Rest Framework). The available features are extensively tested. Test coverage is over 80 percent. 
+The purpose of backend unittests is to thoroughly test the features provided with the `Django Rest Framework (DRF) API`. The available `API` features are tested extensively, resulting in a test coverage of over 80 percent.
 
-Some minor functionalities have been omitted from tests. These include
-- selected functionalities from the authentication middleware 
-- selected conditional branches related to filtering parameters
-- updating an expired user token 
+However, some minor functionalities have been omitted from the tests. These include selected functionalities from the authentication middleware, selected conditional branches related to filtering parameters, and updating an expired user token.
 
-Main motivations for considered test exclusion have been temporal restrictions and priorization decisions. 
+These exclusions were made due to time constraints and prioritization decisions. Despite these omissions, the majority of the `API` features have been tested to ensure the reliability and stability of the backend system.
 
-Invoking tests locally:
+Invoking backend unittests locally:
 
 1. Clone the project
 2. Navigate to directory backend/
