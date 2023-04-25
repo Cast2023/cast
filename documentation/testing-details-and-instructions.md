@@ -17,7 +17,7 @@ Some minor functionalities have been omitted from tests. These include
 - selected conditional branches related to filtering parameters
 - updating an expired user token 
 
-Main motivation for exclusion has been temporal restrictions and priorization decisions. 
+Main motivations for considerate test exclusion have been temporal restrictions and priorization decisions. 
 
 Invoking tests locally:
 
