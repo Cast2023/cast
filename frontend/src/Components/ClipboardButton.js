@@ -14,7 +14,7 @@ const ClipboardButton = ({integrationTokenValue}) => {
   return (
     <>
       <Tooltip title="Copy to clipboard" arrow>
-        <IconButton onClick={handleClick} color="primary">
+        <IconButton name="copy to clipboard button" onClick={handleClick} color="primary">
           <ContentCopyIcon />
         </IconButton>
       </Tooltip>

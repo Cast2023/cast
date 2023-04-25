@@ -79,6 +79,7 @@ const Api = () => {
       console.log("response",response)
       dispatch(updateintegrationTokenValue(response.data.token))
     })
+    setTrigger(!trigger)
   }
 
   const changeTokenName = (event) => {
@@ -107,13 +108,6 @@ const Api = () => {
   }
 
   const timeToLive = [{ inSeconds: 86400, ttl: "One Day" }, { inSeconds:604800 , ttl: "One Week" }, { inSeconds: 2419200, ttl: "One Month" }, {inSeconds:29030400, ttl: "One Year"}]
-
-  // FOR LATER USE A BUTTON TO COPY THE TOKEN TO CLIPBOARD
-  //<button 
-  //    onClick={() =>  navigator.clipboard.writeText('this is copied to clipboard')}
-  //  >
-  //   Copy
-  //  </button>
 
   const tokens = () => {
     let t = []
@@ -177,7 +171,7 @@ const Api = () => {
             onChange={(event,value)=>{changeTokenTtl(value)}}
           />
             <br />
-            <Button type="submit" id="submit_new_skill_button">
+            <Button type="submit" id="generate new token button">
               Add
             </Button>
 
@@ -217,7 +211,7 @@ const Api = () => {
                           <TableCell>{token.token} </TableCell>
                           <TableCell>{token.ttl}</TableCell>
                           <TableCell><ClipboardButton integrationTokenValue = {tokens().find((t) => t.id === token.id).token}/> 
-                            <IconButton id={token.id} onClick={(event) => {handleDelete(event, token.id)}}><DeleteIcon /></IconButton>
+                            <IconButton id={token.id} name="delete token button" onClick={(event) => {handleDelete(event, token.id)}}><DeleteIcon /></IconButton>
                             
                           </TableCell>
                         </TableRow>
