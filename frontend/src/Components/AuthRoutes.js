@@ -29,7 +29,6 @@ const AuthRoutes = () => {
 
     if (authToken) {
       authenticationService.verifyToken(authToken).then((response) => {
-        //console.log('response.data[0]: ', response.data[0])
         const userId = response.data[0]
         const authToken = response.data[1] //may utilize the value from response //now it is same to credentialResponse.credential's value
         const APIToken = response.data[2]

@@ -31,8 +31,6 @@ const Search = () => {
   )
   const nameFilter = useSelector((state) => state.consultants.filteredName)
 
-  
-
   useEffect(() => {
     dispatch(updateFilteredConsultants())
   }, [])

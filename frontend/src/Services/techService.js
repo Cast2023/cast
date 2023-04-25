@@ -1,5 +1,6 @@
 import axios from "axios"
 
+
 const baseUrl = process.env.REACT_APP_BACKEND_URL + "api/tech/"
 
 const authHeader = (token) => ({
@@ -18,29 +19,25 @@ const getAllTechs = () => {
 const createTech = async (newObject) => {
   const APIToken = localStorage.getItem("APIToken")
   const request = await axios.post(baseUrl, newObject, authHeader(APIToken))
-  
-  //
   return request.data
 }
 
 const getSelectedTech =  (id) => {
   const APIToken = localStorage.getItem("APIToken")
-  const request = axios.get(`${baseUrl}${id}/`, authHeader(APIToken)  )
+  const request = axios.get(`${baseUrl}${id}/`, authHeader(APIToken))
   return request.then((response) => response.data)
 }
+
 const getSelectedTechByName =  (name) => {
   const APIToken = localStorage.getItem("APIToken")
-  const request = axios.get(`${baseUrl}?tech_name=${name}`, authHeader(APIToken)  )
+  const request = axios.get(`${baseUrl}?tech_name=${name}`, authHeader(APIToken))
   return request.then((response) => response.data)
 }
-//const editTech = (id, payload) => {
-//    //Todo if we need it
-//}
+
 
 export default {
   getAllTechs,
   createTech,
   getSelectedTech,
   getSelectedTechByName,
-//  editConsultant,
 }
