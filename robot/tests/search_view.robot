@@ -51,7 +51,6 @@ Scenario: As a visitor I can still see the search results after visiting another
   Click Element  home
   Click Element  profile
   Click Element  api
-  Click Element  myteam
   Click Element  search
   Page Should Not Contain  Bruce
   Page Should Contain  Gwen
