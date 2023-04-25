@@ -10,12 +10,12 @@
 
 ### Backend
 
-Backend unittests tests focus on testing the features provided by the `DRF API` (Django Rest Framework). The available features are extensively tested. 
+Backend unittests tests focus on testing the features provided by the `DRF API` (Django Rest Framework). The available features are extensively tested. Test coverage is over 80 percent. 
 
 Some minor functionalities have been omitted from tests. These include
-- Selected functionalities from the authentication middleware 
-- Selected conditional branches related to filtering parameters
-- Updating an expired user token. 
+- selected functionalities from the authentication middleware 
+- selected conditional branches related to filtering parameters
+- updating an expired user token 
 
 Main motivation for exclusion has been temporal restrictions and priorization decisions. 
 
@@ -31,11 +31,11 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 4. Install dependencies from `requirements.txt` with
-```bash
+```shell
 pip install -r requirements.txt
 ```
-5. Use the following command to run the tests
-```bash
+5. Use the following command to run the tests and to create a coverage report
+```shell
 invoke coverage-test
 ```
 
