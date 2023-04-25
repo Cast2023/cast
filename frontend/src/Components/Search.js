@@ -64,7 +64,7 @@ useEffect(() => {
               id="search_bar"
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
               label="Select tech skills"
@@ -94,7 +94,7 @@ useEffect(() => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
               label="Select certs by name"
@@ -126,7 +126,7 @@ useEffect(() => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
               label="Select certs by vendor"
@@ -174,7 +174,7 @@ useEffect(() => {
         <Grid container spacing={2} id="searchresults">
           {filteredUsers.map((consultant) => (
             <Grid item xs={0} sm={0} md={0} lg={0} key={consultant.id} >
-              <Card variant="outlined" sx={{ maxWidth: 300 }} >
+              <Card variant="outlined" sx={{ width: 300 }} >
                 <CardActionArea>
                   <CardHeader
                     title={
@@ -193,8 +193,8 @@ useEffect(() => {
                   <CardContent>
                   <b>Allocation:</b>
                     <div>
-                      {consultant.worktime_allocation}% until:{" "}
-                      {consultant.allocation_until}
+                      {consultant.worktime_allocation}% (until {" "}
+                      {consultant.allocation_until})
                     </div>
                     <br />
                     <b>Skills:</b>
@@ -204,7 +204,8 @@ useEffect(() => {
                     <br />
                     <b>Certificates:</b>
                     <div>
-                      {allCertificates.map((certificate) => certificate.certificate_name + "  ")}
+                      if
+                      {consultant.certificates.map((certificate) => certificate.certificate_name + "  ")}
                     </div>
                   </CardContent>
                 </CardActionArea>
