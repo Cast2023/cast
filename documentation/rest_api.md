@@ -1,6 +1,14 @@
 # REST API
 
-Cast Application provides a REST API courtesy to Django REST framework.
+Cast Application provides a REST API courtesy to Django REST framework. To access the API the recommended workflow is to create an integration token in the Cast web-application. 
+
+## Integration tokens
+
+To create an integration token log into the Cast web-application and navigate to view `API.` Input a name to the integration token and select a `time-to-live` value from the available options. Add the created integration token to the header of the requests as follows:
+```
+KEY: Authorization
+VALUE: Token token=<integration token>
+```
 
 ## Consultants
 
@@ -39,7 +47,7 @@ The data is serialized in standard JSON-format:
         "certificate": "AWS Certified Cloud Practitioner",
         "valid_until": "2021-12-31"
       }
-    ]
+    ],
     "projects": [
       {
         "project_name": "Cast 2023",
@@ -50,7 +58,7 @@ The data is serialized in standard JSON-format:
         "allocation_busy": 80,
         "confidential": "False"
       }
-    ]
+    ],
     "first_name": "Alex",
     "last_name": "Consultant",
     "email": "alex@gmail.com",
@@ -141,4 +149,39 @@ Examples:
 ```
 api/consultant/?available_allocation=50                  # Returns employees that have 50 percent of available allocation on date of the query
 api/consultant/?available_allocation=50,YYYY-MM-DD       # Returns employees that have 50 percent of available allocation on the given date
+```
+
+## Projects, Certificates and Skills
+New projects, certificates and skills can be POSTed through the `DRF API` using the following routes:
+```
+projects: api/projects/
+certificates: api/certificates/
+skills: api/tech/
+```
+
+### Field structures.
+
+Projects: 
+```json
+    {
+        "project_name": "Project name here",
+        "project_start_date": "YYYY-MM-DD",
+        "project_end_date": "YYYY-MM-DD",
+        "confidential": true/false
+    }
+```
+
+Certificates
+```json
+    {
+        "vendor": "vendor here",
+        "certificate_name": "certificate name here"
+    }
+```
+
+Tech-skills
+```json
+    {
+        "tech_name": "tech name here"
+    }
 ```
