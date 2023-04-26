@@ -16,6 +16,7 @@ As A Visitor I Can Generate An Api Token
     Wait Until Page Contains  Generated token:
     Page Should Contain  robot token
     Click Element  id=robot token
+    Sleep  1s
     Handle Alert  accept
     
 As A Visitor I Can Delete An Generated Api Token
@@ -29,7 +30,7 @@ As A Visitor I Can Delete An Generated Api Token
     Click Element  id=delete me
     sleep  1s
     Handle Alert  accept
-    sleep  2s   
+    sleep  1s   
     Page Should Not Contain  delete me
 
 # TODO: Fix this test
