@@ -11,10 +11,7 @@ import { Button,
   IconButton,
   
  } from "@mui/material"
-import UploadIcon from "@mui/icons-material/Upload"
-import DownloadIcon from "@mui/icons-material/Download"
 import DeleteIcon from "@mui/icons-material/Delete"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { initializeIntegrationTokenTB,

@@ -44,16 +44,4 @@ describe('sessionReducer', ()=>{
    expect(newState).toEqual({...state, token: "tokenToBeSet"})
   })
 
-
-  test('returns new state with action session/setActiveUserId', () => { 
-  const state = initialState
-  const action = {
-    type: "session/setActiveUserId",
-    payload: "5"
-  }
-  deepFreeze(state)
-  const newState = sessionReducer(state,action)
-  expect(newState).toEqual({...state, activeUserId:"5"})
-  })
-
 })

@@ -1,26 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit"
 import consultantService from "../Services/consultantService"
-import { setSelectedConsultant, setActiveConsultant } from "./consultantReducer"
+import { setActiveConsultant } from "./consultantReducer"
 
 
-// User-id is set to 1 for now to highlight if the correct user info is not fecthed from database
 const initialState = {
   activeSession: false,
   token: null,
   activeUserId: null,
-  // activeUser: [],
 }
 
 const sessionSlice = createSlice({
   name: "session",
   initialState,
   reducers: {
-    // setActiveUser(state, action) {
-    //   return {
-    //     ...state,
-    //     activeUser: action.payload,
-    //   }
-    // },
+    
     setActiveSession: (state, action) => {
       state.activeSession = action.payload
     },
@@ -28,13 +21,10 @@ const sessionSlice = createSlice({
       let token = null
       token = action.payload
       
-      state.token = token//`Bearer ${action.payload}`
-      // state.token = jwt.sign(state.activeUserId, process.env.SECRET)
-      // 
+      state.token = token
     },
     setActiveUserId: (state, action) => {
       state.activeUserId = action.payload
-      // initializeUser(action.payload)
     },
   },
 })
@@ -42,8 +32,6 @@ const sessionSlice = createSlice({
 export const initializeUser = (id, APIToken) => {
   return async (dispatch) => {
     const user = await consultantService.getSelectedConsultant(id, APIToken)
-    
-    // dispatch(setSelectedConsultant(user))
     dispatch(setActiveConsultant(user))
     dispatch(setActiveUserId(id))
   }

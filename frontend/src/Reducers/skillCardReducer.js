@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-import techService from "../Services/techService"
 import consultantService from "../Services/consultantService"
 
 const initialState = {

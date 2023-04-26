@@ -1,4 +1,3 @@
-import consultantReducer  from "./searchReducer";
 import deepFreeze from 'deep-freeze'
 import searchReducer from "./searchReducer";
 const initialState = {
