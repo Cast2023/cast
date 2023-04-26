@@ -32,7 +32,7 @@ The initial design is to use the following stack for the project. Information wi
 ### Documentation
 
 - [Documentation](https://github.com/Cast2023/cast/tree/development/documentation)
-- [Definition of Done](https://docs.google.com/document/d/1p4CsCFcm2ePFmxsqkQ7I0mt9tyTYYlAqzxWl63oserw/edit)
+- [Definition of Done](https://github.com/Cast2023/cast/blob/documentation/documentation/dev/definition_of_done.md)
 
 ### Project progress
 - [Product Backlog](https://github.com/orgs/Cast2023/projects/2)
