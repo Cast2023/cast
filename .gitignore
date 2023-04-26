@@ -1,1 +1,10 @@
 venv/
+*cache*
+.env
+*gecko*
+selenium-screenshot*
+log.html
+report.html
+output.xml
+.coverage
+backend/partial_update.log
