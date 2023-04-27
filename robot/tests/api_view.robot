@@ -14,7 +14,9 @@ As A Visitor I Can Generate An Api Token
     Click Element  id=generate new token button
     Wait Until Page Contains  Generated token:
     Click Element  name=delete token button
+    sleep 3s
     Handle Alert  accept
+    sleep 3s
     
 As A Visitor I Can Delete An Generated Api Token
     [Setup]  Refresh & Navigate to  api
@@ -25,9 +27,9 @@ As A Visitor I Can Delete An Generated Api Token
     
     Refresh & Navigate to  api
     Click Element  name=delete token button
-    sleep  1s
+    sleep  3s
     Handle Alert  accept
-    sleep  2s   
+    sleep  3s   
     Page Should Not Contain  delete me
 
 # TODO: Fix this test
