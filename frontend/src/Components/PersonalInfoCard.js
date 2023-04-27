@@ -46,13 +46,9 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
         />
         <CardContent>
           <Box
-            //component="form"
-            //onSubmit={handleSubmit}
             sx={{
               '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            //noValidate
-            //autoComplete="off"
           >
             <form onSubmit={handleSubmit} onChange={handleChange}>
               <TextField

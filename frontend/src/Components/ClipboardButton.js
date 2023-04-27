@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { IconButton, Snackbar, Tooltip } from "@mui/material";
-//import ShareIcon from "@mui/icons-material/Share";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const ClipboardButton = ({integrationTokenValue}) => {
@@ -8,7 +7,7 @@ const ClipboardButton = ({integrationTokenValue}) => {
 
   const handleClick = () => {
     setOpen(true);
-    navigator.clipboard.writeText(integrationTokenValue)//window.location.toString());
+    navigator.clipboard.writeText(integrationTokenValue)
   };
 
   return (
