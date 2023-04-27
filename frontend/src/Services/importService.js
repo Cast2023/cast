@@ -18,5 +18,5 @@ const importCertificates = async (event) => {
       )
     })
 }
-
-export default { importCertificates }
+const exports = { importCertificates }
+export default exports

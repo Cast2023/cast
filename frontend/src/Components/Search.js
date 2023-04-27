@@ -45,7 +45,7 @@ useEffect(() => {
     dispatch(updateFilteredConsultants())
   }
 
-  console.log(allVendors)
+  
 
   return (
     <div>
@@ -139,7 +139,7 @@ useEffect(() => {
                 (state) => state.consultants.setFilteredVendorsInputValue
               )}
               onInputChange={(event, value) => {
-                console.log(value)
+                
                 dispatch(setFilteredVendorsInputValue(value))
               }}
               options={allVendors.map((vendor) => ({

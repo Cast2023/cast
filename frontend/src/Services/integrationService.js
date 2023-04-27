@@ -26,8 +26,5 @@ const createToken =  async (newObject) => {///id
   //return request.then((response) => response.data.token)
 }
 
-export default {
-  getAllTokens,
-  deleteToken,
-  createToken
-}
+const exports = { getAllTokens, deleteToken, createToken }
+export default exports

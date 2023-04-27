@@ -30,9 +30,5 @@ const editConsultant = (id, payload) => {
   const request = axios.patch(`${baseUrl}${id}/`, payload, authHeader(APIToken))
   return request.then((response) => response.data)
 }
-
-export default {
-  getAllConsultants,
-  getSelectedConsultant,
-  editConsultant,
-}
+const exports = { getAllConsultants, getSelectedConsultant, editConsultant }
+export default exports

@@ -24,4 +24,5 @@ const verifyToken = async (token) => {
   return result
 }
 
-export default {successCallback, verifyToken}
+const exports = {successCallback, verifyToken}
+export default exports

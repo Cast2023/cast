@@ -29,11 +29,6 @@ const getSelectedCertByName =  (name) => {
   const request = axios.get(`${baseUrl}?certificate=${name}`)
   return request.then((response) => response.data)
 }
+const exports = { getAllCertificates, createCert, getSelectedCert, getSelectedCertByName }
 
-
-export default {
-  getAllCertificates,
-  createCert,
-  getSelectedCert,
-  getSelectedCertByName,
-}
+export default exports

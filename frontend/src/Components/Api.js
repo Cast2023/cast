@@ -46,7 +46,7 @@ const Api = () => {
       "user": currentUserId,
     } 
     integrationService.createToken(newObject).then((response) => {
-      console.log("response",response)
+      
       dispatch(updateintegrationTokenValue(response.data.token))
     })
     setTrigger(!trigger)

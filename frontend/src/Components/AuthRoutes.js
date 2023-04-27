@@ -22,7 +22,7 @@ const AuthRoutes = () => {
     dispatch(initializeProjects())
     dispatch(setToken(`${authToken}`))
   }
-  console.log("here")
+  
   useEffect(() => {
     //example in part5 uses JSON, here we test with token strin first
     const authToken = window.localStorage.getItem("authToken")
