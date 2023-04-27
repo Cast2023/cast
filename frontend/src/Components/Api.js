@@ -180,7 +180,7 @@ const Api = () => {
                           <TableCell>{token.token} </TableCell>
                           <TableCell>{token.ttl}</TableCell>
                           <TableCell><ClipboardButton integrationTokenValue = {tokens().find((t) => t.id === token.id).token}/> 
-                            <IconButton id={token.id} name="delete token button" onClick={(event) => {handleDelete(event, token.id)}}><DeleteIcon /></IconButton>
+                            <IconButton id={token.name} name="delete token button" onClick={(event) => {handleDelete(event, token.id)}}><DeleteIcon /></IconButton>
                             
                           </TableCell>
                         </TableRow>
