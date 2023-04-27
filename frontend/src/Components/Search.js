@@ -204,8 +204,7 @@ useEffect(() => {
                     <br />
                     <b>Certificates:</b>
                     <div>
-                      if
-                      {consultant.certificates.map((certificate) => certificate.certificate_name + "  ")}
+                      {consultant.certificates.map((cert) => cert.id + "  ")}
                     </div>
                   </CardContent>
                 </CardActionArea>
