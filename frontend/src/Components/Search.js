@@ -36,7 +36,7 @@ const Search = () => {
   )
   const nameFilter = useSelector((state) => state.consultants.filteredName)
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(updateFilteredConsultants())
   }, [])
 
@@ -45,7 +45,27 @@ useEffect(() => {
     dispatch(updateFilteredConsultants())
   }
 
-  console.log(allVendors)
+  const consultantCertificates = (consultant) => {
+    const certificateCounts = consultant.certificates.reduce(
+      (counts, certificate) => {
+        const vendor = certificate.vendor
+        counts[vendor] = (counts[vendor] || 0) + 1
+        return counts
+      },
+      {}
+    )
+
+    let output = ""
+    Object.entries(certificateCounts).forEach(([vendor, count]) => {
+      if (output.length > 0) {
+        output += `, ${vendor}: ${count}`
+      } else {
+        output += `${vendor}: ${count}`
+      }
+    })
+
+    return output
+  }
 
   return (
     <div>
@@ -173,8 +193,8 @@ useEffect(() => {
       {filteredUsers ? (
         <Grid container spacing={2} id="searchresults">
           {filteredUsers.map((consultant) => (
-            <Grid item xs={0} sm={0} md={0} lg={0} key={consultant.id} >
-              <Card variant="outlined" sx={{ width: 300 }} >
+            <Grid item xs={0} sm={0} md={0} lg={0} key={consultant.id}>
+              <Card variant="outlined" sx={{ width: 300 }}>
                 <CardActionArea>
                   <CardHeader
                     title={
@@ -191,9 +211,9 @@ useEffect(() => {
                     alt="placeholder img"
                   />
                   <CardContent>
-                  <b>Allocation:</b>
+                    <b>Allocation:</b>
                     <div>
-                      {consultant.worktime_allocation}% (until {" "}
+                      {consultant.worktime_allocation}% (until{" "}
                       {consultant.allocation_until})
                     </div>
                     <br />
@@ -203,9 +223,7 @@ useEffect(() => {
                     </div>
                     <br />
                     <b>Certificates:</b>
-                    <div>
-                      {consultant.certificates.map((cert) => cert.id + "  ")}
-                    </div>
+                    <div>{consultantCertificates(consultant)}</div>
                   </CardContent>
                 </CardActionArea>
               </Card>
