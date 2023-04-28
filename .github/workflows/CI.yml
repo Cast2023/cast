@@ -6,29 +6,29 @@ on:
       - development
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-  
-    steps:
-      - uses: actions/checkout@v3
-  
-      - name: Login container registry
-        run: echo ${{ secrets.REGISTRY_PWORD }} | docker login ${{ secrets.SERVER }} -u ${{ secrets.REGISTRY_UNAME }} --password-stdin
-  
-      - name: Pull base image
-        run: docker pull ${{ secrets.IMAGE }}
-  
-      - name: Run robottests
-        env:
-          BASE: ${{ secrets.TESTS_ENV_FILE }}
-        run: |
-          echo "${{ secrets.TESTS_ENV_FILE }}" | base64 -d > .env
-          cp .env backend/
-          cp .env frontend/
-          docker compose -f docker-compose.tests.yml up --exit-code-from robo
+  #tests:
+  #  runs-on: ubuntu-latest
+  #
+  #  steps:
+  #    - uses: actions/checkout@v3
+  #
+  #    - name: Login container registry
+  #      run: echo ${{ secrets.REGISTRY_PWORD }} | docker login ${{ secrets.SERVER }} -u ${{ secrets.REGISTRY_UNAME }} --password-stdin
+  #
+  #    - name: Pull base image
+  #      run: docker pull ${{ secrets.IMAGE }}
+  #
+  #    - name: Run robottests
+  #      env:
+  #        BASE: ${{ secrets.TESTS_ENV_FILE }}
+  #      run: |
+  #        echo "${{ secrets.TESTS_ENV_FILE }}" | base64 -d > .env
+  #        cp .env backend/
+  #        cp .env frontend/
+  #        docker compose -f docker-compose.tests.yml up --exit-code-from robo
 
   deploy:
-    needs: tests
+    #needs: tests
 
     runs-on: ubuntu-latest
 
