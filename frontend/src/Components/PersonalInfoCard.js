@@ -1,15 +1,14 @@
+import { useState } from "react"
 import { 
-  Card,
-  CardHeader, 
-  CardContent, 
-  IconButton,
-  TextField,
   Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader, 
+  IconButton,
+  TextField,
 } from "@mui/material"
-
 import EditIcon from '@mui/icons-material/Edit'
-import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
 
@@ -47,7 +46,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
         <CardContent>
           <Box
             sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
+              '& .MuiTextField-root': { m: 1, minWidth: 0 },
             }}
           >
             <form onSubmit={handleSubmit} onChange={handleChange}>
@@ -126,6 +125,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
                   multiline
                   rows={4}
                   defaultValue={user.wants_to_do}
+                  sx={{ width: '90%' }}
                 />
               </div>
               <div>
@@ -137,7 +137,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
                   multiline
                   rows={4}
                   defaultValue={user.wants_not_to_do}
-                  fullWidth
+                  sx={{ width: '90%' }}
                 />
               </div>
               {editable && (
