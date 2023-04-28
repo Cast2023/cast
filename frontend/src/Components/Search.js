@@ -36,7 +36,7 @@ const Search = () => {
   )
   const nameFilter = useSelector((state) => state.consultants.filteredName)
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(updateFilteredConsultants())
   }, [])
 
@@ -45,7 +45,27 @@ useEffect(() => {
     dispatch(updateFilteredConsultants())
   }
 
-  console.log(allVendors)
+  const consultantCertificates = (consultant) => {
+    const certificateCounts = consultant.certificates.reduce(
+      (counts, certificate) => {
+        const vendor = certificate.vendor
+        counts[vendor] = (counts[vendor] || 0) + 1
+        return counts
+      },
+      {}
+    )
+
+    let output = ""
+    Object.entries(certificateCounts).forEach(([vendor, count]) => {
+      if (output.length > 0) {
+        output += `, ${vendor}: ${count}`
+      } else {
+        output += `${vendor}: ${count}`
+      }
+    })
+
+    return output
+  }
 
   return (
     <div>
@@ -64,7 +84,7 @@ useEffect(() => {
               id="search_bar"
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
               label="Select tech skills"
@@ -94,7 +114,7 @@ useEffect(() => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
               label="Select certs by name"
@@ -126,7 +146,7 @@ useEffect(() => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
               label="Select certs by vendor"
@@ -170,12 +190,11 @@ useEffect(() => {
         </Grid>
       </div>
       <br />
-      <div>Search results here</div>
       {filteredUsers ? (
         <Grid container spacing={2} id="searchresults">
           {filteredUsers.map((consultant) => (
-            <Grid item xs={12} sm={6} md={4} lg={4} key={consultant.id}>
-              <Card variant="outlined">
+            <Grid item xs={0} sm={0} md={0} lg={0} key={consultant.id}>
+              <Card variant="outlined" sx={{ width: 300 }}>
                 <CardActionArea>
                   <CardHeader
                     title={
@@ -187,29 +206,24 @@ useEffect(() => {
                   />
                   <CardMedia
                     component="img"
-                    height="140"
+                    height="100"
                     image={`https://cataas.com/cat?${consultant.id}`}
                     alt="placeholder img"
                   />
                   <CardContent>
+                    <b>Allocation:</b>
                     <div>
-                      <b>Wants to do:</b> {consultant.wants_to_do}
-                    </div>
-                    <br />
-                    <div>
-                      <b>Wants not to do:</b> {consultant.wants_not_to_do}
-                    </div>
-                    <br />
-                    <div>
-                      Allocation: {consultant.worktime_allocation}, until:{" "}
-                      {consultant.allocation_until}
+                      {consultant.worktime_allocation}% (until{" "}
+                      {consultant.allocation_until})
                     </div>
                     <br />
                     <b>Skills:</b>
                     <div>
-                      {" "}
                       {consultant.skills.map((skill) => skill.tech_name + "  ")}
                     </div>
+                    <br />
+                    <b>Certificates:</b>
+                    <div>{consultantCertificates(consultant)}</div>
                   </CardContent>
                 </CardActionArea>
               </Card>
