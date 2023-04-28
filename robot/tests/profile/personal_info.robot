@@ -81,9 +81,6 @@ Scenario: As a visitor I can edit my location in personal info on profile page
     Textfield Value Should Be  id=country  Finland
     [Teardown]  Reset Location
 
-# Scenario: As a visitor I can edit my team & languages in personal info on profile page
-#   To Do
-
 Scenario: As a visitor I can edit my worktime info in personal info on profile page
     [Setup]  Refresh & Navigate to Profile Page Card  personalinfocard
     Activate Edit Mode
@@ -113,7 +110,6 @@ Scenario: As a visitor I can't edit other user's personal info
     Click Link  Janet
     Wait Until Page Contains Element  personalinfocard
     Page Should Not Contain Button  editPersonalInfoButton
-
 
 *** Keywords ***
 Activate Edit Mode
