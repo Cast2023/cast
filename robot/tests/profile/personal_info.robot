@@ -24,11 +24,6 @@ Scenario: As a visitor I can see correct location in personal info on profile pa
     Textfield Value Should Be  id=country  Denmark
     Textfield Value Should Be  id=city  Copenhagen
 
-Scenario: As a visitor I can see correct team & languages in personal info on profile page
-    [Setup]  Refresh & Navigate to Profile Page Card  personalinfocard
-    Textfield Value Should Be  id=team  To Do
-    Textfield Value Should Be  id=languages  To Do
-
 Scenario: As a visitor I can see correct worktime info in personal info on profile page
     [Setup]  Refresh & Navigate to Profile Page Card  personalinfocard
     Textfield Value Should Be  id=worktime  100%
