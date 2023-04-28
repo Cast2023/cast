@@ -3,7 +3,7 @@ from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.views.decorators.csrf import csrf_exempt
 
-from .views import ConsultantAPIView, TechAPIView, ImportCertificatesView, CertAPIView, ProjectAPIView, IntegrationTokenView
+from .views import ConsultantAPIView, TechAPIView, CertAPIView, ProjectAPIView, IntegrationTokenView
 from core.decorators import token_required
 
 
@@ -56,7 +56,6 @@ urlpatterns = format_suffix_patterns([
     path('tech/', csrf_exempt(token_required(tech_list)), name='tech-list'),
     path('tech/<int:pk>', csrf_exempt(token_required(tech_detail)), name='tech-detail'),
     path('certificates/', csrf_exempt(token_required(cert_list)), name='cert-list'),
-    path('import-certificates/', csrf_exempt(token_required(ImportCertificatesView.as_view())), name='upload-file'),
     path('projects/', csrf_exempt(token_required(project_list)), name='project-list'),
     path('integration-tokens/', csrf_exempt(token_required(integration_token_list)), name='integration-token-list'),
     path('integration-tokens/<int:pk>', csrf_exempt(token_required(remove_integration_token)), name='remove-integration-token'),

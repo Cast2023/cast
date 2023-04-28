@@ -6,8 +6,7 @@ Suite Setup     ${SETUP}
 
 *** Test Cases ***
 Scenario: As a visitor I can see the projects card on profile page
-    Refresh & Navigate to Profile Page
-    Wait Until Page Contains Element  projectscard
+    Refresh & Navigate to Profile Page Card  projectscard
 
 Scenario: As a visitor I can't add projects for other users
     [Setup]  Refresh & Navigate to  search
@@ -43,13 +42,14 @@ Scenario: As a visitor I can see correct participation period in project info on
     Table Cell Should Contain  locator=projectTable  row=2  column=3  expected=2023-03-31 | 2024-12-31
     Table Cell Should Contain  locator=projectTable  row=3  column=3  expected=2023-08-01 | 2025-12-31
 
-Scenario: As a visitor, after pressing plus-symbol I can see the correct fields for adding a new project
+Scenario: As a visitor, after pressing plus-symbol I can see the correct elements for adding a new project
     [Setup]  Refresh & Navigate to Profile Page Card  projectscard
     Click Button  addProjectButton
     Page Should Contain Element  projectsComboBox
     Page Should Contain Element  participationStart
     Page Should Contain Element  participationEnd
     Page Should Contain Element  selectAllocationBusy
+    Page Should Contain Button  submitNewProject
 
 Scenario: As a visitor I can't submit a new project without filling in all required fields
     [Setup]  Refresh & Navigate to Profile Page Card  projectscard
@@ -62,7 +62,7 @@ Scenario: As a visitor I can't submit a new project without filling in all requi
     Page Should Contain Element  participationEnd
     Page Should Contain Element  selectAllocationBusy
 
-Scenario: As a visitor, after pressing pen-symbol I can see the correct fields for editing existing projects
+Scenario: As a visitor after pressing pen-symbol I can see the correct fields for editing existing projects
     [Setup]  Refresh & Navigate to Profile Page Card  projectscard
     Click Button  editProjectsButton
     Page Should Contain Element  JawCorpAllocation
@@ -71,6 +71,7 @@ Scenario: As a visitor, after pressing pen-symbol I can see the correct fields f
     Page Should Contain Element  KeutzCorpAllocation
     Page Should Contain Element  KeutzCorpStart
     Page Should Contain Element  KeutzCorpEnd
+    Page Should Contain Button  submitProjectChanges
     
 Scenario: As a visitor I can edit my projects' allocations
     [Setup]  Refresh & Navigate to Profile Page Card  projectscard
@@ -79,6 +80,7 @@ Scenario: As a visitor I can edit my projects' allocations
     Click Element  allocation40%
     Click Element  KeutzCorpAllocation
     Click Element  allocation80%
+    Sleep  1s
     Click Button  submitProjectChanges
     Refresh & Navigate to Profile Page Card  projectscard
     Table Cell Should Contain  locator=projectTable  row=2  column=2  expected=40%
@@ -93,4 +95,5 @@ Reset Project Allocations
     Click Element  allocation50%
     Click Element  KeutzCorpAllocation
     Click Element  allocation50%
+    Sleep  1s
     Click Button  submitProjectChanges

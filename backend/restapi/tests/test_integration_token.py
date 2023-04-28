@@ -16,7 +16,7 @@ class ProjectGetTests(APITestCase):
             last_name='Doe',
             email='tester@gmail.com'
         )
-        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890')
+        self.token_for_user1 = Token.objects.create(user=user1, token='1234567890', is_integration_token=False)
         self.client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Token token=' + self.token_for_user1.token)
         self.factory = APIRequestFactory()
@@ -108,7 +108,6 @@ class IntegrationTokenPostTests(APITestCase):
         content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
         response = self.client.post(self.url, content, content_type=content_type)
         result = response.json()
-        print(result)
         
         self.assertEqual(result['token'], 'cde345')
 

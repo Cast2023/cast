@@ -86,8 +86,7 @@ export const initializeProjects = () => {
 export const initializeProjectCard = (id) => {
   return async (dispatch) => {
     const consultant = await consultantService.getSelectedConsultant(id)
-    const userProjects = consultant.projects
-    dispatch(setUserProjects(userProjects))
+    dispatch(setUserProjects(consultant.projects))
     dispatch(updateAddState(false))
     dispatch(updateEditState(false))
   }
@@ -95,11 +94,23 @@ export const initializeProjectCard = (id) => {
 
 export const addNewProject = (newProject) => {
   return async (dispatch) => {
-    const addedProject = await consultantService.editConsultant(
+    const consultant = await consultantService.editConsultant(
       newProject.userId,
       newProject
     )
+    dispatch(setUserProjects(consultant.projects))
     dispatch(updateAddState(false))
+  }
+}
+
+export const editProjects = (editedProjects) => {
+  return async (dispatch) => {
+    const consultant = await consultantService.editConsultant(
+      editedProjects.userId,
+      editedProjects
+    )
+    dispatch(setUserProjects(consultant.projects))
+    dispatch(updateEditState(false))
   }
 }
 

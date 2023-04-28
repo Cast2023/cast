@@ -190,11 +190,29 @@ class EmployeeFilterTests(APITestCase):
         result = response.json()
         self.assertEqual(len(result), 1)
 
+    def test_filter_by_tech_and_preference_returns_all_applicable_matches_for_true_if_bool_value_not_given(self):
+        search_url = '/api/consultant/?tech_and_pref=django'
+        response = self.client.get(search_url)
+        result = response.json()
+        self.assertEqual(len(result), 1)
+
     def test_filter_by_tech_and_skill_level_returns_all_applicable_matches(self):
         search_url = '/api/consultant/?tech_and_level=django,2'
         response = self.client.get(search_url)
         result = response.json()
         self.assertEqual(len(result), 1)
+    
+    def test_filter_by_tech_and_skill_level_returns_all_matches_for_tech_if_no_skill_value_is_given(self):
+        search_url = '/api/consultant/?tech_and_level=django'
+        response = self.client.get(search_url)
+        result = response.json()
+        self.assertEqual(len(result), 2)
+
+    def test_filter_by_tech_and_skill_level_returns_all_matches_for_tech_if_non_integer_skill_value_is_given(self):
+        search_url = '/api/consultant/?tech_and_level=django,abc'
+        response = self.client.get(search_url)
+        result = response.json()
+        self.assertEqual(len(result), 2)
 
     def test_filter_certificates_valid_less_than_returns_all_applicable_matches(self):
         search_url = '/api/consultant/?cert_valid_until__lte=2023-01-01'
