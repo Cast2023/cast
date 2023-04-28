@@ -1,26 +1,24 @@
+import { useEffect, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  IconButton,
+  Autocomplete,
   Box,
   Button,
-  TextField,
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Paper,
   Table,
   TableBody,
   TableCell,
-  TableRow,
   TableContainer,
   TableHead,
-  Paper,
-  Checkbox,
-  Autocomplete,
+  TableRow,
+  TextField,
 } from "@mui/material"
-
-import EditIcon from "@mui/icons-material/Edit"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
-import consultantService from "../Services/consultantService"
-import { useSelector, useDispatch } from "react-redux"
+import EditIcon from "@mui/icons-material/Edit"
 import {
   updateEditability,
   updateNewSkillAddability,
@@ -28,10 +26,10 @@ import {
   setAddableSkillDetail,
   initializeSkillCard,
 } from "../Reducers/skillCardReducer"
-import { useEffect, useState } from "react"
+import consultantService from "../Services/consultantService"
+
 
 const SkillsCard = ({ user, activeUserId }) => {
-  const dispatch = useDispatch()
   const editable = useSelector((state) => state.skillCard.editable)
   const newSkillAddable = useSelector(
     (state) => state.skillCard.newSkillAddable
@@ -42,11 +40,11 @@ const SkillsCard = ({ user, activeUserId }) => {
   )
   const userSkills = useSelector((state) => state.skillCard.userSkills)
   const allSkills = useSelector((state) => state.consultants.allTechSkills)
-
+  const dispatch = useDispatch()
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
-    const id = activeUserId === user.id ? activeUserId : user.id
+    const id = user.id
     dispatch(initializeSkillCard(id))
   }, [trigger])
 
@@ -135,6 +133,7 @@ const SkillsCard = ({ user, activeUserId }) => {
     )
     return t
   }
+
   const skillLevels = [
     { id: 1, level: "Beginner" },
     { id: 2, level: "Intermediate" },
@@ -190,7 +189,6 @@ const SkillsCard = ({ user, activeUserId }) => {
                     handleNewSkillChange(value)
                   }}
                 />
-
                 <Autocomplete
                   label="Skill level"
                   text="Define skill level"
@@ -235,7 +233,6 @@ const SkillsCard = ({ user, activeUserId }) => {
                         <TableRow key={skill.id}>
                           {/* Tech */}
                           <TableCell>{skill.tech}</TableCell>
-
                           {/* Skill level */}
                           <TableCell>
                             <Autocomplete
@@ -283,13 +280,14 @@ const SkillsCard = ({ user, activeUserId }) => {
                       </TableBody>
                     ))
                   ) : (
-                    <TableRow>
-                      <TableCell>No skills added</TableCell>
-                    </TableRow>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>No skills added</TableCell>
+                      </TableRow>
+                    </TableBody>
                   )}
                 </Table>
               </TableContainer>
-
               {editable && (
                 <Button type="submit" id="submit_skills_button">
                   Submit
