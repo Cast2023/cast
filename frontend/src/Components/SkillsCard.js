@@ -247,7 +247,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                               freeSolo
                               forcePopupIcon={true}
                               id={skill.id.toString()}
-                              value={
+                              defaultValue={
                                 skillLevels.find(
                                   (level) => level.id === skill.skillLevel
                                 ).level
