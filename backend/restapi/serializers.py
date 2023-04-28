@@ -148,7 +148,3 @@ class ConsultantSerializer(serializers.ModelSerializer):
                     updated = True
 
         return instance
-
-
-class FileUploadSerializer(serializers.Serializer):
-    file = serializers.FileField()
