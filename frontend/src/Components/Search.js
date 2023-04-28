@@ -21,11 +21,10 @@ import {
   setFilteredSkillsInputValue,
 } from "../Reducers/consultantReducer"
 import { Link } from "react-router-dom"
-import certificateService from "../Services/certificateService"
+
 
 const Search = () => {
   const dispatch = useDispatch()
-  const consultants = useSelector((state) => state.consultants.allConsultants)
   const skills = useSelector((state) => state.consultants.allTechSkills)
   const allCertificates = useSelector(
     (state) => state.consultants.allCertificates
@@ -159,7 +158,7 @@ const Search = () => {
                 (state) => state.consultants.setFilteredVendorsInputValue
               )}
               onInputChange={(event, value) => {
-                console.log(value)
+                
                 dispatch(setFilteredVendorsInputValue(value))
               }}
               options={allVendors.map((vendor) => ({
@@ -177,16 +176,6 @@ const Search = () => {
               }}
             />
           </Grid>
-          {/* <Grid item xs={4}>
-              <Button
-                variant="contained"
-                color="secondary"
-                type="submit"
-                value="submit"
-              >
-                Search
-              </Button>
-            </Grid> */}
         </Grid>
       </div>
       <br />

@@ -34,10 +34,5 @@ const getSelectedTechByName =  (name) => {
   return request.then((response) => response.data)
 }
 
-
-export default {
-  getAllTechs,
-  createTech,
-  getSelectedTech,
-  getSelectedTechByName,
-}
+const exports = { getAllTechs, createTech, getSelectedTech, getSelectedTechByName }
+export default exports

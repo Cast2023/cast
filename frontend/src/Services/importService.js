@@ -7,16 +7,16 @@ const importCertificates = async (event) => {
   formData.append("file", file)
 
   const result = await axios
-    .post(baseUrl, formData) //newFile
+    .post(baseUrl, formData) 
     .then((response) => {
       return response.data
     })
     .catch((error) => {
       alert(
         "error",
-        error //errors to alert, it should be edited
+        error 
       )
     })
 }
-
-export default { importCertificates }
+const exports = { importCertificates }
+export default exports

@@ -11,9 +11,6 @@ Scenario: As a visitor I can visit the home page
     Wait until page contains element  home
     Page Should Contain  Welcome to CAS-tracker
 
-# Scenario: As A visitor I can inspect profile page
-#     Refresh & Navigate to Profile Page
-#     Page Should Contain  Profile
 
 Scenario: As A visitor I can inspect search page
     Go To  ${SERVER}

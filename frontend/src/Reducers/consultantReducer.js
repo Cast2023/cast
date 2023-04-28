@@ -41,12 +41,6 @@ const consultantSlice = createSlice({
         allTechSkills: action.payload,
       }
     },
-    setAllCertificates(state, action) {
-      return {
-        ...state,
-        allCertificates: action.payload,
-      }
-    },
     setFilteredConsultants(state, action) {
       return {
         ...state,

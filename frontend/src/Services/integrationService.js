@@ -19,15 +19,11 @@ const deleteToken =  (tokenID) => {
   const request = axios.delete(`${baseUrl}${tokenID}`, authHeader(APIToken))
   return request.then((response) => response.data)
 }
-const createToken =  async (newObject) => {///id
+const createToken =  async (newObject) => {
   const APIToken = localStorage.getItem("APIToken")
   const request = await axios.post(baseUrl, newObject, authHeader(APIToken))
   return request 
-  //return request.then((response) => response.data.token)
 }
 
-export default {
-  getAllTokens,
-  deleteToken,
-  createToken
-}
+const exports = { getAllTokens, deleteToken, createToken }
+export default exports
