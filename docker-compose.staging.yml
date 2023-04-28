@@ -20,6 +20,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      - IS_STAGING=true
 
   db:
     image: postgres:alpine
