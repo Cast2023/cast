@@ -103,22 +103,6 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
               </div>
               <TextField
                 disabled={!editable}
-                id="team"
-                label="Team"
-                defaultValue="To Do"
-                variant="standard"
-              />
-              <div>
-                <TextField
-                  disabled={!editable}
-                  id="languages"
-                  label="Languages"
-                  defaultValue="To Do"
-                  variant="standard"
-                />
-              </div>
-              <TextField
-                disabled={!editable}
                 id="worktime"
                 label="Work time allocation"
                 name="worktime_allocation"
@@ -153,6 +137,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
                   multiline
                   rows={4}
                   defaultValue={user.wants_not_to_do}
+                  fullWidth
                 />
               </div>
               {editable && (
