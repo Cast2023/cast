@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   IconButton,
   Paper,
   Table,
@@ -242,10 +243,11 @@ const SkillsCard = ({ user, activeUserId }) => {
                               text="Define skill level"
                               name={skill.id + "new_skill_level"}
                               disablePortal
+                              disableClearable
                               freeSolo
                               forcePopupIcon={true}
                               id={skill.id.toString()}
-                              defaultValue={
+                              value={
                                 skillLevels.find(
                                   (level) => level.id === skill.skillLevel
                                 ).level
@@ -273,7 +275,7 @@ const SkillsCard = ({ user, activeUserId }) => {
                               name={skill.id.toString()}
                               id={skill.id + "pref"}
                               disabled={!editable}
-                              defaultChecked={skill.preference}
+                              checked={skill.preference}
                             ></Checkbox>
                           </TableCell>
                         </TableRow>
