@@ -9,7 +9,15 @@ To create an integration token log into the Cast web-application and navigate to
 KEY: Authorization
 VALUE: Token token=<integration token>
 ```
+To get all tokens or create a token
 
+```
+<application address>/api/integration-tokens/
+```
+To delete the token by its ID
+```
+<application address>/api/integration-tokens/<ID>
+```
 ## Consultants
 
 To access all consultants use the path
