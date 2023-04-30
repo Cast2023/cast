@@ -4,7 +4,7 @@
 
 Acceptance tests are implemented with `Robot Framework` using `Selenium library`. In order to test the application with a realistic user scenario, we use `roboroute` defined in `frontend/src/Components/Roboroute.js`.
 
-Due to difficulties with testing compatibility & techiniques, `Google Login` & the use of `Material UI Datepicker` element were deliberately omitted from acceptance testing.
+Due to difficulties with testing compatibility & techniques, `Google Login` & the use of `Material UI Datepicker` element were deliberately omitted from acceptance testing.
 
 Robot test directory has the following structure:
 ```
