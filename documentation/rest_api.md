@@ -159,6 +159,15 @@ api/consultant/?available_allocation=50                  # Returns employees tha
 api/consultant/?available_allocation=50,YYYY-MM-DD       # Returns employees that have 50 percent of available allocation on the given date
 ```
 
+## Updating consultant information
+
+To update consultant information send a `PATCH` - request as follows (where `<id:pk> = consuntalt's id`):
+```
+api/consultant/<id:pk>
+```
+
+To get a detailed overview of the structure of a `PATCH` request processes, send an `OPTIONS` request to `api/consultant/`
+
 ## Projects, Certificates and Skills
 New projects, certificates and skills can be POSTed through the `DRF API` using the following routes:
 ```
