@@ -166,7 +166,39 @@ To update consultant information send a `PATCH` - request as follows (where `<id
 api/consultant/<id:pk>
 ```
 
-To get a detailed overview of the structure of a `PATCH` request processes, send an `OPTIONS` request to `api/consultant/`
+The basic structure is:
+
+
+```json
+{
+  "id": <id:pk>,
+  "skills": [
+    {
+      "skill_level": <integer value 1-3>,
+      "tech": <skill id>,
+    }
+  ],
+  "certificates": [
+    {
+      "cert": <id>,
+      "valid_until": <YYYY-MM-DD>
+    }
+  ],
+  "projects": [
+    {
+      "project": <id>,
+      "employee_participation_start_date": <YYYY-MM-DD>,
+      "employee_participation_end_date": <YYYY-MM-DD>,
+      "allocation_busy": <integer 0-100>,
+    }
+  ],
+  "first_name": <string>,
+  "last_name": <string>,
+  ...
+}
+```
+
+To get a detailed overview of the structure of a `PATCH` request, send an `OPTIONS` request to `api/consultant/`.
 
 ## Projects, Certificates and Skills
 New projects, certificates and skills can be POSTed through the `DRF API` using the following routes:
