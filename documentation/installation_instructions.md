@@ -1,6 +1,6 @@
 # Installing and setting up the software
 
-It is possible to run software either with Docker or installing and running it locally.
+It is possible to run this software either with Docker or by installing and running it locally.
 
 ## Requirements
 
@@ -44,21 +44,21 @@ REACT_APP_BACKEND_URL=<backend url, e.g. https://cast23.lol/>
 REACT_APP_GOOGLE_CLIENT_ID=<same OAuth clientID as on the backend>
 ```
 
-Obviously the values for psql user, pw and db should be the same for Docker and for backend.
+**Please note** that the values for psql user, pw and db should be the same for Docker and for backend.
 
-#### Starting the software
+### Starting the software
 
-After creating the .env files software can be started by spelling:
+After creating the .env files the software can be started by with the following command:
 
 ```bash
 docker compose -f docker-compose.production.yml up -d
 ```
 
-Additionally, depending on your production environment, you may need to configure the domain name in Nginx too.
+Additionally, depending on your production environment, you may need to configure the domain name in Nginx as well.
 
 ## Development version
 
-You can develop the software either with Docker by adding mount point to the working directories or e.g. by using VSCode's Docker extension, or install and run it locally.
+You can develop the software either with Docker by adding mount point to the working directories or e.g. by using VSCode's Docker extension, or by installing and running it locally.
 
 Use similar .env files with production version, but change following values:
 
