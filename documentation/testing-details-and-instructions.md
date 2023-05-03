@@ -57,11 +57,14 @@ pip install -r requirements.txt
 invoke test
 ```
 
+### Important notice
+To enable Robot tests a backdoor has been created for development environment. The purpose of the backdoor is to allow Robot tests to bypass Google Authentication. It is important to disable this route (Roboroute) before pushing the application into production! 
+
 ## Unittests
 
 ### Backend
 
-The purpose of backend unit tests is to thoroughly test the features provided with the `Django Rest Framework (DRF) API`. The available `API` features are tested extensively, resulting in a test coverage of over 80 percent.
+The purpose of backend unit tests is to thoroughly test the features provided with the `Django Rest Framework (DRF) API`. The available `API` features are tested extensively, resulting in a test coverage of over 90 percent.
 
 However, some minor functionalities have been omitted from the tests. These include selected functionalities from the authentication middleware, selected conditional branches related to filtering parameters, and updating an expired user token.
 

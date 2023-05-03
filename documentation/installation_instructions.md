@@ -113,11 +113,11 @@ This will be left as an exercise to the reader. However, here are some tips:
 
 ## Other
 
-#### Tests in containers
+### Tests in containers
 
 There is `docker-compose.tests.yml` for running robot tests in containers, but it does not work well, so can't really recommend using it.
 
-#### Test data
+### Test data
 
 There is also test data for the software in `testdata.json`. It is very useful when testing new features or software at all, but it should be updated every once when making new migrations in backend.
 
@@ -135,3 +135,5 @@ When installing and using the software locally it is possible to import testdata
 ~/cast/backend$ ./manage.py loaddata testdata.json
 ```
 
+### Important notice
+To enable Robot tests a backdoor has been created for development environment. The purpose of the backdoor is to allow Robot tests to bypass Google Authentication. It is important to disable this route (Roboroute) before pushing the application into production! 
