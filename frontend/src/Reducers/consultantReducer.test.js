@@ -129,22 +129,4 @@ describe('consultantReducer', ()=>{
         expect(newSetConsultantsState.activeConsultant).toHaveLength(3)
         expect(newSetConsultantsState.activeConsultant).toEqual(testConsultantValue)    
     })
-
-    //test fail but reducer is working, this is the last one which not be tested
-    // test('returns new state with action consultants/updateFilteredConsultantsByName', () => { 
-    //     const state = {...initialState, allConsultants: testConsultantValue}
-    //     console.log("sssssssssssssssssssssssssssssss",state)
-    //     const action = {
-    //         type: "consultants/updateFilteredConsultantsByName",
-    //         payload: "B"
-                
-    //     }
-
-    //     deepFreeze(state)
-    //     const newSetConsultantsState = consultantReducer(state,action)
-
-    //     //expect(newSetConsultantsState.filteredConsultants).toHaveLength(1)
-    //     expect(newSetConsultantsState.filteredConsultants).toEqual(testConsultantValue[0])    
-    // })
-
 })

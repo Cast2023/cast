@@ -3,7 +3,9 @@
 [![CI](https://github.com/Cast2023/cast/actions/workflows/CI.yml/badge.svg?branch=development)](https://github.com/Cast2023/cast/blob/development/.github/workflows/CI.yml)
 [![CD](https://github.com/Cast2023/cast/actions/workflows/CD.yml/badge.svg?branch=master)](https://github.com/Cast2023/cast/blob/master/.github/workflows/CD.yml)
 
-Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.
+Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.  
+
+**Note:** The development for this project was finished in May 2023. The project will not be updated in the future.  
 
 ## License
 
@@ -32,15 +34,17 @@ The initial design is to use the following stack for the project. Information wi
 ### Documentation
 
 - [Documentation](https://github.com/Cast2023/cast/tree/development/documentation)
-- [Definition of Done](https://docs.google.com/document/d/1p4CsCFcm2ePFmxsqkQ7I0mt9tyTYYlAqzxWl63oserw/edit)
+- [Definition of Done](https://github.com/Cast2023/cast/blob/documentation/documentation/dev/definition_of_done.md)
 
 ### Project progress
 - [Product Backlog](https://github.com/orgs/Cast2023/projects/2)
 - Sprint Backlogs
+  - [Sprint 6](https://github.com/orgs/Cast2023/projects/11)
+  - [Sprint 5](https://github.com/orgs/Cast2023/projects/10)
   - [Sprint 4](https://github.com/orgs/Cast2023/projects/8)
   - [Sprint 3](https://github.com/orgs/Cast2023/projects/7)
   - [Sprint 2](https://github.com/orgs/Cast2023/projects/5)
-  - [Sprint 1](https://github.com/orgs/Cast2023/projects/2/views/1?layout=board)
+  - [Sprint 1](https://github.com/orgs/Cast2023/projects/2)
   - [Sprint 0](https://docs.google.com/spreadsheets/d/1wXlovJIC06ALvSr0M8b3VLNFiQBl1FqVd2ohvP6ofAQ/edit#gid=0)
 - [Retro notes](https://drive.google.com/drive/u/0/folders/1b6o-C2-OCTkozW5lMW37FBeKggW2jbtV)
 - [Working hours](https://docs.google.com/spreadsheets/d/1krRQkM73SgpyN823PulQSOlVZdtE565QKWDeB00OikY/edit#gid=0)

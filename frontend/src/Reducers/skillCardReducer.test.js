@@ -5,8 +5,8 @@ const initialState = {
   editable: false,
   newSkillAddable: false,
   skillChanges: [],
-  addableSkillDetail: null,//{new_skill_level: "", new_skill_name: ""}
-  allSkills: null,//from consultant
+  addableSkillDetail: null,
+  allSkills: null,
 }
 
 describe('skillCardReducer', ()=>{
@@ -85,23 +85,6 @@ describe('skillCardReducer', ()=>{
     deepFreeze(state)
     const newState = skillCardReducer(state,action)
     expect(newState).toEqual({...state, skillChanges: payload})
-  })
-
-  test('returns new state with action skillCard/addableSkillDetail', () => { 
-    const state = initialState
-    const payload = {
-      "new_skill_name": "Java",
-      "new_skill_level": "1"
-    }
-
-    const action = {
-      type: "skillCard/setAddableSkillDetail",
-      payload: payload
-    }
-
-    deepFreeze(state)
-    const newState = skillCardReducer(state,action)
-    expect(newState).toEqual({...state, addableSkillDetail: payload})
   })
 
   test('returns new state with action skillCard/addableSkillDetail', () => { 

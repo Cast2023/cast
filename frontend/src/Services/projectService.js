@@ -15,6 +15,5 @@ const getAllProjects = () => {
   return request.then((response) => response.data)
 }
 
-export default {
-  getAllProjects,
-}
+const exports = { getAllProjects }
+export default  exports

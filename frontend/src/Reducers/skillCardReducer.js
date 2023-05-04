@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
-import techService from "../Services/techService"
 import consultantService from "../Services/consultantService"
 
 const initialState = {
   editable: false,
   newSkillAddable: false,
   skillChanges: [],
-  addableSkillDetail: null,//{new_skill_level: "", new_skill_name: ""}
-  userSkills: null,//from consultant
+  addableSkillDetail: null,
+  userSkills: null,
 
 }
 

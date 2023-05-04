@@ -4,7 +4,6 @@ import Home from "./Home"
 import Profile from "./Profile"
 import Search from "./Search"
 import Api from "./Api"
-import MyTeam from "./MyTeam"
 import Logout from "./Logout"
 import { useSelector } from "react-redux"
 
@@ -16,7 +15,6 @@ const AppRoutes = () => {
         (consultant) => consultant.id === Number(match.params.id)
       )
     : null
-  //activeConsultant's dispatch can be found from sessionReducer's initializeUser function
   const activeUser = useSelector((state) => state.consultants.activeConsultant)
   return (
     <div>
@@ -33,14 +31,11 @@ const AppRoutes = () => {
           <Button color="inherit" component={Link} to="/profile" id="profile">
             profile
           </Button>
-          <Button color="inherit" component={Link} to="/api" id="api">
-            api
-          </Button>
-          <Button color="inherit" component={Link} to="/myteam" id="myteam">
-            my team
-          </Button>
           <Button color="inherit" component={Link} to="/search" id="search">
             search
+          </Button>
+          <Button color="inherit" component={Link} to="/api" id="api">
+            api
           </Button>
           <Button color="inherit" component={Link} to="/logout" id="logout">
             logout
@@ -61,9 +56,8 @@ const AppRoutes = () => {
             <Profile consultant={consultant} key={window.location.pathname} />
           }
         />
-        <Route path="/api" element={<Api />} />
-        <Route path="/myteam" element={<MyTeam />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/api" element={<Api />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>
     </div>

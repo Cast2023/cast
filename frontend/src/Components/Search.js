@@ -15,23 +15,25 @@ import {
   setFilteredName,
   setFilteredCertificates,
   setFilteredCertificatesInputValue,
+  setFilteredVendors,
+  setFilteredVendorsInputValue,
   setFilteredSkills,
   setFilteredSkillsInputValue,
 } from "../Reducers/consultantReducer"
 import { Link } from "react-router-dom"
-import certificateService from "../Services/certificateService"
+
 
 const Search = () => {
   const dispatch = useDispatch()
-  const consultants = useSelector((state) => state.consultants.allConsultants)
   const skills = useSelector((state) => state.consultants.allTechSkills)
-  const certs = useSelector((state) => state.consultants.allCertificates)
+  const allCertificates = useSelector(
+    (state) => state.consultants.allCertificates
+  )
+  const allVendors = useSelector((state) => state.consultants.allVendors)
   const filteredUsers = useSelector(
     (state) => state.consultants.filteredConsultants
   )
   const nameFilter = useSelector((state) => state.consultants.filteredName)
-
-  console.log(certs)
 
   useEffect(() => {
     dispatch(updateFilteredConsultants())
@@ -40,6 +42,28 @@ const Search = () => {
   const changeSearchTerm = (e) => {
     dispatch(setFilteredName(e.target.value))
     dispatch(updateFilteredConsultants())
+  }
+
+  const consultantCertificates = (consultant) => {
+    const certificateCounts = consultant.certificates.reduce(
+      (counts, certificate) => {
+        const vendor = certificate.vendor
+        counts[vendor] = (counts[vendor] || 0) + 1
+        return counts
+      },
+      {}
+    )
+
+    let output = ""
+    Object.entries(certificateCounts).forEach(([vendor, count]) => {
+      if (output.length > 0) {
+        output += `, ${vendor}: ${count}`
+      } else {
+        output += `${vendor}: ${count}`
+      }
+    })
+
+    return output
   }
 
   return (
@@ -59,7 +83,7 @@ const Search = () => {
               id="search_bar"
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
               label="Select tech skills"
@@ -89,28 +113,30 @@ const Search = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid item xs={0} sm={0} md={0} lg={0}>
             <Autocomplete
               multiple
-              label="Select certs"
-              text="Select certs"
+              label="Select certs by name"
+              text="Select certs by name"
               name="certs"
               disablePortal
               id="certs-combo-box"
-              value={useSelector((state) => state.consultants.filteredCertificates)}
+              value={useSelector(
+                (state) => state.consultants.filteredCertificates
+              )}
               inputValue={useSelector(
                 (state) => state.consultants.filteredCertificatesInputValue
               )}
               onInputChange={(event, value) => {
                 dispatch(setFilteredCertificatesInputValue(value))
               }}
-              options={certs.map((certificate) => ({
+              options={allCertificates.map((certificate) => ({
                 id: certificate.id,
                 label: certificate.certificate_name,
               }))}
               sx={{ width: 300 }}
               renderInput={(params) => (
-                <TextField {...params} label="Select certs" />
+                <TextField {...params} label="Select certs by name" />
               )}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={(event, value) => {
@@ -119,26 +145,45 @@ const Search = () => {
               }}
             />
           </Grid>
-          {/* <Grid item xs={4}>
-              <Button
-                variant="contained"
-                color="secondary"
-                type="submit"
-                value="submit"
-              >
-                Search
-              </Button>
-            </Grid> */}
-            
+          <Grid item xs={0} sm={0} md={0} lg={0}>
+            <Autocomplete
+              multiple
+              label="Select certs by vendor"
+              text="Select certs by vendor"
+              name="certsVendor"
+              disablePortal
+              id="certsVendor-combo-box"
+              value={useSelector((state) => state.consultants.filteredVendors)}
+              inputValue={useSelector(
+                (state) => state.consultants.setFilteredVendorsInputValue
+              )}
+              onInputChange={(event, value) => {
+                
+                dispatch(setFilteredVendorsInputValue(value))
+              }}
+              options={allVendors.map((vendor) => ({
+                id: vendor.id,
+                label: vendor.name,
+              }))}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Select certs by vendor" />
+              )}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(event, value) => {
+                dispatch(setFilteredVendors(value))
+                dispatch(updateFilteredConsultants())
+              }}
+            />
+          </Grid>
         </Grid>
       </div>
       <br />
-      <div>Search results here</div>
       {filteredUsers ? (
         <Grid container spacing={2} id="searchresults">
           {filteredUsers.map((consultant) => (
-            <Grid item xs={12} sm={6} md={4} lg={4} key={consultant.id}>
-              <Card variant="outlined">
+            <Grid item xs={0} sm={0} md={0} lg={0} key={consultant.id}>
+              <Card variant="outlined" sx={{ width: 300 }}>
                 <CardActionArea>
                   <CardHeader
                     title={
@@ -150,29 +195,24 @@ const Search = () => {
                   />
                   <CardMedia
                     component="img"
-                    height="140"
+                    height="100"
                     image={`https://cataas.com/cat?${consultant.id}`}
                     alt="placeholder img"
                   />
                   <CardContent>
+                    <b>Allocation:</b>
                     <div>
-                      <b>Wants to do:</b> {consultant.wants_to_do}
-                    </div>
-                    <br />
-                    <div>
-                      <b>Wants not to do:</b> {consultant.wants_not_to_do}
-                    </div>
-                    <br />
-                    <div>
-                      Allocation: {consultant.worktime_allocation}, until:{" "}
-                      {consultant.allocation_until}
+                      {consultant.worktime_allocation}% (until{" "}
+                      {consultant.allocation_until})
                     </div>
                     <br />
                     <b>Skills:</b>
                     <div>
-                      {" "}
                       {consultant.skills.map((skill) => skill.tech_name + "  ")}
                     </div>
+                    <br />
+                    <b>Certificates:</b>
+                    <div>{consultantCertificates(consultant)}</div>
                   </CardContent>
                 </CardActionArea>
               </Card>

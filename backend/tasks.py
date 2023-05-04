@@ -15,3 +15,4 @@ def migrate(ctx):
 @task
 def coverage_test(ctx):
     ctx.run("coverage run --source='.' manage.py test restapi")
+    ctx.run("coverage report")

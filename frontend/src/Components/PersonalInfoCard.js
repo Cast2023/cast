@@ -1,15 +1,14 @@
+import { useState } from "react"
 import { 
-  Card,
-  CardHeader, 
-  CardContent, 
-  IconButton,
-  TextField,
   Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader, 
+  IconButton,
+  TextField,
 } from "@mui/material"
-
 import EditIcon from '@mui/icons-material/Edit'
-import { useState } from "react"
 import consultantService from "../Services/consultantService"
 
 
@@ -46,13 +45,9 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
         />
         <CardContent>
           <Box
-            //component="form"
-            //onSubmit={handleSubmit}
             sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
+              '& .MuiTextField-root': { m: 1, minWidth: 0 },
             }}
-            //noValidate
-            //autoComplete="off"
           >
             <form onSubmit={handleSubmit} onChange={handleChange}>
               <TextField
@@ -107,22 +102,6 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
               </div>
               <TextField
                 disabled={!editable}
-                id="team"
-                label="Team"
-                defaultValue="To Do"
-                variant="standard"
-              />
-              <div>
-                <TextField
-                  disabled={!editable}
-                  id="languages"
-                  label="Languages"
-                  defaultValue="To Do"
-                  variant="standard"
-                />
-              </div>
-              <TextField
-                disabled={!editable}
                 id="worktime"
                 label="Work time allocation"
                 name="worktime_allocation"
@@ -146,6 +125,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
                   multiline
                   rows={4}
                   defaultValue={user.wants_to_do}
+                  sx={{ width: '90%' }}
                 />
               </div>
               <div>
@@ -157,6 +137,7 @@ const PersonalInfoCard = ({ user, activeUserId }) => {
                   multiline
                   rows={4}
                   defaultValue={user.wants_not_to_do}
+                  sx={{ width: '90%' }}
                 />
               </div>
               {editable && (
