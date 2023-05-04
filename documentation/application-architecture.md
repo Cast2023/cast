@@ -42,6 +42,8 @@ flowchart
 
 - Google OAuth: OAuth 2.0 protocol
 
+**CI/CD pipeline**
+
 ## Initial proposal for API-routes
 
 - all/
