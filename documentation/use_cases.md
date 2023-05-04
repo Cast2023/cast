@@ -26,8 +26,9 @@ On this page the user can edit:
 
 ## Creating integration API token
 
-Integration token creation page can be accessed by Api tab. User can create an integration token and determine the time to live value for
-the token. All available integration tokens are listed at the bottom of the page. User can also deleted tokens.
+Integration token creation page can be accessed by Api tab. User can create an integration token and determine the time to live value for the token. All available integration tokens are listed at the bottom of the page. User can also deleted tokens.  
+
+See [REST API](rest_api.md) documentation for instructions on how to use the API. 
 
 ## Using search view
 
