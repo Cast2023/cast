@@ -5,6 +5,8 @@
 
 Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.  
 
+[Click here](https://youtu.be/VO4iN8Y1Fvw) to see a video demonstration of the application.  
+
 **Note:** The development for this project was finished in May 2023. The project will not be updated in the future.  
 
 ## License
