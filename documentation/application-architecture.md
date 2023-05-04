@@ -28,24 +28,17 @@ flowchart
 **API**
 
 - API: Django REST framework
-- API routes:
-   - all/
-   - consult/name
-   - certs/?certification=cert1,cert2, cert3
-   - skills/?skill=skill1,skill2,skill3
-   - project-startdate/
-   - allocation/
+- API routes: see [API documentation](rest_api.md)
 
 **Backend**
 
 - Implemented in Python 
 - Django web framework
-  - Implement Model from Django MVT
 
 **Database**
 
 - PostgreSQL
-- [Database architecture](https://github.com/Cast2023/cast/blob/documentation/documentation/cast_db-architecture.md)
+- [Database architecture](cast_db-architecture.md)
 
 **Authentication (OAuth)**
 
@@ -53,10 +46,10 @@ flowchart
 
 **CI/CD pipeline**
 
-- [Architecture](https://github.com/Cast2023/cast/blob/documentation/documentation/CICD_pipeline.md)
+- [Architecture](CICD_pipeline.md)
 
 **Testing**
 
 - Tested using Robot Framework with Selenium library
-- [Testing guide](https://github.com/Cast2023/cast/blob/documentation/documentation/testing-details-and-instructions.md)
+- [Testing guide](testing-details-and-instructions.md)
 
