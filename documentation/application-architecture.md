@@ -19,45 +19,37 @@ flowchart
 
 ## Overview
 
-**UI**
+**Frontend**
 
-- React Application
+- Implemented in React
   - Single Page Application design style
   - Material UI: React Component library for styling web content
 
 **API**
 
 - API: Django REST framework
+- API routes: see [API documentation](rest_api.md)
 
-**Django**
+**Backend**
 
-- Django: Python web framework
-  - Implement Model from Django MVT
+- Implemented in Python 
+- Django web framework
 
 **Database**
 
 - PostgreSQL
+- [Database architecture](cast_db-architecture.md)
 
 **Authentication (OAuth)**
 
 - Google OAuth: OAuth 2.0 protocol
 
-## Initial proposal for API-routes
+**CI/CD pipeline**
 
-- all/
-- consult/name
-- certs/?certification=cert1,cert2, cert3
-- skills/?skill=skill1,skill2,skill3
-- project-startdate/
-- allocation/
+- [Architecture](CICD_pipeline.md)
 
-Questions:
+**Testing**
 
-- What if client wants to filter consults with?
-  - certain certifications
-  - certain skills
-  - certain allocation
+- Tested using Robot Framework with Selenium library
+- [Testing guide](testing-details-and-instructions.md)
 
-Other notes
-
-- Certifications and Skills from Database through API?

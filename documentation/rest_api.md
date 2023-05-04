@@ -9,7 +9,15 @@ To create an integration token log into the Cast web-application and navigate to
 KEY: Authorization
 VALUE: Token token=<integration token>
 ```
+To get all tokens or create a token
 
+```
+<application address>/api/integration-tokens/
+```
+To delete the token by its ID
+```
+<application address>/api/integration-tokens/<ID>
+```
 ## Consultants
 
 To access all consultants use the path
@@ -150,6 +158,47 @@ Examples:
 api/consultant/?available_allocation=50                  # Returns employees that have 50 percent of available allocation on date of the query
 api/consultant/?available_allocation=50,YYYY-MM-DD       # Returns employees that have 50 percent of available allocation on the given date
 ```
+
+## Updating consultant information
+
+To update consultant information send a `PATCH` - request as follows (where `<id:pk> = consuntalt's id`):
+```
+api/consultant/<id:pk>
+```
+
+The basic structure is:
+
+
+```json
+{
+  "id": <id:pk>,
+  "skills": [
+    {
+      "skill_level": <integer value 1-3>,
+      "tech": <skill id>,
+    }
+  ],
+  "certificates": [
+    {
+      "cert": <id>,
+      "valid_until": <YYYY-MM-DD>
+    }
+  ],
+  "projects": [
+    {
+      "project": <id>,
+      "employee_participation_start_date": <YYYY-MM-DD>,
+      "employee_participation_end_date": <YYYY-MM-DD>,
+      "allocation_busy": <integer 0-100>,
+    }
+  ],
+  "first_name": <string>,
+  "last_name": <string>,
+  ...
+}
+```
+
+To get a detailed overview of the structure of a `PATCH` request, send an `OPTIONS` request to `api/consultant/`.
 
 ## Projects, Certificates and Skills
 New projects, certificates and skills can be POSTed through the `DRF API` using the following routes:
