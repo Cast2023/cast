@@ -3,7 +3,9 @@
 [![CI](https://github.com/Cast2023/cast/actions/workflows/CI.yml/badge.svg?branch=development)](https://github.com/Cast2023/cast/blob/development/.github/workflows/CI.yml)
 [![CD](https://github.com/Cast2023/cast/actions/workflows/CD.yml/badge.svg?branch=master)](https://github.com/Cast2023/cast/blob/master/.github/workflows/CD.yml)
 
-Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.
+Project for University of Helsinki course Software Engineering Project (Ohjelmistotuotantoprojekti), spring 2023.  
+
+**Note:** The development for this project was finished in May 2023. The project will not be updated in the future.  
 
 ## License
 
